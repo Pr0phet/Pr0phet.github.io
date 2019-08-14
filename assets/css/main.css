@@ -276,7 +276,7 @@ body {
 
 .prompt {
     white-space: nowrap;
-    color: #FF0000;
+    color: #00FF00;
     margin-right: 7px;
     display: -webkit-box;
     -webkit-box-pack: center;

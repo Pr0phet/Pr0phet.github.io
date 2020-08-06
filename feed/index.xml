@@ -3,11 +3,307 @@
   <channel>
     <title>Pr0ph3t's blog</title>
     <description></description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed/index.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 18 May 2020 05:26:47 +0800</pubDate>
-    <lastBuildDate>Mon, 18 May 2020 05:26:47 +0800</lastBuildDate>
+    <link>https://blog.pr0ph3t.com/</link>
+    <atom:link href="https://blog.pr0ph3t.com/feed/index.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Thu, 06 Aug 2020 15:14:30 +0800</pubDate>
+    <lastBuildDate>Thu, 06 Aug 2020 15:14:30 +0800</lastBuildDate>
     <generator>Jekyll v4.0.1</generator>
+    
+      <item>
+        <title>[工具]Cobalt Strike4.0 破解日记</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;好久没写东西了啊。。。。感觉都过去几万年了。。。感觉这两年自己变化也挺大的，决定了一些事情，做成了一些事情，错过了一些事情，反省了一些事情。是时候也更新一下这个封尘的博客了。最近发现cs4.0出来了，想着白嫖一波23333&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;在网上白嫖了其他师傅破解的，试用了几波之后发现有挺多问题的。比如net view会无回应，无法生成powershell马等等，一开始以为是4.0破解的通病，但是问了几位师傅之后发现只有我这发生了这种情况。。。所以就想着，反正有原版，索性自己搞一下。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;感谢&lt;a href=&quot;https://www.cnblogs.com/ssooking/p/12535998.html&quot;&gt;ssooking&lt;/a&gt;师傅的原版jar, 这里的原版是&lt;strong&gt;&lt;em&gt;Cobalt Strike 4.0 (December 5, 2019) 558f61bfab60ef5e6bec15c8a6434e94249621f53e7838868cdb3206168a0937	Cobalt Strike 4.0 Licensed (cobaltstrike.jar)&lt;/em&gt;&lt;/strong&gt; bug fixes之前的版本，不过这个问题不大，这个主要是修复了x64上线的问题&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://verify.cobaltstrike.com/&quot;&gt;checksum&lt;/a&gt;
+&lt;img src=&quot;https://i.loli.net/2020/08/05/SOITnP8c7HhKfob.png&quot; alt=&quot;checksum&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;破解方法有很多种，这里采用的是改动最小（因为懒）的直接硬编码key覆盖掉。感谢coolcat师傅和其他师傅的无私贡献～&lt;/li&gt;
+  &lt;li&gt;其余方法也有零队的《Cobaltstrike 4破解之 我自己给我自己颁发license》&lt;a href=&quot;https://mp.weixin.qq.com/s/Pneu8R0zoG0ONyFXF9VLpg&quot;&gt;链接&lt;/a&gt; / ca3tie1师傅的《CobaltStrike4.0无Hook蛮力Cracked License思路》&lt;a href=&quot;https://ca3tie1.github.io/post/cobaltstrike40-wu-hook-man-li-cracked-license-si-lu/#0x00-%E5%89%8D%E8%A8%80&quot;&gt;链接&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;准备工作&quot;&gt;准备工作&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;我用的是Mac，Windows可能稍有点区别但是区别应该不大&lt;/li&gt;
+  &lt;li&gt;以下操作都在一个新建文件夹&lt;strong&gt;&lt;em&gt;fuckcs4.0&lt;/em&gt;&lt;/strong&gt;里&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;找到Idea的java反编译工具，Mac在路径&lt;code class=&quot;highlighter-rouge&quot;&gt;/Applications/IntelliJ IDEA.app/Contents/plugins/java-decompiler/lib&lt;/code&gt;下，找到&lt;strong&gt;&lt;em&gt;java-decompiler.jar&lt;/em&gt;&lt;/strong&gt; copy出来一份，并建立文件夹cs_bin，把原版jar放进去&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+├── cs_bin
+│   └── cobaltstrike.jar
+├── cs_src
+└── java-decompiler.jar
+
+2 directories, 2 files
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;反编译原版jar待用，在&lt;strong&gt;&lt;em&gt;java-decompiler.jar&lt;/em&gt;&lt;/strong&gt;所在的目录执行&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java &lt;span class=&quot;nt&quot;&gt;-cp&lt;/span&gt; ./java-decompiler.jar org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler &lt;span class=&quot;nt&quot;&gt;-dgs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true &lt;/span&gt;cs_bin/cobaltstrike.jar ./cs_src
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;命令解释：因为&lt;strong&gt;&lt;em&gt;java-decompiler.jar&lt;/em&gt;&lt;/strong&gt;中的META-INF/MANIFEST.MF并没有定义可执行的主类，所以我们并不能使用&lt;strong&gt;&lt;em&gt;java -jar&lt;/em&gt;&lt;/strong&gt;去直接运行&lt;strong&gt;&lt;em&gt;java-decompiler.jar&lt;/em&gt;&lt;/strong&gt;
+&lt;img src=&quot;https://i.loli.net/2020/08/05/iyF8lqkQYTRCf3E.png&quot; alt=&quot;decompile&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+├── cs_bin
+│   └── cobaltstrike.jar
+├── cs_src
+│   └── cobaltstrike.jar
+└── java-decompiler.jar
+
+2 directories, 3 files
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在&lt;strong&gt;&lt;em&gt;fuckcs4.0&lt;/em&gt;&lt;/strong&gt;里面创建一个新的文件夹，名字为&lt;strong&gt;&lt;em&gt;project&lt;/em&gt;&lt;/strong&gt;， 打开Idea新建工程，直接create一个普通的java project就行（一路next），把路径设置到我们刚新建的&lt;strong&gt;&lt;em&gt;project&lt;/em&gt;&lt;/strong&gt;文件夹，在&lt;strong&gt;&lt;em&gt;project&lt;/em&gt;&lt;/strong&gt;中再创建一个文件夹&lt;strong&gt;&lt;em&gt;decompiled_src&lt;/em&gt;&lt;/strong&gt;存放我们逆向之后的源码，把刚刚反编译后的jar放到这个文件夹之后解压，之后再创建一个&lt;strong&gt;&lt;em&gt;lib&lt;/em&gt;&lt;/strong&gt;文件夹，用于存放我们的原版jar。&lt;/p&gt;
+
+&lt;p&gt;然后在&lt;code class=&quot;highlighter-rouge&quot;&gt;Files --&amp;gt; Project Structure --&amp;gt; Modules&lt;/code&gt;里面的 Dependencies – 加入Jar or directories, 把我们&lt;strong&gt;&lt;em&gt;lib&lt;/em&gt;&lt;/strong&gt;文件夹的原版jar加入到项目中，打上勾就好了。
+&lt;img src=&quot;https://i.loli.net/2020/08/05/tkaM6I7WHfbUhVB.png&quot; alt=&quot;import jar.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;最后在&lt;code class=&quot;highlighter-rouge&quot;&gt;Files --&amp;gt; Project Structure --&amp;gt; Artifact&lt;/code&gt;里面添加Jar – From modules with dependencies, Main Class可以从原版的jar里面的&lt;strong&gt;&lt;em&gt;META-INF/MANIFEST.MF&lt;/em&gt;&lt;/strong&gt;看到是&lt;strong&gt;&lt;em&gt;aggressor.Aggressor&lt;/em&gt;&lt;/strong&gt;，填进去就行了。
+&lt;img src=&quot;https://i.loli.net/2020/08/05/o5SNnJZ2rOXd7A6.png&quot; alt=&quot;image.png&quot; /&gt;
+&lt;img src=&quot;https://i.loli.net/2020/08/05/gZR2KXzkbPrL938.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此准备工作已经差不多完成&lt;/p&gt;
+
+&lt;h2 id=&quot;改编不是乱编&quot;&gt;改编不是乱编&lt;/h2&gt;
+
+&lt;h3 id=&quot;example&quot;&gt;example：&lt;/h3&gt;
+
+&lt;p&gt;在&lt;strong&gt;&lt;em&gt;src&lt;/em&gt;&lt;/strong&gt;目录创建你要更改的文件以及对应的目录（和&lt;strong&gt;&lt;em&gt;decompiled_src&lt;/em&gt;&lt;/strong&gt;相同的目录），如：如果我要修改入口文件，也就是&lt;strong&gt;&lt;em&gt;aggressor/Aggressor.java&lt;/em&gt;&lt;/strong&gt;，那就要在src目录创建&lt;strong&gt;&lt;em&gt;aggressor/Aggressor.java&lt;/em&gt;&lt;/strong&gt;文件和对应的目录，并在里面作对应的更改，比如在运行cs的时候弹出一个消息框，修改后的源码如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aggressor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aggressor.dialogs.ConnectDialog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aggressor.ui.UseSynthetica&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;common.Authorization&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;common.License&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;common.Requirements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sleep.parser.ParserConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.swing.*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Aggressor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;VERSION&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;4.0 (20191205) &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;License&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isTrial&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Trial&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Licensed&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MultiFrame&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MultiFrame&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFrame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;JOptionPane&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;showMessageDialog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Pr0ph3t!!!!!!!!!!!!!!!!!!!!!!!!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//修改的代码&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ParserConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;installEscapeConstant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;'c'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;\u0003&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ParserConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;installEscapeConstant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;'U'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;\u001f&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;ParserConfig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;installEscapeConstant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sc&quot;&gt;'o'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;\u000f&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UseSynthetica&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setup&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;Requirements&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;checkGUI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;License&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;checkLicenseGUI&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Authorization&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;MultiFrame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ConnectDialog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;frame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;然后在菜单栏有&lt;code class=&quot;highlighter-rouge&quot;&gt;Build --&amp;gt; Build Artifact&lt;/code&gt;，运行之后在&lt;strong&gt;&lt;em&gt;out/artifacts&lt;/em&gt;&lt;/strong&gt;里面会有发现新编译好的jar，
+在&lt;code class=&quot;highlighter-rouge&quot;&gt;Run --&amp;gt; Profile --&amp;gt; Edit Profile&lt;/code&gt;处添加一个Jar Application， Jar Path指向我们刚刚编译好的jar，VM Options填上&lt;strong&gt;&lt;em&gt;-XX:+AggressiveHeap -XX:+UseParallelGC&lt;/em&gt;&lt;/strong&gt;（如果不加的话会报错）
+Run之后发现还有报错，找不到&lt;strong&gt;&lt;em&gt;cobaltstrike.auth&lt;/em&gt;&lt;/strong&gt;文件
+&lt;img src=&quot;https://i.loli.net/2020/08/05/tOXui6fvxUy3rzm.png&quot; alt=&quot;image.png&quot; /&gt;
+然后我们把&lt;strong&gt;&lt;em&gt;cobaltstrike.auth&lt;/em&gt;&lt;/strong&gt;文件复制到我们生成的jar同目录下，再运行，就能出现我们熟悉的框框了 :(
+&lt;img src=&quot;https://i.loli.net/2020/08/05/21ZVjFEnA75HP4T.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.
+├── cs_bin
+│   └── cobaltstrike.jar
+├── cs_src
+│   └── cobaltstrike.jar
+├── java-decompiler.jar
+└── project
+    ├── decompiled_src
+    │   ├── LICENSE.txt
+    │   ├── META-INF
+    │   ├── NOTICE.TXT
+    │   ├── aggressor
+    │   ├── beacon
+    │   ├── c2profile
+    │   ├── cloudstrike
+    │   ├── cobaltstrike.jar
+    │   ├── com
+    │   ├── common
+    │   ├── console
+    │   ├── cortana
+    │   ├── data
+    │   ├── de
+    │   ├── dialog
+    │   ├── dns
+    │   ├── encoders
+    │   ├── endpoint
+    │   ├── eu
+    │   ├── extc2
+    │   ├── filter
+    │   ├── graph
+    │   ├── icmp
+    │   ├── importers
+    │   ├── java_cup
+    │   ├── javax
+    │   ├── kerberos
+    │   ├── libicmp.so
+    │   ├── libicmp64.so
+    │   ├── libtapmanager.so
+    │   ├── libtapmanager64.so
+    │   ├── license
+    │   ├── logger
+    │   ├── mail
+    │   ├── net
+    │   ├── org
+    │   ├── parser
+    │   ├── pe
+    │   ├── phish
+    │   ├── profiler
+    │   ├── proxy
+    │   ├── report
+    │   ├── resources
+    │   ├── scripts
+    │   ├── server
+    │   ├── sleep
+    │   ├── sleeve
+    │   ├── socks
+    │   ├── ssl
+    │   ├── stagers
+    │   ├── table
+    │   ├── tap
+    │   └── ui
+    ├── fuckcs4.0.iml
+    ├── lib
+    │   └── cobaltstrike.jar
+    ├── out
+    │   ├── artifacts
+    │   └── production
+    └── src
+        ├── META-INF
+        ├── aggressor
+        ├── beacon
+        └── common
+
+59 directories, 12 files
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;开始破解&quot;&gt;开始破解：&lt;/h3&gt;
+
+&lt;p&gt;我们需要修改的东西为&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;绕过验证校验&lt;/li&gt;
+  &lt;li&gt;过期问题&lt;/li&gt;
+  &lt;li&gt;去除exit暗桩&lt;/li&gt;
+  &lt;li&gt;修复x64上线问题&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;绕过验证校验：
+修改的文件在&lt;strong&gt;&lt;em&gt;common/Authorization.java&lt;/em&gt;&lt;/strong&gt;
+把31行的密钥注释掉并填进正确的密钥（感谢无私奉献的师傅的密钥）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 
+          &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;55&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;61&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MAX_VALUE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;52&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;86&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;120&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; 
+          &lt;span class=&quot;mi&quot;&gt;27&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;27&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;66&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;82&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;58&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;37&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;92&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;51&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;85&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;114&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; 
+          &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;118&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;28&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;74&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;103&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;53&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.loli.net/2020/08/05/5wYKZEnbz1VHlB6.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;其实这时候已经是可以正常启动客户端了
+&lt;img src=&quot;https://i.loli.net/2020/08/06/XmN8cyRwUOD6jHp.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;但是过期、暗桩和x64上线问题我们还没有修改好&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过期问题：
+修改的文件在&lt;strong&gt;&lt;em&gt;common/Authorization.java&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第9行把&lt;strong&gt;&lt;em&gt;Authorization&lt;/em&gt;&lt;/strong&gt;类中的&lt;strong&gt;&lt;em&gt;valid&lt;/em&gt;&lt;/strong&gt;改成true
+&lt;img src=&quot;https://i.loli.net/2020/08/06/aPsKXeSIA3U5NZY.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;第76行把&lt;strong&gt;&lt;em&gt;isValid&lt;/em&gt;&lt;/strong&gt;函数改成&lt;strong&gt;&lt;em&gt;reture true&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;第92行把&lt;strong&gt;&lt;em&gt;isExpired&lt;/em&gt;&lt;/strong&gt;函数改成&lt;strong&gt;&lt;em&gt;return false&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;去除exit暗桩：
+修改的文件在&lt;strong&gt;&lt;em&gt;beacon/BeaconData.java&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第48行&lt;strong&gt;&lt;em&gt;shouldPad&lt;/em&gt;&lt;/strong&gt;函数中的&lt;strong&gt;&lt;em&gt;shouldPad&lt;/em&gt;&lt;/strong&gt;变量改成&lt;strong&gt;&lt;em&gt;false&lt;/em&gt;&lt;/strong&gt;
+&lt;img src=&quot;https://i.loli.net/2020/08/06/VREzHBheJ3Krdj2.png&quot; alt=&quot;image.png&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;修复x64上线问题
+修改的文件在&lt;strong&gt;&lt;em&gt;aggressor/dialogs/WindowsExecutableDialog.java&lt;/em&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;第29行的&lt;strong&gt;&lt;em&gt;dialogAction&lt;/em&gt;&lt;/strong&gt;函数在生成stage可执行文件的时候并没有判断主机的架构是x86还是x64，统统都用了x86的payload，这里我们加一个判断就可以了&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;dialogAction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;ActionEvent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Map&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;options&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DialogUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;listener&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;//this.stager = ListenerUtils.getListener(this.client, var3).getPayloadStager(&quot;x86&quot;);&lt;/span&gt;
+	&lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DialogUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;bool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;x64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;//增加判断&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bool&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stager&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ListenerUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPayloadStager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stager&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ListenerUtils&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPayloadStager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x86&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 
+	&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;output&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;indexOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;EXE&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;var5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;artifact.exe&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;var4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;indexOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;DLL&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;n&quot;&gt;var5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;artifact.dll&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+		&lt;span class=&quot;nc&quot;&gt;SafeDialogs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;saveFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;JFrame&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3&gt;～&lt;/h3&gt;
+&lt;p&gt;至此我们的大致修改就已经完成了，修改完成打包好的文件就是生成的artifacts，直接替换原版的jar文件即可，mac用户想要弄成app的话可以使用jar2app，如果想要二次开发的话其实也是和这个流程类似。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;水完了，溜！继续学习&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;参考：
+&lt;a href=&quot;https://www.cnblogs.com/ssooking/p/12535998.html&quot;&gt;ssooking&lt;/a&gt;
+&lt;a href=&quot;https://blog.gzsec.org/post/Patch-Cobalt-Strike-4.0/&quot;&gt;coolcat&lt;/a&gt;
+&lt;a href=&quot;http://blog.leanote.com/snowming&quot;&gt;snowming&lt;/a&gt;
+&lt;a href=&quot;https://mp.weixin.qq.com/s/Pneu8R0zoG0ONyFXF9VLpg&quot;&gt;零队&lt;/a&gt;
+&lt;a href=&quot;https://ca3tie1.github.io/post/cobaltstrike40-wu-hook-man-li-cracked-license-si-lu/#0x00-%E5%89%8D%E8%A8%80&quot;&gt;ca3tie1&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 05 Aug 2020 20:00:00 +0800</pubDate>
+        <link>https://blog.pr0ph3t.com//posts/Cobalt-Strike4.0%E7%A0%B4%E8%A7%A3%E6%97%A5%E8%AE%B0/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/Cobalt-Strike4.0%E7%A0%B4%E8%A7%A3%E6%97%A5%E8%AE%B0/</guid>
+        
+        <category>CyberSecurity</category>
+        
+        <category>Tools</category>
+        
+        <category>RedTeam</category>
+        
+        
+        <category>posts</category>
+        
+      </item>
     
       <item>
         <title>[题目]记一次利用gopher的内网mysql盲注</title>
@@ -139,8 +435,8 @@ http://www.freebuf.com/articles/web/159342.html
 https://segmentfault.com/a/1190000012166738&lt;/p&gt;
 </description>
         <pubDate>Wed, 02 May 2018 07:14:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/%E9%A2%98%E7%9B%AE-%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%88%A9%E7%94%A8gopher%E7%9A%84%E5%86%85%E7%BD%91mysql%E7%9B%B2%E6%B3%A8/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/%E9%A2%98%E7%9B%AE-%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%88%A9%E7%94%A8gopher%E7%9A%84%E5%86%85%E7%BD%91mysql%E7%9B%B2%E6%B3%A8/</guid>
+        <link>https://blog.pr0ph3t.com//posts/%E9%A2%98%E7%9B%AE-%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%88%A9%E7%94%A8gopher%E7%9A%84%E5%86%85%E7%BD%91mysql%E7%9B%B2%E6%B3%A8/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/%E9%A2%98%E7%9B%AE-%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%88%A9%E7%94%A8gopher%E7%9A%84%E5%86%85%E7%BD%91mysql%E7%9B%B2%E6%B3%A8/</guid>
         
         <category>CyberSecurity</category>
         
@@ -673,8 +969,8 @@ METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDGNRQWOKJAMZZG63JAKNSWG4RTORPWM3BU
 &lt;p&gt;感觉自己越打越菜了….Orz………..&lt;/p&gt;
 </description>
         <pubDate>Sat, 03 Feb 2018 11:25:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/hitctf-Web-Writeup/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/hitctf-Web-Writeup/</guid>
+        <link>https://blog.pr0ph3t.com//posts/hitctf-Web-Writeup/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitctf-Web-Writeup/</guid>
         
         <category>CyberSecurity</category>
         
@@ -880,8 +1176,8 @@ https://yq.aliyun.com/ziliao/55320
 https://www.zhihu.com/question/23786410&lt;/p&gt;
 </description>
         <pubDate>Fri, 26 Jan 2018 15:28:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/</guid>
+        <link>https://blog.pr0ph3t.com//posts/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitcon2017-Baby-H-master-php-2017-%E5%A4%8D%E7%8E%B0/</guid>
         
         <category>CyberSecurity</category>
         
@@ -1184,8 +1480,8 @@ https://ricterz.me/posts/HITCON%202017%20SSRFme&lt;/p&gt;
 
 </description>
         <pubDate>Sun, 14 Jan 2018 10:04:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/hitcon2017-SSRF-Me%E5%A4%8D%E7%8E%B0/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/hitcon2017-SSRF-Me%E5%A4%8D%E7%8E%B0/</guid>
+        <link>https://blog.pr0ph3t.com//posts/hitcon2017-SSRF-Me%E5%A4%8D%E7%8E%B0/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitcon2017-SSRF-Me%E5%A4%8D%E7%8E%B0/</guid>
         
         <category>CyberSecurity</category>
         
@@ -1289,8 +1585,8 @@ https://github.com/sorgloomer/writeups/blob/master/writeups/2017-hitcon-quals/sq
 https://node-postgres.com/announcements#2017-08-12-code-execution-vulnerability&lt;/p&gt;
 </description>
         <pubDate>Tue, 09 Jan 2018 04:09:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/hitcon2017-Sql-so-hard-%E5%A4%8D%E7%8E%B0/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/hitcon2017-Sql-so-hard-%E5%A4%8D%E7%8E%B0/</guid>
+        <link>https://blog.pr0ph3t.com//posts/hitcon2017-Sql-so-hard-%E5%A4%8D%E7%8E%B0/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitcon2017-Sql-so-hard-%E5%A4%8D%E7%8E%B0/</guid>
         
         <category>CyberSecurity</category>
         
@@ -1828,8 +2124,8 @@ JNews注入：&lt;a href=&quot;https://www.exploit-db.com/exploits/38565/&quot;&
 &lt;p&gt;总结来说这次比赛还是有不足的，第一就是个人赛的有点瓜皮。。。主办方给的提示是题目都没有暴力操作。。。所以自己就很麻瓜的连扫目录都懒得扫了。。。导致错过www.zip文件。第二就是策略不太对，第一天应该侧重点在渗透和下源码，而不是一被打了就乱了节奏 Orz 师傅们都太强了。。。&lt;/p&gt;
 </description>
         <pubDate>Sun, 24 Dec 2017 07:27:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/X-NUCA-%E6%80%BB%E5%86%B3%E8%B5%9B%E5%B0%8F%E7%BB%93/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/X-NUCA-%E6%80%BB%E5%86%B3%E8%B5%9B%E5%B0%8F%E7%BB%93/</guid>
+        <link>https://blog.pr0ph3t.com//posts/X-NUCA-%E6%80%BB%E5%86%B3%E8%B5%9B%E5%B0%8F%E7%BB%93/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/X-NUCA-%E6%80%BB%E5%86%B3%E8%B5%9B%E5%B0%8F%E7%BB%93/</guid>
         
         <category>CyberSecurity</category>
         
@@ -1952,8 +2248,8 @@ JNews注入：&lt;a href=&quot;https://www.exploit-db.com/exploits/38565/&quot;&
 https://github.com/orangetw/My-CTF-Web-Challenges&lt;/p&gt;
 </description>
         <pubDate>Tue, 28 Nov 2017 01:17:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/</guid>
+        <link>https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/</guid>
         
         <category>CyberSecurity</category>
         
@@ -2111,8 +2407,8 @@ sh _  &lt;span class=&quot;c&quot;&gt;#也就执行了a指令 但是没有意义
 https://github.com/orangetw/My-CTF-Web-Challenges&lt;/p&gt;
 </description>
         <pubDate>Mon, 27 Nov 2017 01:39:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/hitcon2017-BabyFirst-Revenge%E5%A4%8D%E7%8E%B0/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/hitcon2017-BabyFirst-Revenge%E5%A4%8D%E7%8E%B0/</guid>
+        <link>https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge%E5%A4%8D%E7%8E%B0/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge%E5%A4%8D%E7%8E%B0/</guid>
         
         <category>CyberSecurity</category>
         
@@ -2441,224 +2737,8 @@ data 0x05 0x05 0x05 0x05 0x05 或
 &lt;a href=&quot;http://www.jianshu.com/p/9b4d3565de87&quot;&gt;http://www.jianshu.com/p/9b4d3565de87&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 09 Nov 2017 05:47:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/Web%E7%8B%97%E8%A6%81%E6%87%82%E7%9A%84Padding-Oracle%E6%94%BB%E5%87%BB/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/Web%E7%8B%97%E8%A6%81%E6%87%82%E7%9A%84Padding-Oracle%E6%94%BB%E5%87%BB/</guid>
-        
-        <category>CyberSecurity</category>
-        
-        <category>writeup</category>
-        
-        <category>crypto</category>
-        
-        <category>old</category>
-        
-        
-        <category>posts</category>
-        
-      </item>
-    
-      <item>
-        <title>Web狗要懂的CBC翻转字节攻击(Flipped Ciphertext Bits)</title>
-        <description>&lt;p&gt;这次蓝盾杯线上赛遇到了一题类似于NJCTF的CBC翻转攻击的题目，不过题目被改简单了，省去了最开始的Padding Oracle攻击部分，直接给出了初始字符串。
-源码如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt; 
-&lt;span class=&quot;nb&quot;&gt;error_reporting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;define&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;METHOD&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;aes-128-cbc&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;define&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SECRET_KEY&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;XXXXX&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$flag&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;flag&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;session_start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_random_token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;$random_token&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-        &lt;span class=&quot;nv&quot;&gt;$random_token&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$random_token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$defaultID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;heheda&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
- &lt;span class=&quot;nv&quot;&gt;$token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;get_random_token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;base64_encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;openssl_encrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$defaultID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;METHOD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SECRET_KEY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;OPENSSL_RAW_DATA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;setcookie&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;token&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;base64_encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'isadmin'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;is_admin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])){&lt;/span&gt;
-  &lt;span class=&quot;nv&quot;&gt;$token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;base64_decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_COOKIE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'token'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;openssl_decrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;base64_decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;METHOD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SECRET_KEY&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;OPENSSL_RAW_DATA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)){&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;admin&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'isadmin'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Error!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;get_identity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
- &lt;span class=&quot;nx&quot;&gt;is_admin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
- &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_SESSION&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;isadmin&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]){&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;You are admin!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$flag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
- &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
-     &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;You are not admin!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
- &lt;span class=&quot;cp&quot;&gt;?&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;先上脚本&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;base64&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b64&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;binascii&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;requests&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;source_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'heheda'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x0a&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;target_srt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'admin'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x0b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'ooeOFlWe26ZCTl8nVzCd2Q=='&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#你获得的初始IV的base64encode值
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b64decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# token[0] = chr(ord('h') ^ ord('a') ^ ord(token[0]))
-# print token
-# exit()
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;target_srt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)):&lt;/span&gt;
-	&lt;span class=&quot;n&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;target_srt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;source_str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b64encode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;这里我们可控的只有解密的初始向量IV 下面是介绍这个加密方法的原理：&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;加密过程&quot;&gt;加密过程&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2017/Web狗要懂的CBC翻转字节攻击-Flipped-Ciphertext-Bits/1.png&quot; alt=&quot;加密过程&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;首先将明文分成每X位一组，位数不足的是用特殊字符填充  ！！！！！！！
-X常见的为16位，也有32位
-这里要注意，CBC的填充规则是缺少N位，就用 N 个 ‘\xN’填充，如缺少10位则用 10 个 ‘\x10’填充&lt;/li&gt;
-  &lt;li&gt;然后生成初始向量IV(这里的初始向量如果未特定给出则随机生成)和密钥&lt;/li&gt;
-  &lt;li&gt;将初始向量与第一组明文异或生成密文A&lt;/li&gt;
-  &lt;li&gt;用密钥加密密文A 得到密文A_1&lt;/li&gt;
-  &lt;li&gt;重复3 将密文A_1与第二组明文异或生成密文B&lt;/li&gt;
-  &lt;li&gt;重复4 用密钥加密密文B_1&lt;/li&gt;
-  &lt;li&gt;重复3-6 直到最后一组明文&lt;/li&gt;
-  &lt;li&gt;将IV和加密后的密文拼接在一起，得到最终的密文&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;解密过程&quot;&gt;解密过程&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/posts/2017/Web狗要懂的CBC翻转字节攻击-Flipped-Ciphertext-Bits/2.png&quot; alt=&quot;解密过程&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;首先从最终的密文中提取出IV (IV为加密时指定的X位)&lt;/li&gt;
-  &lt;li&gt;将密文分组&lt;/li&gt;
-  &lt;li&gt;使用密钥对第一组密文解密得到密文A，然后用IV进行异或得到第一组明文&lt;/li&gt;
-  &lt;li&gt;使用密钥对第二组密文解密得到密文B，然后用A与B进行异或得到第二组明文&lt;/li&gt;
-  &lt;li&gt;重复3-4 直到最后一组密文&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;所以根据以上过程，攻击点有两个，一个是初始向量IV，第二个是第N-1个密文。题目利用的是IV攻击的点&lt;/p&gt;
-
-&lt;p&gt;下面是攻击过程：
-根据解密过程，假设A为明文，B为前一组密文，C为密文经过密钥解密之后的字符串：&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Plaintext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Ciphertext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Decrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ciphertext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;解密过程中我们是用 C与B 异或得到A， 即 &lt;code class=&quot;highlighter-rouge&quot;&gt;C ^ B = A&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;题目这里只需要我们更改第一组明文的信息，所以我们只需要简单更改IV即可，
-即有以下过程：&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Plaintext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'h'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;IV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;可控&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Decrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ciphertext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//所以我们需要伪造一个新的IV向量，使得$C ^ New_IV = 我们需要的明文&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//因为有 &lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Old_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Source_str&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Old_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Source_str&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//并且我们还需要&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;New_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Target_str&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//即&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;New_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Target_str&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;Old_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Source_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;New_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Target_str&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;New_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Old_IV&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Source_str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Target_str&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;下面是密文攻击的点&lt;/p&gt;
-
-&lt;p&gt;假如已知异或之后的第N-1组密文(Decrypt之后的密文)，我们就可以通过字节翻转改变第N组明文&lt;/p&gt;
-
-&lt;p&gt;数学原理和前面一种攻击点类似&lt;/p&gt;
-
-&lt;p&gt;下面假设我们要更改第3组明文$Old_pt[1]为第2组明文，$Old_ct[1]为第2组密文，$Old_ct[2]为第3组密文&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$Plaintext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;'comment1=wowsuch'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;'%20CBC;userdata='&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;'*admin=true;come'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;'nt2=%20suchsafe%'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;'20very%20encrypt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;'wowww'&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//我们要使$Plaintext[2]中的*变成;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//密文全部已知并可控&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$Old_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Plaintext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'%20CBC;userdata='&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Decrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ciphertext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;已知&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;并且我们攻击的点在这&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Decrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Ciphertext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;已知&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//所以我们需要伪造一个新的第2组密文，使得$Old_ct[2] ^ $New_ct[1] = 我们需要的明文&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//因为有 &lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//并且还已知&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$New_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$New_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//即&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$New_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$New_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$New_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$New_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$New_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_ct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$Old_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$New_pt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;暂时不知道有啥特别用处的数学背景&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// &amp;lt;====一式 （任何数和自己异或都为0）&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//又因为&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以有&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//所以一式又可以写成&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//又因为任何数和0异或都为自身，所以有&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$C&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;作者水平有限 如有错误请指出 Orz&lt;/p&gt;
-
-&lt;p&gt;参考文章 : &lt;a href=&quot;http://www.ifuryst.com/archives/CBC_bitflipping_attacks.html&quot;&gt;http://www.ifuryst.com/archives/CBC_bitflipping_attacks.html&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 24 Oct 2017 21:44:00 +0800</pubDate>
-        <link>http://localhost:4000//posts/Web%E7%8B%97%E8%A6%81%E6%87%82%E7%9A%84CBC%E7%BF%BB%E8%BD%AC%E5%AD%97%E8%8A%82%E6%94%BB%E5%87%BB-Flipped-Ciphertext-Bits/</link>
-        <guid isPermaLink="true">http://localhost:4000//posts/Web%E7%8B%97%E8%A6%81%E6%87%82%E7%9A%84CBC%E7%BF%BB%E8%BD%AC%E5%AD%97%E8%8A%82%E6%94%BB%E5%87%BB-Flipped-Ciphertext-Bits/</guid>
+        <link>https://blog.pr0ph3t.com//posts/Web%E7%8B%97%E8%A6%81%E6%87%82%E7%9A%84Padding-Oracle%E6%94%BB%E5%87%BB/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/Web%E7%8B%97%E8%A6%81%E6%87%82%E7%9A%84Padding-Oracle%E6%94%BB%E5%87%BB/</guid>
         
         <category>CyberSecurity</category>
         

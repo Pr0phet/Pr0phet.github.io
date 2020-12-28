@@ -103,28 +103,28 @@
 <span class="nv">$flag</span> <span class="o">=</span> <span class="s2">"flag</span><span class="si">{</span><span class="nv">...</span><span class="si">}</span><span class="s2">"</span><span class="p">;</span>
 <span class="nb">session_start</span><span class="p">();</span>
 
-<span class="k">function</span> <span class="nf">get_random_token</span><span class="p">(){</span>
+<span class="k">function</span> <span class="n">get_random_token</span><span class="p">(){</span>
     <span class="nv">$random_token</span><span class="o">=</span><span class="s1">''</span><span class="p">;</span>
     <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$i</span><span class="o">&lt;</span><span class="mi">16</span><span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">){</span>
-        <span class="nv">$random_token</span><span class="o">.=</span><span class="nb">chr</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">255</span><span class="p">));</span>
+        <span class="nv">$random_token</span><span class="mf">.</span><span class="o">=</span><span class="nb">chr</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">255</span><span class="p">));</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="nv">$random_token</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">function</span> <span class="nf">get_identity</span><span class="p">()</span>
+<span class="k">function</span> <span class="n">get_identity</span><span class="p">()</span>
 <span class="p">{</span>
  <span class="nv">$defaultID</span> <span class="o">=</span> <span class="s2">"heheda"</span><span class="p">;</span>
- <span class="nv">$token</span> <span class="o">=</span> <span class="nx">get_random_token</span><span class="p">();</span>
-    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">base64_encode</span><span class="p">(</span><span class="nb">openssl_encrypt</span><span class="p">(</span><span class="nv">$defaultID</span><span class="p">,</span> <span class="nx">METHOD</span><span class="p">,</span> <span class="nx">SECRET_KEY</span><span class="p">,</span> <span class="nx">OPENSSL_RAW_DATA</span><span class="p">,</span> <span class="nv">$token</span><span class="p">));</span>
+ <span class="nv">$token</span> <span class="o">=</span> <span class="nf">get_random_token</span><span class="p">();</span>
+    <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">base64_encode</span><span class="p">(</span><span class="nb">openssl_encrypt</span><span class="p">(</span><span class="nv">$defaultID</span><span class="p">,</span> <span class="no">METHOD</span><span class="p">,</span> <span class="no">SECRET_KEY</span><span class="p">,</span> <span class="no">OPENSSL_RAW_DATA</span><span class="p">,</span> <span class="nv">$token</span><span class="p">));</span>
     <span class="nb">setcookie</span><span class="p">(</span><span class="s2">"token"</span><span class="p">,</span> <span class="nb">base64_encode</span><span class="p">(</span><span class="nv">$token</span><span class="p">));</span>
     <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'isadmin'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">function</span> <span class="nf">is_admin</span><span class="p">()</span>
+<span class="k">function</span> <span class="n">is_admin</span><span class="p">()</span>
 <span class="p">{</span>
- <span class="k">if</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])){</span>
+ <span class="k">if</span><span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">])){</span>
   <span class="nv">$token</span> <span class="o">=</span> <span class="nb">base64_decode</span><span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s1">'token'</span><span class="p">]);</span>
-  <span class="k">if</span><span class="p">(</span><span class="nv">$id</span> <span class="o">=</span> <span class="nb">openssl_decrypt</span><span class="p">(</span><span class="nb">base64_decode</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]),</span> <span class="nx">METHOD</span><span class="p">,</span> <span class="nx">SECRET_KEY</span><span class="p">,</span> <span class="nx">OPENSSL_RAW_DATA</span><span class="p">,</span> <span class="nv">$token</span><span class="p">)){</span>
+  <span class="k">if</span><span class="p">(</span><span class="nv">$id</span> <span class="o">=</span> <span class="nb">openssl_decrypt</span><span class="p">(</span><span class="nb">base64_decode</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]),</span> <span class="no">METHOD</span><span class="p">,</span> <span class="no">SECRET_KEY</span><span class="p">,</span> <span class="no">OPENSSL_RAW_DATA</span><span class="p">,</span> <span class="nv">$token</span><span class="p">)){</span>
    <span class="k">if</span><span class="p">(</span><span class="nv">$id</span> <span class="o">==</span> <span class="s2">"admin"</span><span class="p">)</span>
     <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'isadmin'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -133,10 +133,10 @@
  <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]))</span>
-    <span class="nx">get_identity</span><span class="p">();</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">'id'</span><span class="p">]))</span>
+    <span class="nf">get_identity</span><span class="p">();</span>
 <span class="k">else</span> <span class="p">{</span>
- <span class="nx">is_admin</span><span class="p">();</span>
+ <span class="nf">is_admin</span><span class="p">();</span>
  <span class="k">if</span> <span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s2">"isadmin"</span><span class="p">]){</span>
      <span class="k">echo</span> <span class="s2">"You are admin!</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
      <span class="k">die</span><span class="p">(</span><span class="nv">$flag</span><span class="p">);</span>
@@ -202,33 +202,33 @@ X常见的为16位，也有32位
 <p>下面是攻击过程：
 根据解密过程，假设A为明文，B为前一组密文，C为密文经过密钥解密之后的字符串：</p>
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$A</span> <span class="o">=</span> <span class="nx">Plaintext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">11</span> <span class="p">;</span>
-<span class="nv">$B</span> <span class="o">=</span> <span class="nx">Ciphertext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">13</span> <span class="p">;</span>
-<span class="nv">$C</span> <span class="o">=</span> <span class="nx">Decrypt</span><span class="p">(</span><span class="nx">Ciphertext</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span> <span class="p">;</span>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$A</span> <span class="o">=</span> <span class="nc">Plaintext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">11</span> <span class="p">;</span>
+<span class="nv">$B</span> <span class="o">=</span> <span class="nc">Ciphertext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">13</span> <span class="p">;</span>
+<span class="nv">$C</span> <span class="o">=</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nc">Ciphertext</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span> <span class="p">;</span>
 </code></pre></div></div>
 
-<p>解密过程中我们是用 C与B 异或得到A， 即 <code class="highlighter-rouge">C ^ B = A</code></p>
+<p>解密过程中我们是用 C与B 异或得到A， 即 <code class="language-plaintext highlighter-rouge">C ^ B = A</code></p>
 
 <p>题目这里只需要我们更改第一组明文的信息，所以我们只需要简单更改IV即可，
 即有以下过程：</p>
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$A</span> <span class="o">=</span> <span class="nx">Plaintext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'h'</span> <span class="p">;</span>
-<span class="nv">$B</span> <span class="o">=</span> <span class="nx">IV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span>  <span class="nx">可控</span><span class="p">;</span>
-<span class="nv">$C</span> <span class="o">=</span> <span class="nx">Decrypt</span><span class="p">(</span><span class="nx">Ciphertext</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">?</span><span class="p">;</span>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$A</span> <span class="o">=</span> <span class="nc">Plaintext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'h'</span> <span class="p">;</span>
+<span class="nv">$B</span> <span class="o">=</span> <span class="no">IV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span>  <span class="n">可控</span><span class="p">;</span>
+<span class="nv">$C</span> <span class="o">=</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nc">Ciphertext</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">?</span><span class="p">;</span>
 
 <span class="c1">//所以我们需要伪造一个新的IV向量，使得$C ^ New_IV = 我们需要的明文</span>
 <span class="c1">//因为有 </span>
-<span class="nv">$C</span> <span class="o">^</span> <span class="nx">Old_IV</span> <span class="o">=</span> <span class="nx">Source_str</span>
+<span class="nv">$C</span> <span class="o">^</span> <span class="n">Old_IV</span> <span class="o">=</span> <span class="n">Source_str</span>
 <span class="c1">//所以</span>
-<span class="nv">$C</span> <span class="o">=</span> <span class="nx">Old_IV</span> <span class="o">^</span> <span class="nx">Source_str</span>
+<span class="nv">$C</span> <span class="o">=</span> <span class="n">Old_IV</span> <span class="o">^</span> <span class="n">Source_str</span>
 <span class="c1">//并且我们还需要</span>
-<span class="nv">$C</span> <span class="o">^</span> <span class="nx">New_IV</span> <span class="o">=</span> <span class="nx">Target_str</span>
+<span class="nv">$C</span> <span class="o">^</span> <span class="n">New_IV</span> <span class="o">=</span> <span class="n">Target_str</span>
 <span class="c1">//即</span>
-<span class="nv">$C</span> <span class="o">=</span> <span class="nx">New_IV</span> <span class="o">^</span> <span class="nx">Target_str</span>
+<span class="nv">$C</span> <span class="o">=</span> <span class="n">New_IV</span> <span class="o">^</span> <span class="n">Target_str</span>
 <span class="c1">//所以</span>
-<span class="nx">Old_IV</span> <span class="o">^</span> <span class="nx">Source_str</span> <span class="o">=</span> <span class="nx">New_IV</span> <span class="o">^</span> <span class="nx">Target_str</span>
+<span class="n">Old_IV</span> <span class="o">^</span> <span class="n">Source_str</span> <span class="o">=</span> <span class="n">New_IV</span> <span class="o">^</span> <span class="n">Target_str</span>
 <span class="c1">//所以</span>
-<span class="nx">New_IV</span> <span class="o">=</span> <span class="nx">Old_IV</span> <span class="o">^</span> <span class="nx">Source_str</span> <span class="o">^</span> <span class="nx">Target_str</span>
+<span class="n">New_IV</span> <span class="o">=</span> <span class="n">Old_IV</span> <span class="o">^</span> <span class="n">Source_str</span> <span class="o">^</span> <span class="n">Target_str</span>
 </code></pre></div></div>
 
 <hr />
@@ -250,9 +250,9 @@ X常见的为16位，也有32位
   <span class="s1">'wowww'</span>
 <span class="p">];</span><span class="c1">//我们要使$Plaintext[2]中的*变成;</span>
 <span class="c1">//密文全部已知并可控</span>
-<span class="nv">$Old_pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Plaintext</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'%20CBC;userdata='</span><span class="p">;</span>
-<span class="nv">$Old_ct</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Decrypt</span><span class="p">(</span><span class="nx">Ciphertext</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nx">已知</span> <span class="nx">并且我们攻击的点在这</span><span class="p">;</span>
-<span class="nv">$Old_ct</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Decrypt</span><span class="p">(</span><span class="nx">Ciphertext</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nx">已知</span><span class="p">;</span>
+<span class="nv">$Old_pt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nc">Plaintext</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'%20CBC;userdata='</span><span class="p">;</span>
+<span class="nv">$Old_ct</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nc">Ciphertext</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">已知</span> <span class="n">并且我们攻击的点在这</span><span class="p">;</span>
+<span class="nv">$Old_ct</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nf">Decrypt</span><span class="p">(</span><span class="nc">Ciphertext</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">已知</span><span class="p">;</span>
 
 <span class="c1">//所以我们需要伪造一个新的第2组密文，使得$Old_ct[2] ^ $New_ct[1] = 我们需要的明文</span>
 <span class="c1">//因为有 </span>

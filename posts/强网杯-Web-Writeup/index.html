@@ -117,7 +117,7 @@
   <li>题目链接：动态url</li>
 </ul>
 
-<p>进去之后有一句话 <code class="highlighter-rouge">Sorry. You have no permissions.</code> 看Cookie后发现set了一个可疑cookie名字叫role，base64解密后是这个东西 <code class="highlighter-rouge">f:5:"thrfg";</code> 估计中间的字符串要变成相应的admin，脑洞大发直接将中间的rot13后就变成了guest，直接改成admin后再rot13再base64，然后修改cookie role成为这个之后进去另外一个页面，页面提示<code class="highlighter-rouge">Hello admin, now you can upload something you are easy to forget.</code> 然后查看源码发现注释<code class="highlighter-rouge">&lt;!-- $filename = $_POST['filename']; $data = $_POST['data']; --&gt;Hello admin, now you can upload something you are easy to forget.&lt;/body&gt;
+<p>进去之后有一句话 <code class="language-plaintext highlighter-rouge">Sorry. You have no permissions.</code> 看Cookie后发现set了一个可疑cookie名字叫role，base64解密后是这个东西 <code class="language-plaintext highlighter-rouge">f:5:"thrfg";</code> 估计中间的字符串要变成相应的admin，脑洞大发直接将中间的rot13后就变成了guest，直接改成admin后再rot13再base64，然后修改cookie role成为这个之后进去另外一个页面，页面提示<code class="language-plaintext highlighter-rouge">Hello admin, now you can upload something you are easy to forget.</code> 然后查看源码发现注释<code class="language-plaintext highlighter-rouge">&lt;!-- $filename = $_POST['filename']; $data = $_POST['data']; --&gt;Hello admin, now you can upload something you are easy to forget.&lt;/body&gt;
 </code>
 随便post一个filename为fuck.php，data是123的文件上去
 <img src="/assets/images/posts/2017/强网杯-Web-Writeup/5.png" alt="upload" /></p>
@@ -136,7 +136,7 @@
 <p>进去之后发现是一个注册登录的界面，自然是首先想到的是注入，正常注册一个账号登录之后有这样的一个界面
 <img src="/assets/images/posts/2017/强网杯-Web-Writeup/7.png" alt="登录后" /></p>
 
-<p>并且在点击check后注释中有这样一句话<code class="highlighter-rouge">&lt;!-- 听说admin的电话藏着大秘密哦～--&amp;rt;</code>
+<p>并且在点击check后注释中有这样一句话<code class="language-plaintext highlighter-rouge">&lt;!-- 听说admin的电话藏着大秘密哦～--&amp;rt;</code>
 首先想到的是利用admin表长度限制的漏洞进行越权注册，发现没啥用。
 然后想到的是二次注入，发现在用户名的地方是被addslash了无法注入，其次尝试phone，发现在注册的时候phone的长度作了限制，并且只能提交数字，这里使用了三个小技巧
 1、phone的长度是前端做限制的，所以可以截包修改
@@ -188,9 +188,9 @@ exp：0x3120756e696f6e2073656c6563742070686f6e652066726f6d207573657223
 比较骚但是有点麻烦
 这里因为长度的限制和/过滤的问题不能直接执行反弹shell的语句
 这里我们直接将反弹shell语句base64一下之后一个个字写到一个文件
-也就是 <code class="highlighter-rouge">echo -n 'A' &gt;&gt; 1</code>
-这里注意要加<code class="highlighter-rouge">-n</code> 因为<code class="highlighter-rouge">echo</code>默认是在最后面加入一个换行符
-最后执行 <code class="highlighter-rouge">cat 1 | base64 -d |bash</code>就行了
+也就是 <code class="language-plaintext highlighter-rouge">echo -n 'A' &gt;&gt; 1</code>
+这里注意要加<code class="language-plaintext highlighter-rouge">-n</code> 因为<code class="language-plaintext highlighter-rouge">echo</code>默认是在最后面加入一个换行符
+最后执行 <code class="language-plaintext highlighter-rouge">cat 1 | base64 -d |bash</code>就行了
 附上脚本：</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>

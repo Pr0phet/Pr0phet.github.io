@@ -116,7 +116,7 @@
 这里还涉及到一个小知识是mysql的用户认证是采用了挑战应答的方式,由服务器生成一个挑战数发送给用户之后用户用挑战数加密密码返回给服务器,服务器检查结果是否与预期相同, 这里需要无授权mysql用户的原因就是如果密码为空的话挑战加密结果就是空, 这样的话认证数据包就能每次相同了
 query包则相对结构简单,quit包格式固定</p>
 <ul>
-  <li>首先<code class="highlighter-rouge">tcpdump -i lo0 -w mysql.pcap port 3306</code> -i网卡 -w导出到文件 然后本地马上TCP/IP方式连接数据库进行select操作, 最后exit
+  <li>首先<code class="language-plaintext highlighter-rouge">tcpdump -i lo0 -w mysql.pcap port 3306</code> -i网卡 -w导出到文件 然后本地马上TCP/IP方式连接数据库进行select操作, 最后exit
 <img src="/assets/images/posts/2018/[题目]记一次利用gopher的内网mysql盲注/2.png" alt="11ea80a7-1e91-436c-a74d-cec9c0fff6db.png" /></li>
 </ul>
 

@@ -101,13 +101,13 @@
 <p>这题是一个特别的命令执行题， 首先进去首页之后发现以下源码</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
-    <span class="nv">$sandbox</span> <span class="o">=</span> <span class="s1">'/www/sandbox/'</span> <span class="o">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'REMOTE_ADDR'</span><span class="p">]);</span>
+    <span class="nv">$sandbox</span> <span class="o">=</span> <span class="s1">'/www/sandbox/'</span> <span class="mf">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="mf">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'REMOTE_ADDR'</span><span class="p">]);</span>
     <span class="o">@</span><span class="nb">mkdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span>
     <span class="o">@</span><span class="nb">chdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
         <span class="o">@</span><span class="nb">exec</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">]);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'reset'</span><span class="p">]))</span> <span class="p">{</span>
-        <span class="o">@</span><span class="nb">exec</span><span class="p">(</span><span class="s1">'/bin/rm -rf '</span> <span class="o">.</span> <span class="nv">$sandbox</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'reset'</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="o">@</span><span class="nb">exec</span><span class="p">(</span><span class="s1">'/bin/rm -rf '</span> <span class="mf">.</span> <span class="nv">$sandbox</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="nb">highlight_file</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
 </code></pre></div></div>
@@ -132,7 +132,7 @@ sh _  <span class="c">#也就执行了a指令 但是没有意义，所以我们�
 <ol>
   <li>ls出来是按照什么顺序排列的文件？</li>
   <li>追加文件的时候会自动加入换行 这个问题要怎么解决？</li>
-  <li>如果ls途中有无用的文件怎么办？ 因为如果是以上的做法的话其实<code class="highlighter-rouge">cat _</code>你会发现里面还有一个<code class="highlighter-rouge">_</code>文件</li>
+  <li>如果ls途中有无用的文件怎么办？ 因为如果是以上的做法的话其实<code class="language-plaintext highlighter-rouge">cat _</code>你会发现里面还有一个<code class="language-plaintext highlighter-rouge">_</code>文件</li>
 </ol>
 
 <blockquote>

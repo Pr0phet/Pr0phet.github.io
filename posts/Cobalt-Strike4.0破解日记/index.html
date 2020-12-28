@@ -117,7 +117,7 @@
   <li>以下操作都在一个新建文件夹<strong><em>fuckcs4.0</em></strong>里</li>
 </ul>
 
-<p>找到Idea的java反编译工具，Mac在路径<code class="highlighter-rouge">/Applications/IntelliJ IDEA.app/Contents/plugins/java-decompiler/lib</code>下，找到<strong><em>java-decompiler.jar</em></strong> copy出来一份，并建立文件夹cs_bin，把原版jar放进去</p>
+<p>找到Idea的java反编译工具，Mac在路径<code class="language-plaintext highlighter-rouge">/Applications/IntelliJ IDEA.app/Contents/plugins/java-decompiler/lib</code>下，找到<strong><em>java-decompiler.jar</em></strong> copy出来一份，并建立文件夹cs_bin，把原版jar放进去</p>
 
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
 ├── cs_bin
@@ -148,10 +148,10 @@
 
 <p>在<strong><em>fuckcs4.0</em></strong>里面创建一个新的文件夹，名字为<strong><em>project</em></strong>， 打开Idea新建工程，直接create一个普通的java project就行（一路next），把路径设置到我们刚新建的<strong><em>project</em></strong>文件夹，在<strong><em>project</em></strong>中再创建一个文件夹<strong><em>decompiled_src</em></strong>存放我们逆向之后的源码，把刚刚反编译后的jar放到这个文件夹之后解压，之后再创建一个<strong><em>lib</em></strong>文件夹，用于存放我们的原版jar。</p>
 
-<p>然后在<code class="highlighter-rouge">Files --&gt; Project Structure --&gt; Modules</code>里面的 Dependencies – 加入Jar or directories, 把我们<strong><em>lib</em></strong>文件夹的原版jar加入到项目中，打上勾就好了。
+<p>然后在<code class="language-plaintext highlighter-rouge">Files --&gt; Project Structure --&gt; Modules</code>里面的 Dependencies – 加入Jar or directories, 把我们<strong><em>lib</em></strong>文件夹的原版jar加入到项目中，打上勾就好了。
 <img src="https://i.loli.net/2020/08/05/tkaM6I7WHfbUhVB.png" alt="import jar.png" /></p>
 
-<p>最后在<code class="highlighter-rouge">Files --&gt; Project Structure --&gt; Artifact</code>里面添加Jar – From modules with dependencies, Main Class可以从原版的jar里面的<strong><em>META-INF/MANIFEST.MF</em></strong>看到是<strong><em>aggressor.Aggressor</em></strong>，填进去就行了。
+<p>最后在<code class="language-plaintext highlighter-rouge">Files --&gt; Project Structure --&gt; Artifact</code>里面添加Jar – From modules with dependencies, Main Class可以从原版的jar里面的<strong><em>META-INF/MANIFEST.MF</em></strong>看到是<strong><em>aggressor.Aggressor</em></strong>，填进去就行了。
 <img src="https://i.loli.net/2020/08/05/o5SNnJZ2rOXd7A6.png" alt="image.png" />
 <img src="https://i.loli.net/2020/08/05/gZR2KXzkbPrL938.png" alt="image.png" /></p>
 
@@ -196,8 +196,8 @@
 <span class="o">}</span>
 
 </code></pre></div></div>
-<p>然后在菜单栏有<code class="highlighter-rouge">Build --&gt; Build Artifact</code>，运行之后在<strong><em>out/artifacts</em></strong>里面会有发现新编译好的jar，
-在<code class="highlighter-rouge">Run --&gt; Profile --&gt; Edit Profile</code>处添加一个Jar Application， Jar Path指向我们刚刚编译好的jar，VM Options填上<strong><em>-XX:+AggressiveHeap -XX:+UseParallelGC</em></strong>（如果不加的话会报错）
+<p>然后在菜单栏有<code class="language-plaintext highlighter-rouge">Build --&gt; Build Artifact</code>，运行之后在<strong><em>out/artifacts</em></strong>里面会有发现新编译好的jar，
+在<code class="language-plaintext highlighter-rouge">Run --&gt; Profile --&gt; Edit Profile</code>处添加一个Jar Application， Jar Path指向我们刚刚编译好的jar，VM Options填上<strong><em>-XX:+AggressiveHeap -XX:+UseParallelGC</em></strong>（如果不加的话会报错）
 Run之后发现还有报错，找不到<strong><em>cobaltstrike.auth</em></strong>文件
 <img src="https://i.loli.net/2020/08/05/tOXui6fvxUy3rzm.png" alt="image.png" />
 然后我们把<strong><em>cobaltstrike.auth</em></strong>文件复制到我们生成的jar同目录下，再运行，就能出现我们熟悉的框框了 :(

